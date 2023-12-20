@@ -3,12 +3,12 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import axios from 'axios';
 import API_BASE_URL from '../../config';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { token, userData } from '../Auth/Token';
 
-const BlogPostForm = () => {
+const BlogPostForm = ({ postId }) => {
     const navigate = useNavigate()
-    const {id} = useParams()
+    const id = postId
     const isEditing = !!id
     const [formData, setFormData] = useState({
         title: '',
@@ -22,12 +22,16 @@ const BlogPostForm = () => {
     const [tags, setTags]= useState([])
     const [error, setError] = useState('')
     const [authorDetails,setAuthorDetails] = useState({})
+    const [selectedImage, setSelectedImage] = useState(null);
+    const [tagChecked, setTagChecked] = useState([])
 
     useEffect(() => {
         if(isEditing){
             axios.get(`${API_BASE_URL}/api/posts/${id}`, {headers: {Authorization: `Token ${token}`, 'Content-Type': 'application/json',}})
             .then(response => {
                 setFormData(response.data)
+                setSelectedImage(response.data.image)
+                setTagChecked(response.data.tags)
             })
             .catch(error => {
                 setError(`Error fetching blog post: ${error}`)
@@ -60,28 +64,31 @@ const BlogPostForm = () => {
         .then(response => {
             const fetchedAuthorDetails = response.data;
             setAuthorDetails(fetchedAuthorDetails)
+            
         })
         .catch(error => {
             console.error(`Error fetching author data: ${error}`);
         });
         
-    }, [id, isEditing]);
+    }, [isEditing, id]);
+    
     
     const handleChange = (e) => {
-        const { name, value, type } = e.target
-        if(type === 'checkbox'){
-            const selectedTags = formData.tags.includes(value) ? formData.tags.filter(tag => tag !== value)
-                                                               : [...formData.tags, value]
-            setFormData({
-                ...formData,
-                [name]: selectedTags,
-            })
-        }else{
-            setFormData({
-                ...formData,
-                [name]: value,
-            })
-        }        
+        const { name, value} = e.target
+        setFormData({
+            ...formData,
+            [name]: value,
+        })    
+    }
+
+    const handleTagChange = (tagId) => {
+        setTagChecked((prevTagChecked) => {
+            if(prevTagChecked.includes(tagId)){
+                return prevTagChecked.filter((id) => id !== tagId)
+            }else{
+                return [...prevTagChecked, tagId]
+            }
+        })
     }
 
     const handleImageChange = (e) => {
@@ -90,6 +97,15 @@ const BlogPostForm = () => {
             ...formData,
             image: image,
         })
+        if (image) {
+            const reader = new FileReader();        
+            reader.onload = (e) => {
+                setSelectedImage(e.target.result);
+            };    
+            reader.readAsDataURL(image);
+        } else {
+            setSelectedImage(null);
+        }
     }
 
     const handleContentChange = (newContent) => {
@@ -98,19 +114,27 @@ const BlogPostForm = () => {
             content: newContent,
         })
     }
-
+    
     const handleSubmission = (e) => {
         e.preventDefault();
+
+        if((!formData.title) || (!formData.content) || (!formData.category)){
+            setError('Please fill in all required fields.')
+            return
+        }
+        
         const postData = new FormData();
         postData.append('title', formData.title)
         postData.append('content', formData.content)
-        postData.append('category', formData.category)
-        postData.append('image', formData.image)
+        postData.append('category', formData.category)        
         postData.append('author', formData.author)
-        formData.tags.forEach((tagId) => {
-            postData.append('tags', tagId);
-        })
         
+        tagChecked.forEach((tagId) => {postData.append('tags', tagId)})
+
+        if (typeof formData.image !== "string") {// If image is already exist it's in string if new one upload it's and fileobject. ONLY FILE OBJECTS can save in DB
+            postData.append('image', formData.image)
+        }
+
         if(id){
             //Update blog post
             axios.put(`${API_BASE_URL}/api/posts/${id}/`, postData, {headers: {Authorization: `Token ${token}`, 'Content-Type': 'multipart/form-data',}})
@@ -134,6 +158,7 @@ const BlogPostForm = () => {
         }      
     }
 
+
     return(
         <div>
             <h1>{isEditing ? 'Edit Blog Post' : 'Create New Blog Post'}</h1>
@@ -146,7 +171,8 @@ const BlogPostForm = () => {
                 </div>
                 <div>
                     <label htmlFor='category'>Category'</label>
-                    <select name='category' value={formData.category} onChange={handleChange}>
+                    <select name='category' onChange={handleChange} value={formData.category}>
+                        <option value={null}>Please Select</option>
                         {categories.map(category => (
                             <option key={category.id} value={category.id}>{category.name}</option>
                         ))}
@@ -156,14 +182,20 @@ const BlogPostForm = () => {
                         <label htmlFor='tags'>Tags</label>
                         {tags.map(tag => (
                             <label key={tag.id}>
-                                <input type='checkbox' name='tags' value={tag.id} onChange={handleChange} {...formData.tags.includes(tag.id) && 'checked' } />
+                            <input type='checkbox' name='tags' id={`tag${tag.id}`} value={tag.id} onChange={() => handleTagChange(tag.id)} checked={tagChecked.includes(tag.id)}/>                                                                                   
                                 {tag.name}
                             </label>                           
                         ))}                    
                 </div>
                 <div>
-                    <label htmlFor='image'>Blog Image</label>
+                    <label htmlFor='image'>Blog Image </label>
+                    {selectedImage ? (
+                        <img src={selectedImage} alt="Selected thumbnail" style={{ width: '50px', height: '50px', objectFit: 'cover' }} />
+                        ) 
+                        : ( 'Choose Image' )
+                    }
                     <input type='file' name='image' accept='image/*' onChange={handleImageChange} />
+                    
                 </div>
                 <div>
                     <label htmlFor='content'>Content</label>

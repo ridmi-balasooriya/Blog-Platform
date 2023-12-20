@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import API_BASE_URL from '../../config';
 import { useParams, useNavigate } from "react-router-dom";
-import {token} from "../Auth/Token";
+import {token, userData} from "../Auth/Token";
 
 const BlogPostFull = () =>{
     const { id } = useParams();
@@ -21,7 +21,7 @@ const BlogPostFull = () =>{
     },[]);
     
     const handleEditClick = (postId) =>{
-        navigate(`/dashboard/?id=${postId}`)
+        navigate(`/dashboard/?postId=${postId}`)
     }
 
     return(
@@ -29,7 +29,8 @@ const BlogPostFull = () =>{
         <div className="article-div">
             <h1>{post && post.title}</h1>
             <p><em>{post && post.author.username}</em></p>
-            {token && <button onClick={() => handleEditClick(post && post.id)}>Edit Post</button> }
+            <div>{post && post.tags.map(tag => (<span key={tag}>{tag}</span>))}</div>
+            {post && (userData.username === post.author.username) && <button onClick={() => handleEditClick(post && post.id)}>Edit Post</button> }
             {post && post.image && 
                 <div className="post_image">
                     {post && <img src={`${post.image}`} alt={post.title} /> }

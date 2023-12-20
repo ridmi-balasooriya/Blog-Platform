@@ -3,8 +3,10 @@ from django.http import JsonResponse
 # For Define API Views
 from rest_framework import generics, viewsets, status
 from rest_framework.response import Response
+from rest_framework.parsers import MultiPartParser, FormParser
 from .models import Post, Category, Tag, Comment, User
 from .serializers import PostSerializer, CategorySerializer, TagSerializer, CommentSerializer, UserSerializer, PasswordResetSerializer
+
 
 # For User Authentication
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
@@ -47,12 +49,25 @@ class PostModelViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
     permission_classes = [IsAuthenticated]
+    parser_classes = (MultiPartParser, FormParser)
 
     def get_queryset(self):
         return Post.objects.filter(author=self.request.user)
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
+
+    def update(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(
+            instance, data=request.data, partial=True)
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        else:
+            print(serializer.errors)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class CategoryListCreateView(generics.ListCreateAPIView):

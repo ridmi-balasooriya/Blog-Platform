@@ -1,11 +1,22 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {token} from "../components/Auth/Token";
 import LogOut from "../components/Auth/LogOut";
 import BlogPostForm from "../components/BlogPosts/BlogPostForm";
 import MyBlogPost from "../components/BlogPosts/MyBlogPosts";
+import { useLocation } from 'react-router-dom';
 
 const DashBoard = () => {
-    const [displayComponent, setDisplayComponent] = useState('create_post')
+    const [displayComponent, setDisplayComponent] = useState('create_post');
+    const location = useLocation();
+    const postId = new URLSearchParams(location.search).get("postId");
+    
+    useEffect(() => {
+        if(postId){
+            setDisplayComponent('edit_post');
+        }
+    },[postId])
+    
+  
     return(
         <>
             {token && <LogOut /> }
@@ -20,6 +31,7 @@ const DashBoard = () => {
                 </div>
                 <div>
                     {displayComponent === 'create_post' && <BlogPostForm />}
+                    {displayComponent === 'edit_post' && <BlogPostForm postId={postId} />}
                     {displayComponent ==='my_posts' && <MyBlogPost />}
                 </div>
 

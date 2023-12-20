@@ -34,12 +34,17 @@ const MyBlogPost = () => {
         }
     }
 
+    const handleViewDashboardClick = (postId) => {
+        window.location.href = `/dashboard?postId=${postId}`;
+    };
+
     return(
         <div>
             <h1>My Blog Posts</h1>
             <ul>
                 {blogposts.map(post => (
                     <li key={post.id}>
+                        <button onClick={() => handleViewDashboardClick(post.id)}>Edit</button>
                         <h2><a href={`/posts/${post.id}`} target="_blank" rel="noopener noreferrer">{post.title}</a></h2>
                         <p><em>{post.author.username}</em></p>
                         <p dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(getPostReadMore(post.content)) }} />

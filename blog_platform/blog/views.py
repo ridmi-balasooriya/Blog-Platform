@@ -55,7 +55,19 @@ class PostModelViewSet(viewsets.ModelViewSet):
         return Post.objects.filter(author=self.request.user)
 
     def perform_create(self, serializer):
+        # If 'category' is provided, set the category ID
+        if 'category' in self.request.data:
+            category_id = self.request.data['category']
+            serializer.validated_data['category'] = Category.objects.get(
+                pk=category_id)
+
+        # If 'tags' is provided, set the tag IDs
+        if 'tags' in self.request.data:
+            tag_ids = self.request.data.getlist('tags')
+            tags = Tag.objects.filter(pk__in=tag_ids)
+
         serializer.save(author=self.request.user)
+        serializer.instance.tags.set(tags)
 
     def update(self, request, *args, **kwargs):
         instance = self.get_object()
@@ -63,7 +75,24 @@ class PostModelViewSet(viewsets.ModelViewSet):
             instance, data=request.data, partial=True)
 
         if serializer.is_valid():
+
+            # If 'category' is provided, set the category ID
+            if 'category' in request.data:
+                category_id = request.data['category']
+                print('####################### Test ####################')
+                print(request.data['category'])
+                print('####################### Test ####################')
+                serializer.validated_data['category'] = Category.objects.get(
+                    pk=category_id)
+
+            # If 'tags' is provided, set the tag IDs
+            if 'tags' in request.data:
+                tag_ids = request.data.getlist('tags')
+                tags = Tag.objects.filter(pk__in=tag_ids)
+                serializer.instance.tags.set(tags)
+
             serializer.save()
+
             return Response(serializer.data)
         else:
             print(serializer.errors)

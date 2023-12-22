@@ -14,7 +14,7 @@ const BlogPostForm = ({ postId }) => {
         title: '',
         content: '',
         image: null,
-        category: '',
+        category: {},
         tags: [],
         author: userData.id,
     })
@@ -31,14 +31,15 @@ const BlogPostForm = ({ postId }) => {
             .then(response => {
                 setFormData(response.data)
                 setSelectedImage(response.data.image)
-                setTagChecked(response.data.tags)
+                setTagChecked(response.data.tags.map(tag => tag.id))
+                
             })
             .catch(error => {
                 setError(`Error fetching blog post: ${error}`)
                 console.error(`Error fetching blog post: ${error}`);
             })
         }
-
+                
         //Fetch Category List
         axios.get(`${API_BASE_URL}/api/categories`, {headers: {Authorization: `Token ${token}`, 'Content-Type': 'application/json',}})
         .then(response => {
@@ -71,9 +72,8 @@ const BlogPostForm = ({ postId }) => {
         });
         
     }, [isEditing, id]);
-    
-    
-    const handleChange = (e) => {
+        
+    const handleChangeTitle = (e) => {
         const { name, value} = e.target
         setFormData({
             ...formData,
@@ -81,6 +81,13 @@ const BlogPostForm = ({ postId }) => {
         })    
     }
 
+    const handleChangeCategory = (e) => {
+        const { name, value} = e.target
+        setFormData({
+            ...formData,
+            [name]: {id: value, name: e.innerText},
+        })  
+    }
     const handleTagChange = (tagId) => {
         setTagChecked((prevTagChecked) => {
             if(prevTagChecked.includes(tagId)){
@@ -109,15 +116,15 @@ const BlogPostForm = ({ postId }) => {
     }
 
     const handleContentChange = (newContent) => {
-        setFormData({
-            ...formData,
+        setFormData((prevFormData) => ({
+            ...prevFormData,
             content: newContent,
-        })
+        }))
     }
     
     const handleSubmission = (e) => {
         e.preventDefault();
-
+        
         if((!formData.title) || (!formData.content) || (!formData.category)){
             setError('Please fill in all required fields.')
             return
@@ -125,16 +132,16 @@ const BlogPostForm = ({ postId }) => {
         
         const postData = new FormData();
         postData.append('title', formData.title)
-        postData.append('content', formData.content)
-        postData.append('category', formData.category)        
+        postData.append('content', formData.content)  
         postData.append('author', formData.author)
+        postData.append('category', formData.category.id)
         
         tagChecked.forEach((tagId) => {postData.append('tags', tagId)})
 
         if (typeof formData.image !== "string") {// If image is already exist it's in string if new one upload it's and fileobject. ONLY FILE OBJECTS can save in DB
             postData.append('image', formData.image)
         }
-
+        
         if(id){
             //Update blog post
             axios.put(`${API_BASE_URL}/api/posts/${id}/`, postData, {headers: {Authorization: `Token ${token}`, 'Content-Type': 'multipart/form-data',}})
@@ -158,7 +165,7 @@ const BlogPostForm = ({ postId }) => {
         }      
     }
 
-
+    
     return(
         <div>
             <h1>{isEditing ? 'Edit Blog Post' : 'Create New Blog Post'}</h1>
@@ -167,11 +174,11 @@ const BlogPostForm = ({ postId }) => {
             <form onSubmit={handleSubmission}>
                 <div>
                     <label htmlFor='title'>Title</label>
-                    <input type='text' name='title' value={formData.title} onChange={handleChange} />
+                    <input type='text' name='title' value={formData.title} onChange={ handleChangeTitle} />
                 </div>
                 <div>
                     <label htmlFor='category'>Category'</label>
-                    <select name='category' onChange={handleChange} value={formData.category}>
+                    <select name='category' onChange={handleChangeCategory} value={formData.category.id}>
                         <option value={null}>Please Select</option>
                         {categories.map(category => (
                             <option key={category.id} value={category.id}>{category.name}</option>

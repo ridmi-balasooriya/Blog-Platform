@@ -23,13 +23,21 @@ const BlogPostFull = () =>{
     const handleEditClick = (postId) =>{
         navigate(`/dashboard/?postId=${postId}`)
     }
-
+    
     return(
         
         <div className="article-div">
             <h1>{post && post.title}</h1>
             <p><em>{post && post.author.username}</em></p>
-            <div>{post && post.tags.map(tag => (<span key={tag}>{tag}</span>))}</div>
+            <div>
+                <strong>Tags: </strong>
+                {post && post.tags.map((tag, index) => 
+                <span key={tag.name}> {tag.name} {index < post.tags.length - 1 && '|'} </span> )}
+            </div>
+            <div>
+                <strong>Category: </strong>
+                <span>{post && post.category.name}</span>
+            </div>
             {post && (userData.username === post.author.username) && <button onClick={() => handleEditClick(post && post.id)}>Edit Post</button> }
             {post && post.image && 
                 <div className="post_image">

@@ -34,9 +34,28 @@ const MyBlogPost = () => {
         }
     }
 
-    const handleViewDashboardClick = (postId) => {
+    const handleUpdateClick = (postId) => {
+        //Send for dashboad form create/update panel to do the update.
         window.location.href = `/dashboard?postId=${postId}`;
     };
+
+    const handleDeleteClick = (postId) => {
+        const confirmDelete = window.confirm('Are you sure you want to delete this post?')
+
+        if(confirmDelete){
+            axios.delete(
+                `${API_BASE_URL}/api/posts/${postId}`,
+                { headers : { Authorization: `Token ${token}`}}
+            ).then(response => {
+                setBlogPost(
+                    prevPosts => prevPosts.filter(post => post.id !== postId )
+                )
+                console.log(`Post ${postId} deleted successfully`);
+            }).catch(error => {
+                console.log(`Error deleting post ${postId}: ${error}`)
+            })
+        }
+    }
 
     return(
         <div>
@@ -44,7 +63,8 @@ const MyBlogPost = () => {
             <ul>
                 {blogposts.map(post => (
                     <li key={post.id}>
-                        <button onClick={() => handleViewDashboardClick(post.id)}>Edit</button>
+                        <button onClick={() => handleUpdateClick(post.id)}>Edit</button>
+                        <button onClick={() => handleDeleteClick(post.id)}>Delete</button>
                         <h2><a href={`/posts/${post.id}`} target="_blank" rel="noopener noreferrer">{post.title}</a></h2>
                         <p><em>{post.author.username}</em></p>
                         <p dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(getPostReadMore(post.content)) }} />

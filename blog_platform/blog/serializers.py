@@ -54,6 +54,8 @@ class PasswordResetSerializer(serializers.Serializer):
 class PostSerializer(serializers.ModelSerializer):
 
     author = UserSerializer(read_only=True)
+    tags = TagSerializer(many=True, read_only=True)
+    category = CategorySerializer(read_only=True)
 
     class Meta:
         model = Post

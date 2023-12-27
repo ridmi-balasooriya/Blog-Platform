@@ -6,6 +6,7 @@ import DOMPurify from 'dompurify';
 
 const MyBlogPost = () => {
     const [blogposts, setBlogPost] = useState([]);
+    const [successMsg, setSuccessMsg] = useState('');
     
     useEffect(() => {
         if(token){
@@ -47,6 +48,7 @@ const MyBlogPost = () => {
                 `${API_BASE_URL}/api/posts/${postId}`,
                 { headers : { Authorization: `Token ${token}`}}
             ).then(response => {
+                setSuccessMsg('Your blog post is deleted successfully..!')
                 setBlogPost(
                     prevPosts => prevPosts.filter(post => post.id !== postId )
                 )
@@ -60,6 +62,7 @@ const MyBlogPost = () => {
     return(
         <div>
             <h1>My Blog Posts</h1>
+            {successMsg && <div>{successMsg}</div>}
             <ul>
                 {blogposts.map(post => (
                     <li key={post.id}>

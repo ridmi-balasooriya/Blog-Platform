@@ -1,9 +1,23 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.db.models.signals import pre_delete
+from django.dispatch import receiver
+from signal import *
+
+# Give Defalut value for author in Category and Tag Models if neccessry.
+
+
+def get_default_author():
+    try:
+        return User.objects.get(username=3)
+    except User.DoesNotExist:
+        return None  # Handle the case where the superuser doesn't exist
 
 
 class Category(models.Model):
     name = models.CharField(max_length=100)
+    author = models.ForeignKey(
+        User, on_delete=models.CASCADE, null=True, default=get_default_author)
 
     def __str__(self):
         return self.name
@@ -11,9 +25,17 @@ class Category(models.Model):
 
 class Tag(models.Model):
     name = models.CharField(max_length=100)
+    author = models.ForeignKey(
+        User, on_delete=models.CASCADE, null=True, default=get_default_author)
 
     def __str__(self):
         return self.name
+
+
+def get_default_category():
+    # Assuming there is a Category instance with the name 'Uncategory'
+    uncategory, created = Category.objects.get_or_create(name='Uncategory')
+    return uncategory
 
 
 class Post(models.Model):
@@ -21,7 +43,8 @@ class Post(models.Model):
     content = models.TextField()
     image = models.ImageField(upload_to='blog_images/', null=True, blank=True)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    category = models.ForeignKey(
+        Category, on_delete=models.SET(get_default_category))
     tags = models.ManyToManyField(Tag)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

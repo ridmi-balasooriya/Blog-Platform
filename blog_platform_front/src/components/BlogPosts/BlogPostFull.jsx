@@ -18,10 +18,27 @@ const BlogPostFull = () =>{
             alert(`Error fetching blog post:
             ${error}`);
         })
-    },[]);
+    }, [id]);
     
     const handleEditClick = (postId) =>{
         navigate(`/dashboard/?postId=${postId}`)
+    }
+
+    const handleDeleteClick = (postId) => {
+        const confirmDelete = window.confirm('Are you sure you want to delete this post?')
+
+        if(confirmDelete){
+            axios.delete(
+                `${API_BASE_URL}/api/posts/${postId}`,
+                { headers : { Authorization: `Token ${token}`}}
+            ).then(response => {
+                alert(`Your blog post is deleted successfully..!`)
+                navigate(`/`)
+                console.log(`Post ${postId} deleted successfully`);
+            }).catch(error => {
+                console.log(`Error deleting post ${postId}: ${error}`)
+            })
+        }
     }
     
     return(
@@ -39,6 +56,7 @@ const BlogPostFull = () =>{
                 <span>{post && post.category.name}</span>
             </div>
             {post && (userData.username === post.author.username) && <button onClick={() => handleEditClick(post && post.id)}>Edit Post</button> }
+            {post && (userData.username === post.author.username) && <button onClick={() => handleDeleteClick(post && post.id)}>Delete</button> }
             {post && post.image && 
                 <div className="post_image">
                     {post && <img src={`${post.image}`} alt={post.title} /> }

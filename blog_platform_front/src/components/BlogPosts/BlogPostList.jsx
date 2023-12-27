@@ -6,11 +6,12 @@ import LoginButton from "../Auth/LoginButton"
 import LogOut from "../Auth/LogOut";
 import {token} from "../Auth/Token";
 import DashboadButton from "./DashboardButton";
+import { useParams } from 'react-router-dom';
 
 const BlogPostList = () => {
 
     const [posts, setPosts] = useState([]);
-
+    const { successMsg } = useParams()
     useEffect(() => {
         axios.get(`${API_BASE_URL}/api/postlist`)
         .then(response => {
@@ -37,6 +38,7 @@ const BlogPostList = () => {
             <div>{token 
             ? <> <DashboadButton />  <LogOut /> </>
             : <LoginButton /> }</div>
+            {successMsg && <div>{successMsg}</div>}
             <ul>
                 {posts.map(post => (
                     <li key={post.id}>

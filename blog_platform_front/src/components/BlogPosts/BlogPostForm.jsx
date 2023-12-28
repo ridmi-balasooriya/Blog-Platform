@@ -74,6 +74,11 @@ const BlogPostForm = ({ postId }) => {
         });
         
     }, [isEditing, id]);
+
+    const clearMessages = () => {
+        setSuccess('')
+        setError('')
+    }
         
     const handleChangeTitle = (e) => {
         const { name, value} = e.target
@@ -126,6 +131,7 @@ const BlogPostForm = ({ postId }) => {
     
     const handleSubmission = (e) => {
         e.preventDefault();
+        clearMessages()
         
         if((!formData.title) || (!formData.content) || (!formData.category)){
             setError('Please fill in all required fields.')
@@ -180,7 +186,7 @@ const BlogPostForm = ({ postId }) => {
             <form onSubmit={handleSubmission}>
                 <div>
                     <label htmlFor='title'>Title</label>
-                    <input type='text' name='title' value={formData.title} onChange={ handleChangeTitle} />
+                    <input type='text' name='title' value={formData.title} onChange={handleChangeTitle} />
                 </div>
                 <div>
                     <label htmlFor='category'>Category'</label>

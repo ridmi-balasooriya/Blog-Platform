@@ -29,6 +29,7 @@ const BlogPostForm = ({ postId }) => {
 
     useEffect(() => {
         if(isEditing){
+            setViewPostId(id)
             axios.get(`${API_BASE_URL}/api/posts/${id}`, {headers: {Authorization: `Token ${token}`, 'Content-Type': 'application/json',}})
             .then(response => {
                 setFormData(response.data)
@@ -165,7 +166,7 @@ const BlogPostForm = ({ postId }) => {
             axios.post(`${API_BASE_URL}/api/posts/`, postData, {headers: {Authorization: `Token ${token}`, 'Content-Type': 'multipart/form-data',}})
             .then(response => {
                 setSuccess('Blog Post is Created Successfully...');
-                setViewPostId(response.data.id)
+                navigate(`/dashboard/?postId=${response.data.id}`)
             })
             .catch(error => {
                 setError(`Error creating blog post: ${error}`)

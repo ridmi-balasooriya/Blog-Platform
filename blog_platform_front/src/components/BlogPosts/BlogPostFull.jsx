@@ -55,8 +55,8 @@ const BlogPostFull = () =>{
                 <strong>Category: </strong>
                 <span>{post && post.category.name}</span>
             </div>
-            {post && (userData.username === post.author.username) && <button onClick={() => handleEditClick(post && post.id)}>Edit Post</button> }
-            {post && (userData.username === post.author.username) && <button onClick={() => handleDeleteClick(post && post.id)}>Delete</button> }
+            {post && token && (userData.username === post.author.username) && <button onClick={() => handleEditClick(post && post.id)}>Edit Post</button> }
+            {post && token && (userData.username === post.author.username) && <button onClick={() => handleDeleteClick(post && post.id)}>Delete</button> }
             {post && post.image && 
                 <div className="post_image">
                     {post && <img src={`${post.image}`} alt={post.title} /> }

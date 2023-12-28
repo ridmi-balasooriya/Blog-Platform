@@ -20,7 +20,9 @@ const BlogPostForm = ({ postId }) => {
     })
     const [categories, setCategories]= useState([])
     const [tags, setTags]= useState([])
+    const [success, setSuccess] = useState('')
     const [error, setError] = useState('')
+    const [viewPostId, setViewPostId] = useState('')
     const [authorDetails,setAuthorDetails] = useState({})
     const [selectedImage, setSelectedImage] = useState(null);
     const [tagChecked, setTagChecked] = useState([])
@@ -146,7 +148,8 @@ const BlogPostForm = ({ postId }) => {
             //Update blog post
             axios.put(`${API_BASE_URL}/api/posts/${id}/`, postData, {headers: {Authorization: `Token ${token}`, 'Content-Type': 'multipart/form-data',}})
             .then(response => {
-                navigate('/');
+                setSuccess('Blog Post is Updated Successfully...');
+                setViewPostId(response.data.id)
             })
             .catch(error => {
                 setError(`Error updating blog post: ${error}`)
@@ -155,7 +158,8 @@ const BlogPostForm = ({ postId }) => {
         }else{ 
             axios.post(`${API_BASE_URL}/api/posts/`, postData, {headers: {Authorization: `Token ${token}`, 'Content-Type': 'multipart/form-data',}})
             .then(response => {
-                navigate('/')
+                setSuccess('Blog Post is Created Successfully...');
+                setViewPostId(response.data.id)
             })
             .catch(error => {
                 setError(`Error creating blog post: ${error}`)
@@ -170,7 +174,9 @@ const BlogPostForm = ({ postId }) => {
         <div>
             <h1>{isEditing ? 'Edit Blog Post' : 'Create New Blog Post'}</h1>
             {error && <div>{error}</div>}
+            {success && <div>{success}</div>}
             <div><em>Author: {authorDetails.username}</em></div>
+            {viewPostId && <a href={`/posts/${viewPostId}`} target="_blank" rel="noopener noreferrer">View Post</a>}
             <form onSubmit={handleSubmission}>
                 <div>
                     <label htmlFor='title'>Title</label>

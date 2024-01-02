@@ -5,7 +5,7 @@ import API_BASE_URL from '../../config';
 import LoginButton from "../Auth/LoginButton"
 import LogOut from "../Auth/LogOut";
 import {token} from "../Auth/Token";
-import DashboadButton from "./DashboardButton";
+import DashboadButton from "../PageButtons/DashboardButton";
 import { useParams } from 'react-router-dom';
 
 const BlogPostList = () => {

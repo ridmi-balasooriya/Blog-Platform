@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {token} from "../components/Auth/Token";
+import HomeButton from "../components/PageButtons/HomeButton";
 import LogOut from "../components/Auth/LogOut";
 import BlogPostForm from "../components/BlogPosts/BlogPostForm";
 import MyBlogPost from "../components/BlogPosts/MyBlogPosts";
@@ -29,6 +30,7 @@ const DashBoard = () => {
   
     return(
         <>
+            {token && <HomeButton /> }
             {token && <LogOut /> }
             <div className="dashboard_div">
                 <div className="dashboard_menu">

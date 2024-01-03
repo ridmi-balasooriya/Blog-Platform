@@ -1,4 +1,5 @@
 from django.http import JsonResponse
+from django.shortcuts import get_object_or_404
 
 # For Define API Views
 from rest_framework import generics, viewsets, status
@@ -132,7 +133,29 @@ class CommentListCreateView(generics.ListCreateAPIView):
 class CommentViewSet(viewsets.ModelViewSet):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
-    permission_classes = [IsAuthenticated]
+
+    def get_permissions(self):
+        if self.action == 'list':
+            return [IsAuthenticatedOrReadOnly()]
+        return [IsAuthenticated()]
+
+    def get_queryset(self):
+        queryset = Comment.objects.all()
+        postId = self.request.query_params.get('postId')
+        if postId is not None:
+            queryset = queryset.filter(post_id=postId)
+        return queryset
+
+    def perform_create(self, serializer):
+        author = self.request.user
+        post_id = self.request.data.get('post')
+        # Retrieve the Post instance based on the provided ID
+        post = get_object_or_404(Post, id=post_id)
+
+        serializer.validated_data['author'] = author
+        serializer.validated_data['post'] = post
+
+        serializer.save()
 
 
 class UserViewSet(viewsets.ModelViewSet):

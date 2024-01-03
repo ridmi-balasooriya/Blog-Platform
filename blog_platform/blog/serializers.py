@@ -63,8 +63,8 @@ class PostSerializer(serializers.ModelSerializer):
 
 
 class CommentSerializer(serializers.ModelSerializer):
-    post = PostSerializer()
-    author = UserSerializer()
+    post = PostSerializer(read_only=True)
+    author = UserSerializer(read_only=True)
 
     class Meta:
         model = Comment

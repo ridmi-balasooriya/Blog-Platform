@@ -3,13 +3,17 @@ import axios from "axios";
 import API_BASE_URL from '../../config';
 import { useParams, useNavigate } from "react-router-dom";
 import {token, userData} from "../Auth/Token";
+import CommentForm from "../Comments/CommentForm";
+import CommentList from "../Comments/CommentList";
 
 const BlogPostFull = () =>{
     const { id } = useParams();
     const [post, setPost] = useState(null);
+    const [comments, setComments] = useState([])
     const navigate = useNavigate();
 
     useEffect(() => {
+        //Get the Post
         axios.get(`${API_BASE_URL}/api/postlist/${id}/`)
         .then((response) => {
             setPost(response.data);
@@ -18,9 +22,26 @@ const BlogPostFull = () =>{
             alert(`Error fetching blog post:
             ${error}`);
         })
+
+        //Get Comments realted to the post id.
+        axios.get(`${API_BASE_URL}/api/comments/?postId=${id}`,  
+            {headers: {'Content-Type': 'application/json'}}
+        )
+        .then(response => {
+            setComments(response.data)
+            console.log(response.data)
+        })
+        .catch(error => {
+            console.log(`Error fetching comments: ${error}`)
+        })
+
     }, [id]);
+
+    const handleCommentAdded = (newComment) => {
+        setComments([...comments, newComment])
+    }
     
-    const handleEditClick = (postId) =>{
+    const handleEditClick = (postId) => {
         navigate(`/dashboard/?postId=${postId}`)
     }
 
@@ -41,8 +62,7 @@ const BlogPostFull = () =>{
         }
     }
     
-    return(
-        
+    return(        
         <div className="article-div">
             <h1>{post && post.title}</h1>
             <p><em>{post && post.author.username}</em></p>
@@ -66,6 +86,8 @@ const BlogPostFull = () =>{
                 {post &&  <p dangerouslySetInnerHTML={{ __html: post.content }} />}
             </div>
             <a href='/'>Back To Article List</a>
+            {post && token && <CommentForm postId={post.id} onCommentAdded={handleCommentAdded} /> }
+            {post && <CommentList postId={post.id} onCommentAdded={handleCommentAdded} /> }
         </div>
     )
 

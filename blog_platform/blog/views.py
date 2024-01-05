@@ -5,8 +5,8 @@ from django.shortcuts import get_object_or_404
 from rest_framework import generics, viewsets, status
 from rest_framework.response import Response
 from rest_framework.parsers import MultiPartParser, FormParser
-from .models import Post, Category, Tag, Comment, User
-from .serializers import PostSerializer, CategorySerializer, TagSerializer, CommentSerializer, UserSerializer, PasswordResetSerializer
+from .models import Like, Post, Category, Tag, Comment, User
+from .serializers import PostSerializer, CategorySerializer, TagSerializer, CommentSerializer, UserSerializer, PasswordResetSerializer, LikeSerializer
 
 
 # For User Authentication
@@ -155,6 +155,29 @@ class CommentViewSet(viewsets.ModelViewSet):
         serializer.validated_data['author'] = author
         serializer.validated_data['post'] = post
 
+        serializer.save()
+
+
+class LikeViewSet(viewsets.ModelViewSet):
+    queryset = Like.objects.all()
+    serializer_class = LikeSerializer
+
+    def get_permissions(self):
+        if self.action == 'list':
+            return [IsAuthenticatedOrReadOnly()]
+        return [IsAuthenticated()]
+
+    def get_queryset(self):
+        queryset = Like.objects.all()
+        postId = self.request.query_params.get('postId')
+
+        if postId is not None:
+            queryset = queryset.filter(post_id=postId)
+        return queryset
+
+    def perform_create(self, serializer):
+        author = self.request.user
+        serializer.validated_data['author'] = author
         serializer.save()
 
 

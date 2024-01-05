@@ -4,9 +4,8 @@ from django.db.models.signals import pre_delete
 from django.dispatch import receiver
 from signal import *
 
+
 # Give Defalut value for author in Category and Tag Models if neccessry.
-
-
 def get_default_author():
     try:
         return User.objects.get(username=3)
@@ -61,3 +60,14 @@ class Comment(models.Model):
 
     def __str__(self):
         return f"Commnet by {self.author.username} on {self.post.title}"
+
+
+class Like(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    author = models.ForeignKey(User, on_delete=models.Case)
+
+    class Meta:
+        unique_together = ['author', 'post']
+
+    def __str__(self):
+        return f"Liked by {self.author.username} on {self.post.title}"

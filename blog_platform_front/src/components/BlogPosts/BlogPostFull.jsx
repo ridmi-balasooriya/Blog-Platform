@@ -5,6 +5,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import {token, userData} from "../Auth/Token";
 import CommentForm from "../Comments/CommentForm";
 import CommentList from "../Comments/CommentList";
+import Like from "../Likes/Like";
 
 const BlogPostFull = () =>{
     const { id } = useParams();
@@ -23,7 +24,7 @@ const BlogPostFull = () =>{
             ${error}`);
         })
 
-        //Get Comments realted to the post id.
+        //Get Comments related to the post id. ***(Callback when adding new comment)
         axios.get(`${API_BASE_URL}/api/comments/?postId=${id}`,  
             {headers: {'Content-Type': 'application/json'}}
         )
@@ -65,6 +66,7 @@ const BlogPostFull = () =>{
     return(        
         <div className="article-div">
             <h1>{post && post.title}</h1>
+            {post && <Like postId={post.id} /> }
             <p><em>{post && post.author.username}</em></p>
             <div>
                 <strong>Tags: </strong>

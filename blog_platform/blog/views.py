@@ -1,5 +1,7 @@
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
+from django.db.models import Q
+from rest_framework.pagination import PageNumberPagination
 
 # For Define API Views
 from rest_framework import generics, viewsets, status
@@ -27,11 +29,41 @@ from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth import get_user_model
 
 
+# Pagination
+class CustomPageNumberPagination(PageNumberPagination):
+    page_size = 5  # Adjust the number of items per page as needed
+    page_size_query_param = 'page_size'
+    max_page_size = 100
+    page_query_param = 'page'
+
+
 # List all Post Public
 class PostListView(generics.ListCreateAPIView):
-    queryset = Post.objects.all()
     serializer_class = PostSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
+    pagination_class = CustomPageNumberPagination
+
+    def get_queryset(self):
+        queryset = Post.objects.all().order_by('-created_at')
+
+        search = self.request.query_params.get('search', '')
+        search_type = self.request.query_params.get('type', '')
+
+        type_field_mapping = {
+            'title': 'title__icontains',
+            'category': 'category__name__icontains',
+            'tag': 'tags__name__icontains',
+        }
+
+        if search_type in type_field_mapping:
+            filter_condition = Q(**{type_field_mapping[search_type]: search})
+            queryset = queryset.filter(
+                filter_condition).order_by('-created_at')
+
+        if not search:
+            queryset = Post.objects.all().order_by('-created_at')
+
+        return queryset
 
 
 # View Post Details Public

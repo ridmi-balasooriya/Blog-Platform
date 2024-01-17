@@ -44,7 +44,7 @@ class PostListView(generics.ListCreateAPIView):
     pagination_class = CustomPageNumberPagination
 
     def get_queryset(self):
-        queryset = Post.objects.all().order_by('-created_at')
+        queryset = Post.objects.all().filter(is_public=True).order_by('-created_at')
 
         search = self.request.query_params.get('search', '')
         search_type = self.request.query_params.get('type', '')
@@ -52,16 +52,15 @@ class PostListView(generics.ListCreateAPIView):
         type_field_mapping = {
             'title': 'title__icontains',
             'category': 'category__name__icontains',
-            'tag': 'tags__name__icontains',
         }
 
         if search_type in type_field_mapping:
             filter_condition = Q(**{type_field_mapping[search_type]: search})
             queryset = queryset.filter(
-                filter_condition).order_by('-created_at')
+                filter_condition)
 
         if not search:
-            queryset = Post.objects.all().order_by('-created_at')
+            queryset = Post.objects.all().filter(is_public=True).order_by('-created_at')
 
         return queryset
 
@@ -83,9 +82,30 @@ class PostModelViewSet(viewsets.ModelViewSet):
     serializer_class = PostSerializer
     permission_classes = [IsAuthenticated]
     parser_classes = (MultiPartParser, FormParser)
+    pagination_class = CustomPageNumberPagination
 
     def get_queryset(self):
-        return Post.objects.filter(author=self.request.user)
+        queryset = Post.objects.all().filter(
+            author=self.request.user).order_by('-created_at')
+
+        search = self.request.query_params.get('search', '')
+        search_type = self.request.query_params.get('type', '')
+
+        type_field_mapping = {
+            'title': 'title__icontains',
+            'category': 'category__name__icontains',
+        }
+
+        if search_type in type_field_mapping:
+            filter_condition = Q(**{type_field_mapping[search_type]: search})
+            queryset = queryset.filter(
+                filter_condition)
+
+        if not search:
+            queryset = Post.objects.all().filter(
+                author=self.request.user).order_by('-created_at')
+
+        return queryset
 
     def perform_create(self, serializer):
         # If 'category' is provided, set the category ID

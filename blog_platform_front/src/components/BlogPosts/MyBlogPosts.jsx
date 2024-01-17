@@ -5,26 +5,47 @@ import { token } from "../Auth/Token"
 import DOMPurify from 'dompurify';
 
 const MyBlogPost = () => {
-    const [blogposts, setBlogPost] = useState([]);
+    const [blogPosts, setBlogPost] = useState([]);
+    const [searchInput, setSearchInput] = useState('');
+    const [searchType, setSearchType] = useState('title');
+    const [nextPage, setNextPage] = useState([]);
+    const [totalPages, setTotalPage] = useState(1)
     const [successMsg, setSuccessMsg] = useState('');
     
     useEffect(() => {
         if(token){
-            axios.get(`${API_BASE_URL}/api/my_posts`, {
+            axios.get(`${API_BASE_URL}/api/my_posts?search=${searchInput}&type=${searchType}`, {
                 headers: {
                     Authorization: `Token ${token}`
                 }
             })
             .then(response => {
-                console.log(response.data)
-                setBlogPost(response.data)
+                setBlogPost(response.data.results)
+                setNextPage(response.data.next);
+                setTotalPage(Math.ceil(response.data.count/response.data.results.length))
             })
             .catch(error => {
                 console.log(`Error fetching user-specific blog posts: ${error}`)
                 alert(`Error fetching user-specific blog posts: ${error}`)
             })
         }
-    },[]);
+    },[searchInput, searchType]);
+
+    const loadMorePosts = (pageNum) => {
+        if (nextPage) {
+            axios.get(`${API_BASE_URL}/api/my_posts?page=${pageNum}&search=${searchInput}&type=${searchType}`, {
+                headers: {
+                    Authorization: `Token ${token}`
+                }
+            })
+            .then(response => {
+                setBlogPost(response.data.results);
+            })
+            .catch(error => {
+                alert(`Error fetching more blog posts: ${error}`);
+            });
+        }
+    };
 
     const getPostReadMore = (content) => {
         const words = content.split(' ');
@@ -61,10 +82,17 @@ const MyBlogPost = () => {
 
     return(
         <div>
+            <div>
+                <select name="search_type" value={searchType} onChange={(e) => setSearchType(e.target.value)}>
+                    <option value='title'>Title</option>
+                    <option value='category'>Category</option>
+                </select>
+                <input type="text" name="search" value={searchInput} onChange={(e) => setSearchInput(e.target.value)} />
+            </div>
             <h1>My Blog Posts</h1>
             {successMsg && <div>{successMsg}</div>}
             <ul>
-                {blogposts.map(post => (
+                {blogPosts.map(post => (
                     <li key={post.id}>
                         <button onClick={() => handleUpdateClick(post.id)}>Edit</button>
                         <button onClick={() => handleDeleteClick(post.id)}>Delete</button>
@@ -75,6 +103,13 @@ const MyBlogPost = () => {
                     </li>
                 ))}
             </ul>
+            {(totalPages > 1) && 
+                Array.from({ length: totalPages }, (_, index) => (
+                    <button key={index + 1} onClick={() => loadMorePosts(index + 1)}>
+                        {index + 1}
+                    </button>
+                ))
+            }
         </div>
     );
 }

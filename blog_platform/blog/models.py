@@ -45,6 +45,7 @@ class Post(models.Model):
     category = models.ForeignKey(
         Category, on_delete=models.SET(get_default_category))
     tags = models.ManyToManyField(Tag)
+    is_public = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

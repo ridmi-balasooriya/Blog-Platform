@@ -30,7 +30,6 @@ const BlogPostFull = () =>{
         )
         .then(response => {
             setComments(response.data)
-            console.log(response.data)
         })
         .catch(error => {
             console.log(`Error fetching comments: ${error}`)
@@ -62,6 +61,16 @@ const BlogPostFull = () =>{
             })
         }
     }
+
+    const handleIsPublic = (postId, isPublic) => {
+        axios.put(`${API_BASE_URL}/api/posts/${postId}/`, {is_public: !isPublic},
+            { headers : { Authorization: `Token ${token}`, 'Content-Type': 'multipart/form-data',}}
+        ).then(response => {
+            setPost(response.data);
+        }).catch(error => {
+            console.log(`Error changing post status ${postId}: ${error}`)
+        })
+    }
     
     return(        
         <div className="article-div">
@@ -79,6 +88,12 @@ const BlogPostFull = () =>{
             </div>
             {post && token && (userData.username === post.author.username) && <button onClick={() => handleEditClick(post && post.id)}>Edit Post</button> }
             {post && token && (userData.username === post.author.username) && <button onClick={() => handleDeleteClick(post && post.id)}>Delete</button> }
+            {
+                post && token && (userData.username === post.author.username) && 
+                <button onClick={() => handleIsPublic(post && post.id, post && post.is_public)}>
+                    {post && post.is_public ? <span>Make Draft</span> : <span>Make Public</span>}
+                </button> 
+            }
             {post && post.image && 
                 <div className="post_image">
                     {post && <img src={`${post.image}`} alt={post.title} /> }

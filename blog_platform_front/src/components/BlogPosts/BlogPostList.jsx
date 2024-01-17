@@ -61,7 +61,6 @@ const BlogPostList = () => {
                 <select name="search_type" value={searchType} onChange={(e) => setSearchType(e.target.value)}>
                     <option value='title'>Title</option>
                     <option value='category'>Category</option>
-                    <option value='tag'>Tag</option>
                 </select>
                 <input type="text" name="search" value={searchInput} onChange={(e) => setSearchInput(e.target.value)} />
             </div>

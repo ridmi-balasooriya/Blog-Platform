@@ -16,6 +16,7 @@ const BlogPostForm = ({ postId }) => {
         image: null,
         category: {},
         tags: [],
+        is_public: false,
         author: userData.id,
     })
     const [categories, setCategories]= useState([])
@@ -96,6 +97,13 @@ const BlogPostForm = ({ postId }) => {
             [name]: {id: value, name: e.innerText},
         })  
     }
+    const hanldeChangePublic = (e) => {
+        const { name, value} = e.target
+        setFormData({
+            ...formData,
+            [name]: value,
+        })  
+    }
     const handleTagChange = (tagId) => {
         setTagChecked((prevTagChecked) => {
             if(prevTagChecked.includes(tagId)){
@@ -138,12 +146,13 @@ const BlogPostForm = ({ postId }) => {
             setError('Please fill in all required fields.')
             return
         }
-        
+        console.log(formData)
         const postData = new FormData();
         postData.append('title', formData.title)
         postData.append('content', formData.content)  
         postData.append('author', formData.author)
         postData.append('category', formData.category.id)
+        postData.append('is_public', formData.is_public)
         
         tagChecked.forEach((tagId) => {postData.append('tags', tagId)})
 
@@ -182,9 +191,15 @@ const BlogPostForm = ({ postId }) => {
             <h1>{isEditing ? 'Edit Blog Post' : 'Create New Blog Post'}</h1>
             {error && <div>{error}</div>}
             {success && <div>{success}</div>}
-            <div><em>Author: {authorDetails.username}</em></div>
+            <div><em>Author: {authorDetails.username}</em></div>            
             {viewPostId && <a href={`/posts/${viewPostId}`} target="_blank" rel="noopener noreferrer">View Post</a>}
             <form onSubmit={handleSubmission}>
+                <div>
+                    <select name='is_public' onChange={hanldeChangePublic} value={formData.is_public}>
+                        <option value={false} >Draft</option>
+                        <option value={true}>Public</option>
+                    </select>
+                </div>
                 <div>
                     <label htmlFor='title'>Title</label>
                     <input type='text' name='title' value={formData.title} onChange={handleChangeTitle} />

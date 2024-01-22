@@ -9,9 +9,10 @@ import Like from "../Likes/Like";
 
 const BlogPostFull = () =>{
     const { id } = useParams();
+    const navigate = useNavigate();
     const [post, setPost] = useState(null);
     const [comments, setComments] = useState([])
-    const navigate = useNavigate();
+    
 
     useEffect(() => {
         //Get the Post
@@ -20,8 +21,8 @@ const BlogPostFull = () =>{
             setPost(response.data);
         })
         .catch((error) => {
-            alert(`Error fetching blog post:
-            ${error}`);
+            error.response.status === 404 ? navigate('/404')
+            : console.log(`Error Loading the Post: ${error}`);
         })
 
         //Get Comments related to the post id. ***(Callback when adding new comment)

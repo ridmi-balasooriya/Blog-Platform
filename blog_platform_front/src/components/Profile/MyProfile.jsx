@@ -105,11 +105,11 @@ const MyProfile = () => {
 
     const handleSaveEditClick = () => {        
         const postData = new FormData();
-        postData.append('bio', authorProfile.bio)
+        authorProfile.bio && postData.append('bio', authorProfile.bio)
         postData.append('first_name', authorProfile.first_name)
         postData.append('last_name', authorProfile.last_name)
         if ((typeof authorProfile.profile_pic !== "string") && (authorProfile.profile_pic !== null)) {
-            alert(authorProfile.profile_pic)// If proflie is already exist it's in string if new one upload it's and fileobject. ONLY FILE OBJECTS can save in DB
+            // If proflie is already exist it's in string if new one upload it's and fileobject. ONLY FILE OBJECTS can save in DB
             postData.append('profile_pic', authorProfile.profile_pic)
         }
 

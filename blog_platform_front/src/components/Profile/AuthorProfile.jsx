@@ -28,7 +28,6 @@ const AuthorProfile = () => {
         axios.get(`${API_BASE_URL}/api/postlist?author=${id}`)
         .then(response => {
             setAuthorPosts(response.data.results)
-            console.log(response.data.results)
         }).catch(error => {
             console.log(error)
         })
@@ -48,11 +47,13 @@ const AuthorProfile = () => {
         {authorProfile ?
             <div>
                 <div>
-                {authorProfile.profile_pic && <img src={authorProfile.profile_pic} alt={`${authorProfile.first_name} ${authorProfile.last_name}`} />}
-
+                    {authorProfile.profile_pic ? 
+                        <img src={authorProfile.profile_pic} alt={`${authorProfile.first_name} ${authorProfile.last_name}`} />
+                        : <div>{authorProfile.first_name.charAt(0)}</div>
+                    }
                 </div>
                 <h1>{authorProfile.first_name} {authorProfile.last_name}</h1>
-                <div>{authorProfile.bio}</div>
+                {authorProfile.profile_pic && <div>{authorProfile.bio}</div>}
                 <div>
                     <h2>Author Articles</h2>
                     <ul>
@@ -66,7 +67,7 @@ const AuthorProfile = () => {
                     </ul>
                 </div>
             </div>
-        :   <div>Page Not Found</div>
+        :   <div>Author Profile is Not Available.!</div>
         }            
         </>
     );

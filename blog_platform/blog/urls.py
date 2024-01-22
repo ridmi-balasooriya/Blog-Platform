@@ -1,6 +1,7 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from . import views
+from django.views.generic import TemplateView
 from django.contrib.auth import views as auth_views
 
 
@@ -35,4 +36,7 @@ urlpatterns = [
     path('password-reset-complete/', auth_views.PasswordResetCompleteView.as_view(),
          name='password_reset_complete'),
     # END - User Authenticatio Related Urls
+
+    # catch-all route
+    path('', TemplateView.as_view(template_name='index.html'), name='catch-all')
 ]

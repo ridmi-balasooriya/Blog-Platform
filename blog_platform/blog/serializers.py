@@ -52,11 +52,21 @@ class PasswordResetSerializer(serializers.Serializer):
         return value
 
 
+class AuthorProfileSerializer(serializers.ModelSerializer):
+    author = UserSerializer(read_only=True)
+
+    class Meta:
+        model = AuthorProfile
+        fields = '__all__'
+
+
 class PostSerializer(serializers.ModelSerializer):
 
     author = UserSerializer(read_only=True)
     tags = TagSerializer(many=True, read_only=True)
     category = CategorySerializer(read_only=True)
+    author_profile = AuthorProfileSerializer(
+        source='author.authorprofile', read_only=True)
 
     class Meta:
         model = Post
@@ -66,6 +76,8 @@ class PostSerializer(serializers.ModelSerializer):
 class CommentSerializer(serializers.ModelSerializer):
     post = PostSerializer(read_only=True)
     author = UserSerializer(read_only=True)
+    author_profile = AuthorProfileSerializer(
+        source='author.authorprofile', read_only=True)
 
     class Meta:
         model = Comment
@@ -77,12 +89,4 @@ class LikeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Like
-        fields = '__all__'
-
-
-class AuthorProfileSerializer(serializers.ModelSerializer):
-    author = UserSerializer(read_only=True)
-
-    class Meta:
-        model = AuthorProfile
         fields = '__all__'

@@ -71,9 +71,15 @@ const BlogPostList = () => {
                     {posts.map(post => (
                         <li key={post.id}>
                             <h1><a href={`/posts/${post.id}`}>{post.title}</a></h1>
-                            <p>
+                            <div>
+                                {
+                                    post.author_profile.profile_pic ? 
+                                    <img src={post.author_profile.profile_pic} alt={post.author.username} width='40px' height='40px' />
+                                    : <span>{post.author.username.charAt(0)}</span>                                
+                                }
+                                
                                 <Link to={`/author/${post.author.id}`}><em>{post.author.username}</em></Link>
-                            </p>
+                            </div>
                             <p dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(getPostReadMore(post.content)) }} />
                             <a href={`/posts/${post.id}`}>Read More</a>
                         </li>

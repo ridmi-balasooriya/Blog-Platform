@@ -104,7 +104,6 @@ const MyBlogPost = () => {
                         <button onClick={() => handleUpdateClick(post.id)}>Edit</button>
                         <button onClick={() => handleDeleteClick(post.id)}>Delete</button>
                         <h2><a href={`/posts/${post.id}`} target="_blank" rel="noopener noreferrer">{post.title}</a></h2>
-                        <p><em>{post.author.username}</em></p>
                         <p dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(getPostReadMore(post.content)) }} />
                         <a href={`/posts/${post.id}`} target="_blank" rel="noopener noreferrer">Read More</a>
                     </li>

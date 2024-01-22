@@ -102,6 +102,14 @@ const CommentList = ({postId, onCommentAdded}) => {
                         :
                         <div>
                             <span>{comment.content}</span>
+                            <span>
+                                {   
+                                    comment.author_profile.profile_pic ? 
+                                    <img src={comment.author_profile.profile_pic} alt={comment.author.username} width='40px' height='40px' />
+                                    : <span>{comment.author.username.charAt(0)}</span>                                
+                                }
+                            </span>
+                                
                             <span>{comment.author.username}</span>
                             {userData && (userData.username === comment.author.username) && <button onClick={() => handleEditClick(comment && comment.id, comment && comment.content)}>Edit</button>}
                             {userData && (userData.username === comment.author.username) && <button onClick={() => handleDeleteClick(comment && comment.id)}>Delete</button>}

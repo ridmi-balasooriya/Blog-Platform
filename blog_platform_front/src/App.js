@@ -8,6 +8,7 @@ import Register from './components/Auth/Register';
 import PasswordReset from './components/Auth/PasswordRest';
 import PasswordResetConfirmation from './components/Auth/PasswordResetConfirmation';
 import DashBoard from './pages/DashBoard';
+import NotFound from './pages/NotFound';
 import PrivateRoutes from './components/Auth/PrivateRoutes';
 import {token} from './components/Auth/Token';
 
@@ -25,6 +26,9 @@ function App() {
         <Route path='password_reset' element={<PasswordReset />} />
         <Route path='password_reset_confirm/:uid/:token' element={<PasswordResetConfirmation />} />
         <Route path='login' element={localStorage.getItem('token') ? (<Navigate to="/" />) : (<LogIn />)} />
+
+         {/* Handle 404 explicitly */}
+        <Route path='*' element={<NotFound/>} />
       </Routes>        
     </Router>
   );

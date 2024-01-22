@@ -3,11 +3,13 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import axios from 'axios';
 import API_BASE_URL from '../../config';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { token, userData } from '../Auth/Token';
 
 const BlogPostForm = ({ postId }) => {
     const navigate = useNavigate()
+    const location = useLocation();
+    const successMessage = location.state && location.state.successMessage;
     const id = postId
     const isEditing = !!id
     const [formData, setFormData] = useState({
@@ -21,12 +23,23 @@ const BlogPostForm = ({ postId }) => {
     })
     const [categories, setCategories]= useState([])
     const [tags, setTags]= useState([])
-    const [success, setSuccess] = useState('')
+    const [success, setSuccess] = useState(successMessage)
     const [error, setError] = useState('')
     const [viewPostId, setViewPostId] = useState('')
     const [authorDetails,setAuthorDetails] = useState({})
     const [selectedImage, setSelectedImage] = useState(null);
     const [tagChecked, setTagChecked] = useState([])
+
+    const clearMessages = () => {
+        setSuccess('')
+        setError('')
+    }
+
+    const timeOutSuccess = (time = 5000) => {
+        setTimeout(() => {
+            setSuccess('');
+        }, time);
+    }
 
     useEffect(() => {
         if(isEditing){
@@ -42,6 +55,7 @@ const BlogPostForm = ({ postId }) => {
                 setError(`Error fetching blog post: ${error}`)
                 console.error(`Error fetching blog post: ${error}`);
             })
+            timeOutSuccess();
         }
                 
         //Fetch Category List
@@ -77,10 +91,6 @@ const BlogPostForm = ({ postId }) => {
         
     }, [isEditing, id]);
 
-    const clearMessages = () => {
-        setSuccess('')
-        setError('')
-    }
         
     const handleChangeTitle = (e) => {
         const { name, value} = e.target
@@ -166,6 +176,7 @@ const BlogPostForm = ({ postId }) => {
             .then(response => {
                 setSuccess('Blog Post is Updated Successfully...');
                 setViewPostId(response.data.id)
+                timeOutSuccess();
             })
             .catch(error => {
                 setError(`Error updating blog post: ${error}`)
@@ -175,7 +186,7 @@ const BlogPostForm = ({ postId }) => {
             axios.post(`${API_BASE_URL}/api/posts/`, postData, {headers: {Authorization: `Token ${token}`, 'Content-Type': 'multipart/form-data',}})
             .then(response => {
                 setSuccess('Blog Post is Created Successfully...');
-                navigate(`/dashboard/?postId=${response.data.id}`)
+                navigate(`/dashboard/?postId=${response.data.id}`, { state: { successMessage: 'Blog Post is Created Successfully...' } })
             })
             .catch(error => {
                 setError(`Error creating blog post: ${error}`)

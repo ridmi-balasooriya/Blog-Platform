@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Post, Category, Tag, User, Comment, Like
+from .models import Post, Category, Tag, User, Comment, Like, AuthorProfile
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -17,7 +17,8 @@ class TagSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('username', 'email', 'password', 'first_name', 'last_name')
+        fields = ('id', 'username', 'email',
+                  'password', 'first_name', 'last_name')
         extra_kwargs = {'password': {'write_only': True}}
 
     # validation for exisiting usernames and email addresses.
@@ -76,4 +77,12 @@ class LikeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Like
+        fields = '__all__'
+
+
+class AuthorProfileSerializer(serializers.ModelSerializer):
+    author = UserSerializer(read_only=True)
+
+    class Meta:
+        model = AuthorProfile
         fields = '__all__'

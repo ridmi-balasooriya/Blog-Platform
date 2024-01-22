@@ -11,6 +11,12 @@ const MyBlogPost = () => {
     const [nextPage, setNextPage] = useState([]);
     const [totalPages, setTotalPage] = useState(1)
     const [successMsg, setSuccessMsg] = useState('');
+
+    const timeOutSuccess = (time = 5000) => {
+        setTimeout(() => {
+            setSuccessMsg('');
+        }, time);
+    }
     
     useEffect(() => {
         if(token){
@@ -74,6 +80,7 @@ const MyBlogPost = () => {
                     prevPosts => prevPosts.filter(post => post.id !== postId )
                 )
                 console.log(`Post ${postId} deleted successfully`);
+                timeOutSuccess()
             }).catch(error => {
                 console.log(`Error deleting post ${postId}: ${error}`)
             })

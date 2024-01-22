@@ -7,8 +7,8 @@ from rest_framework.pagination import PageNumberPagination
 from rest_framework import generics, viewsets, status
 from rest_framework.response import Response
 from rest_framework.parsers import MultiPartParser, FormParser
-from .models import Like, Post, Category, Tag, Comment, User
-from .serializers import PostSerializer, CategorySerializer, TagSerializer, CommentSerializer, UserSerializer, PasswordResetSerializer, LikeSerializer
+from .models import Like, Post, Category, Tag, Comment, User, AuthorProfile
+from .serializers import PostSerializer, CategorySerializer, TagSerializer, CommentSerializer, UserSerializer, PasswordResetSerializer, LikeSerializer, AuthorProfileSerializer
 
 
 # For User Authentication
@@ -48,6 +48,9 @@ class PostListView(generics.ListCreateAPIView):
 
         search = self.request.query_params.get('search', '')
         search_type = self.request.query_params.get('type', '')
+        author_id = self.request.query_params.get('author', None)
+
+        print(author_id)
 
         type_field_mapping = {
             'title': 'title__icontains',
@@ -59,7 +62,11 @@ class PostListView(generics.ListCreateAPIView):
             queryset = queryset.filter(
                 filter_condition)
 
-        if not search:
+        elif author_id is not None:
+            queryset = Post.objects.all().filter(
+                author=author_id, is_public=True).order_by('-created_at')
+
+        else:
             queryset = Post.objects.all().filter(is_public=True).order_by('-created_at')
 
         return queryset
@@ -238,9 +245,38 @@ class UserViewSet(viewsets.ModelViewSet):
     serializer_class = UserSerializer
     permission_classes = [IsAuthenticated]
 
+    def get_queryset(self):
+        queryset = User.objects.all()
+        user_name = self.request.query_params.get('username')
+
+        if user_name is not None:
+            queryset = queryset.filter(username=user_name)
+        return queryset
+
 
 def home(request):
     return JsonResponse({'message': 'Testing App'})
+
+
+class AuthorProfileViewSet(viewsets.ModelViewSet):
+    queryset = AuthorProfile.objects.all()
+    serializer_class = AuthorProfileSerializer
+
+    def get_permissions(self):
+        if self.action == 'list':
+            return [IsAuthenticatedOrReadOnly()]
+        return [IsAuthenticated()]
+
+    def perform_create(self, serializer):
+        author = self.request.user
+        serializer.validated_data['author'] = author
+        serializer.save()
+
+    def get_queryset(self):
+        author_id = self.request.query_params.get('author', None)
+        if author_id:
+            return AuthorProfile.objects.filter(author=author_id)
+        return AuthorProfile.objects.all()
 
 
 # For User Authentication

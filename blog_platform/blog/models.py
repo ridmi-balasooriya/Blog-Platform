@@ -65,10 +65,20 @@ class Comment(models.Model):
 
 class Like(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
-    author = models.ForeignKey(User, on_delete=models.Case)
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
 
     class Meta:
         unique_together = ['author', 'post']
 
     def __str__(self):
         return f"Liked by {self.author.username} on {self.post.title}"
+
+
+class AuthorProfile(models.Model):
+    author = models.OneToOneField(
+        User, on_delete=models.CASCADE, primary_key=True)
+    first_name = models.CharField(max_length=100, null=True, blank=True)
+    last_name = models.CharField(max_length=100, null=True, blank=True)
+    profile_pic = models.ImageField(
+        upload_to='profile_pic/', null=True, blank=True)
+    bio = models.TextField(null=True, blank=True)

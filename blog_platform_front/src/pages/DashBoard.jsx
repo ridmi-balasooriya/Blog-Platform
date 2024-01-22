@@ -6,6 +6,7 @@ import BlogPostForm from "../components/BlogPosts/BlogPostForm";
 import MyBlogPost from "../components/BlogPosts/MyBlogPosts";
 import CategoryList from "../components/Categories/CategoryList";
 import TagList from "../components/Tags/TagList";
+import MyProfile from "../components/Profile/MyProfile";
 import { useLocation } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
@@ -48,8 +49,8 @@ const DashBoard = () => {
                     {displayComponent === 'my_posts' && <MyBlogPost />}
                     {displayComponent === 'category_list' && <CategoryList />}
                     {displayComponent === 'tag_list' && <TagList />}
+                    {displayComponent === 'my_profile' && <MyProfile />}
                 </div>
-
             </div>
         </>
 

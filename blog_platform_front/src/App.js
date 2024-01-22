@@ -2,6 +2,7 @@ import './App.css';
 import { BrowserRouter as Router, Routes, Route, Navigate} from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import BlogPostFull from './components/BlogPosts/BlogPostFull';
+import AuthorProfile from './components/Profile/AuthorProfile';
 import LogIn from './components/Auth/LogIn'
 import Register from './components/Auth/Register';
 import PasswordReset from './components/Auth/PasswordRest';
@@ -19,6 +20,7 @@ function App() {
         <Route path='/' element={<HomePage />} />
         <Route path="/dashboard/" element={<PrivateRoutes authenticated={isAuthorized} children={<DashBoard />} />} />   
         <Route path='posts/:id' element={<BlogPostFull />} />
+        <Route path='author/:id' element={<AuthorProfile />} />
         <Route path='register' element={<Register />} />
         <Route path='password_reset' element={<PasswordReset />} />
         <Route path='password_reset_confirm/:uid/:token' element={<PasswordResetConfirmation />} />

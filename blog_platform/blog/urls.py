@@ -12,6 +12,7 @@ router.register(r'tags', views.TagViewSet)
 router.register(r'comments', views.CommentViewSet)
 router.register(r'likes', views.LikeViewSet)
 router.register(r'users', views.UserViewSet)
+router.register(r'author_profile', views.AuthorProfileViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),

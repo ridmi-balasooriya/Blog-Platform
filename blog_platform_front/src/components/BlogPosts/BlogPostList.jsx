@@ -6,7 +6,7 @@ import LoginButton from "../Auth/LoginButton"
 import LogOut from "../Auth/LogOut";
 import {token} from "../Auth/Token";
 import DashboadButton from "../PageButtons/DashboardButton";
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 
 const BlogPostList = () => {
     const [posts, setPosts] = useState([]);
@@ -71,7 +71,9 @@ const BlogPostList = () => {
                     {posts.map(post => (
                         <li key={post.id}>
                             <h1><a href={`/posts/${post.id}`}>{post.title}</a></h1>
-                            <p><em>{post.author.username}</em></p>
+                            <p>
+                                <Link to={`/author/${post.author.id}`}><em>{post.author.username}</em></Link>
+                            </p>
                             <p dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(getPostReadMore(post.content)) }} />
                             <a href={`/posts/${post.id}`}>Read More</a>
                         </li>

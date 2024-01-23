@@ -2,10 +2,13 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import API_BASE_URL from '../../config';
 import {token, userData} from "../Auth/Token";
-import AddTag from "./AddTag";
 
 const TagList = () => {
     const [tagList, setTagList] = useState([])
+    const [formData, setFormData] = useState({
+        name: '',
+        author: userData.id,
+    })
     const [editTagId, setEditTagId] = useState(null)
     const [eidtTagName, setEditTagName] = useState('')
     const [success, setSuccess] = useState('')
@@ -41,10 +44,6 @@ const TagList = () => {
         }, time);
     }
 
-    const handleTagAdd = (newTag) => {
-        setTagList((prevTagList) => [...prevTagList, newTag])
-    }
-
     //Check for already Existing Tag
     const alreadyExisit = (tagName) => {
         const isNameAlreadyExist = tagList.some(tag => 
@@ -68,6 +67,45 @@ const TagList = () => {
             return true
         }
         return false
+    }
+
+    //Add New Tag
+    const handleNewTag = (e) => {
+        const {name, value} = e.target
+        setFormData({
+            ...formData,
+            [name]: value,
+        })
+    }
+
+    const handleSubmission = (e) => {
+        e.preventDefault();
+        clearMessages()
+        const isExist = alreadyExisit(formData.name)
+        const isNull = checkForNull(formData.name)
+        console.log(formData)
+        if(!isExist && !isNull){
+            axios.post(`${API_BASE_URL}/api/tags/`, 
+                formData, 
+                {
+                    headers: {
+                        Authorization: `Token ${token}`
+                    }
+                }
+            )
+            .then(response => {
+                setTagList([...tagList, response.data])
+                setFormData({
+                    name: '',
+                    author: userData.id,
+                })
+                setSuccess('New Tag is Added Successfully..!')
+                timeOutSuccess() 
+            })
+            .catch(error => {
+                setError(`Error Adding New Tag: ${error}`)
+            })
+        }   
     }
 
     //Edit Tag
@@ -144,7 +182,10 @@ const TagList = () => {
             <h1>Tags</h1>
             {success && <div>{success}</div>}
             {error && <div>{error}</div>}
-            <AddTag onAddTag={handleTagAdd} />
+            <form onSubmit={handleSubmission}>
+                <input type="text" name="name" value={formData.name} onChange={handleNewTag} />
+                <button type="submit">Add New Tag</button>
+            </form>
             <ul>
                 {tagList.map(tag => (
                     (tag.name !== 'Untaged') &&

@@ -1,6 +1,7 @@
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from django.db.models import Q
+from django.utils.text import slugify
 from rest_framework.pagination import PageNumberPagination
 
 # For Define API Views
@@ -114,6 +115,19 @@ class PostModelViewSet(viewsets.ModelViewSet):
 
         return queryset
 
+    def set_slug_and_save(self, serializer):
+        title = serializer.validated_data['title']
+        slug = slugify(title)
+        base_slug = slug
+        count = 1
+
+        while Post.objects.filter(slug=slug).exists():
+            count += 1
+            slug = f"{base_slug}-{count}"
+
+        serializer.validated_data['slug'] = slug
+        serializer.save(author=self.request.user)
+
     def perform_create(self, serializer):
         # If 'category' is provided, set the category ID
         if 'category' in self.request.data:
@@ -125,6 +139,13 @@ class PostModelViewSet(viewsets.ModelViewSet):
         if 'tags' in self.request.data:
             tag_ids = self.request.data.getlist('tags')
             tags = Tag.objects.filter(pk__in=tag_ids)
+
+        slug = self.request.data.get('slug')  # Use get to handle None
+        if slug is None or slug == '':
+            self.set_slug_and_save(serializer)
+        else:
+            serializer.validated_data['slug'] = slug
+            serializer.save(author=self.request.user)
 
         serializer.save(author=self.request.user)
         serializer.instance.tags.set(tags)
@@ -151,6 +172,13 @@ class PostModelViewSet(viewsets.ModelViewSet):
                 tags = Tag.objects.filter(pk__in=tag_ids)
                 serializer.instance.tags.set(tags)
 
+            slug = self.request.data.get('slug')  # Use get to handle None
+            if slug is None or slug == '':
+                self.set_slug_and_save(serializer)
+            else:
+                serializer.validated_data['slug'] = slug
+                serializer.save(author=self.request.user)
+
             serializer.save()
 
             return Response(serializer.data)
@@ -160,27 +188,51 @@ class PostModelViewSet(viewsets.ModelViewSet):
 
 
 class CategoryListCreateView(generics.ListCreateAPIView):
-    queryset = Category.objects.all()
+    queryset = Category.objects.all().order_by('name')
     serializer_class = CategorySerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
 
 
 class CategoryViewSet(viewsets.ModelViewSet):
-    queryset = Category.objects.all()
+    queryset = Category.objects.all().order_by('name')
     serializer_class = CategorySerializer
     permission_classes = [IsAuthenticated]
 
+    def get_queryset(self):
+        queryset = Category.objects.all().order_by('name')
+
+        search = self.request.query_params.get('search', '')
+
+        if search:
+            queryset = queryset.filter(name__icontains=search)
+        else:
+            queryset = Category.objects.all().order_by('name')
+
+        return queryset
+
 
 class TagListCrateView(generics.ListCreateAPIView):
-    queryset = Tag.objects.all()
+    queryset = Tag.objects.all().order_by('name')
     serializer_class = TagSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
 
 
 class TagViewSet(viewsets.ModelViewSet):
-    queryset = Tag.objects.all()
+    queryset = Tag.objects.all().order_by('name')
     serializer_class = TagSerializer
     permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        queryset = Tag.objects.all().order_by('name')
+
+        search = self.request.query_params.get('search', '')
+
+        if search:
+            queryset = queryset.filter(name__icontains=search)
+        else:
+            queryset = Tag.objects.all().order_by('name')
+
+        return queryset
 
 
 class CommentListCreateView(generics.ListCreateAPIView):

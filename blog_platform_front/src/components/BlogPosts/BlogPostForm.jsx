@@ -5,6 +5,8 @@ import axios from 'axios';
 import API_BASE_URL from '../../config';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { token, userData } from '../Auth/Token';
+import AddCategory from '../Categories/AddCategory';
+import AddTag from '../Tags/AddTag';
 
 const BlogPostForm = ({ postId }) => {
     const navigate = useNavigate()
@@ -20,6 +22,8 @@ const BlogPostForm = ({ postId }) => {
         tags: [],
         is_public: false,
         author: userData.id,
+        slug:'',
+        meta_description:'',
     })
     const [categories, setCategories]= useState([])
     const [tags, setTags]= useState([])
@@ -91,8 +95,17 @@ const BlogPostForm = ({ postId }) => {
         
     }, [isEditing, id]);
 
-        
-    const handleChangeTitle = (e) => {
+
+    //Callback when add new category to update the category list
+    const handleCategoryAdded = (newCategory) => {
+        setCategories((prevCategories) => [...prevCategories, newCategory])
+    }
+    //Callback when add new tag to update the tag list
+    const handleTagAdded = (newTag) => {
+        setTags((prevTags) => [...prevTags, newTag])
+    }
+
+    const handleChangeFormData = (e) => {
         const { name, value} = e.target
         setFormData({
             ...formData,
@@ -107,6 +120,7 @@ const BlogPostForm = ({ postId }) => {
             [name]: {id: value, name: e.innerText},
         })  
     }
+
     const hanldeChangePublic = (e) => {
         const { name, value} = e.target
         setFormData({
@@ -163,6 +177,16 @@ const BlogPostForm = ({ postId }) => {
         postData.append('author', formData.author)
         postData.append('category', formData.category.id)
         postData.append('is_public', formData.is_public)
+        if(formData.slug){
+            const slug = formData.slug.toLowerCase().replace(/\s+/g, '-');
+            postData.append('slug', slug)
+        }
+        if(formData.meta_description){
+            postData.append('meta_description', formData.meta_description)
+        }else{
+            postData.append('meta_description', '')
+        }
+        
         
         tagChecked.forEach((tagId) => {postData.append('tags', tagId)})
 
@@ -204,51 +228,64 @@ const BlogPostForm = ({ postId }) => {
             {success && <div>{success}</div>}
             <div><em>Author: {authorDetails.username}</em></div>            
             {viewPostId && <a href={`/posts/${viewPostId}`} target="_blank" rel="noopener noreferrer">View Post</a>}
-            <form onSubmit={handleSubmission}>
-                <div>
-                    <select name='is_public' onChange={hanldeChangePublic} value={formData.is_public}>
-                        <option value={false} >Draft</option>
-                        <option value={true}>Public</option>
-                    </select>
-                </div>
-                <div>
-                    <label htmlFor='title'>Title</label>
-                    <input type='text' name='title' value={formData.title} onChange={handleChangeTitle} />
-                </div>
-                <div>
-                    <label htmlFor='category'>Category'</label>
-                    <select name='category' onChange={handleChangeCategory} value={formData.category.id}>
-                        <option value={null}>Please Select</option>
-                        {categories.map(category => (
-                            <option key={category.id} value={category.id}>{category.name}</option>
-                        ))}
-                    </select>
-                </div>
-                <div>
-                        <label htmlFor='tags'>Tags</label>
-                        {tags.map(tag => (
-                            <label key={tag.id}>
-                            <input type='checkbox' name='tags' id={`tag${tag.id}`} value={tag.id} onChange={() => handleTagChange(tag.id)} checked={tagChecked.includes(tag.id)}/>                                                                                   
-                                {tag.name}
-                            </label>                           
-                        ))}                    
-                </div>
-                <div>
-                    <label htmlFor='image'>Blog Image </label>
-                    {selectedImage ? (
-                        <img src={selectedImage} alt="Selected thumbnail" style={{ width: '50px', height: '50px', objectFit: 'cover' }} />
-                        ) 
-                        : ( 'Choose Image' )
-                    }
-                    <input type='file' name='image' accept='image/*' onChange={handleImageChange} />
-                    
-                </div>
-                <div>
-                    <label htmlFor='content'>Content</label>
-                    <ReactQuill value={formData.content} onChange={handleContentChange} placeholder='Write your content here...' />
-                </div>
-                <button type="submit">{isEditing ? 'Update' : 'Create'}</button>
-            </form>
+            <div>
+                <AddCategory onAddCategory={handleCategoryAdded} />
+            </div>
+            <div>
+                <AddTag onAddTag={handleTagAdded} />
+            </div>
+            <div>
+                <select name='is_public' onChange={hanldeChangePublic} value={formData.is_public}>
+                    <option value={false} >Draft</option>
+                    <option value={true}>Public</option>
+                </select>
+            </div>
+            <div>
+                <label htmlFor='title'>Title</label>
+                <input type='text' name='title' value={formData.title} onChange={handleChangeFormData} />
+            </div>                
+            <div>
+                <label htmlFor='category'>Category</label>
+                <select name='category' onChange={handleChangeCategory} value={formData.category.id}>
+                    <option value={null}>Please Select</option>
+                    {categories.map(category => (
+                        <option key={category.id} value={category.id}>{category.name}</option>
+                    ))}
+                </select>
+            </div>
+            <div>
+                    <label htmlFor='tags'>Tags</label>
+                    {tags.map(tag => (
+                        <label key={tag.id}>
+                        <input type='checkbox' name='tags' id={`tag${tag.id}`} value={tag.id} onChange={() => handleTagChange(tag.id)} checked={tagChecked.includes(tag.id)}/>                                                                                   
+                            {tag.name}
+                        </label>                           
+                    ))}                    
+            </div>
+            <div>
+                <label htmlFor='image'>Blog Image </label>
+                {selectedImage ? (
+                    <img src={selectedImage} alt="Selected thumbnail" style={{ width: '50px', height: '50px', objectFit: 'cover' }} />
+                    ) 
+                    : ( 'Choose Image' )
+                }
+                <input type='file' name='image' accept='image/*' onChange={handleImageChange} />
+                
+            </div>
+            <div>
+                <label htmlFor='content'>Content</label>
+                <ReactQuill value={formData.content} onChange={handleContentChange} placeholder='Write your content here...' />
+            </div>
+            <hr />
+            <div>
+                <label htmlFor='slug'>Slug</label>
+                <input type='text' name='slug' value={formData.slug} onChange={handleChangeFormData} />
+            </div>
+            <div>
+                <label htmlFor='meta_description'>Meta Description</label>
+                <textarea name='meta_description' value={formData.meta_description} onChange={handleChangeFormData}></textarea>
+            </div>
+            <button onClick={handleSubmission}>{isEditing ? 'Update' : 'Create'}</button>
         </div>
     )
 }

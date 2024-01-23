@@ -65,6 +65,8 @@ class PostSerializer(serializers.ModelSerializer):
     author = UserSerializer(read_only=True)
     tags = TagSerializer(many=True, read_only=True)
     category = CategorySerializer(read_only=True)
+
+    # Getting author profile data of each posts.
     author_profile = AuthorProfileSerializer(
         source='author.authorprofile', read_only=True)
 
@@ -76,6 +78,8 @@ class PostSerializer(serializers.ModelSerializer):
 class CommentSerializer(serializers.ModelSerializer):
     post = PostSerializer(read_only=True)
     author = UserSerializer(read_only=True)
+
+    # Getting author profile data of each comment.
     author_profile = AuthorProfileSerializer(
         source='author.authorprofile', read_only=True)
 

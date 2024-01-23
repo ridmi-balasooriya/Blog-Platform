@@ -48,6 +48,9 @@ class Post(models.Model):
     is_public = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    # Meta Data
+    slug = models.CharField(max_length=250, null=True, blank=True)
+    meta_description = models.TextField(null=True, blank=True)
 
     def __str__(self):
         return self.title

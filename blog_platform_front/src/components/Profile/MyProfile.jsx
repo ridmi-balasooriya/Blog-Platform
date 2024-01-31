@@ -62,7 +62,7 @@ const MyProfile = () => {
                 console.log(error)
             })
         }
-    },[hasProfile])
+    },[hasProfile, userProfile.first_name, userProfile.last_name])
 
     const timeOutSuccess = (time = 5000) => {
         setTimeout(() => {

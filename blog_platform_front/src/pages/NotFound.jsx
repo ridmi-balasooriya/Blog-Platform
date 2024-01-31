@@ -1,9 +1,11 @@
+import React from "react";
+import Layout from "../templates/Layout";
 const NotFound = () => {
     return(
-        <div>
+        <Layout>
             <h1>Page Not Found</h1>
             <p>The requested page could not be found.</p>
-        </div>
+        </Layout>
     );
 }
 

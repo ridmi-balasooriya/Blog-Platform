@@ -31,7 +31,7 @@ const AuthorProfile = () => {
         }).catch(error => {
             console.log(error)
         })
-    },[])
+    },[id])
 
     const getPostReadMore = (content) => {
         const words = content.split(' ');

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { token, userData } from '../components/Auth/Token';
+import { token } from '../components/Auth/Token';
 import LogOut from '../components/Auth/LogOut';
 const Header = () => {
     return(

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {token} from "../components/Auth/Token";
+//import {token} from "../components/Auth/Token";
 import Layout from "../templates/Layout";
 // import HomeButton from "../components/PageButtons/HomeButton";
 // import LogOut from "../components/Auth/LogOut";

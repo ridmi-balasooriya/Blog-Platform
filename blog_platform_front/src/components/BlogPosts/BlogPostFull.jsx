@@ -38,7 +38,7 @@ const BlogPostFull = () =>{
             console.log(`Error fetching comments: ${error}`)
         })
 
-    }, [id]);
+    }, [id, navigate]);
 
     const handleCommentAdded = (newComment) => {
         setComments([...comments, newComment])

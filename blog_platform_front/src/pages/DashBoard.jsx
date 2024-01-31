@@ -34,7 +34,7 @@ const DashBoard = () => {
         <Layout>
             {/* {token && <HomeButton /> }
             {token && <LogOut /> } */}
-            <div className="dashboard_div">
+            <div className="dashboard_div p-1">
                 <div className="dashboard_menu">
                     <ul>
                         <li><button onClick={handleCreatePostClick}>Create New Post</button></li>

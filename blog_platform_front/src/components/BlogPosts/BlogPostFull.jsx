@@ -2,10 +2,12 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import API_BASE_URL from '../../config';
 import { useParams, useNavigate } from "react-router-dom";
+import { Helmet } from 'react-helmet'
 import {token, userData} from "../Auth/Token";
 import CommentForm from "../Comments/CommentForm";
 import CommentList from "../Comments/CommentList";
 import Like from "../Likes/Like";
+import Layout from "../../templates/Layout";
 
 const BlogPostFull = () =>{
     const { id } = useParams();
@@ -64,7 +66,7 @@ const BlogPostFull = () =>{
     }
 
     const handleIsPublic = (postId, isPublic) => {
-        axios.put(`${API_BASE_URL}/api/posts/${postId}/`, {is_public: !isPublic},
+        axios.put(`${API_BASE_URL}/api/posts/${postId}/`, {is_public: !isPublic, slug: post.slug},
             { headers : { Authorization: `Token ${token}`, 'Content-Type': 'multipart/form-data',}}
         ).then(response => {
             setPost(response.data);
@@ -73,40 +75,45 @@ const BlogPostFull = () =>{
         })
     }
     
-    return(        
-        <div className="article-div">
-            <h1>{post && post.title}</h1>
-            {post && <Like postId={post.id} /> }
-            <p><em>{post && post.author.username}</em></p>
-            <div>
-                <strong>Tags: </strong>
-                {post && post.tags.map((tag, index) => 
-                <span key={tag.name}> {tag.name} {index < post.tags.length - 1 && '|'} </span> )}
-            </div>
-            <div>
-                <strong>Category: </strong>
-                <span>{post && post.category.name}</span>
-            </div>
-            {post && token && (userData.username === post.author.username) && <button onClick={() => handleEditClick(post && post.id)}>Edit Post</button> }
-            {post && token && (userData.username === post.author.username) && <button onClick={() => handleDeleteClick(post && post.id)}>Delete</button> }
-            {
-                post && token && (userData.username === post.author.username) && 
-                <button onClick={() => handleIsPublic(post && post.id, post && post.is_public)}>
-                    {post && post.is_public ? <span>Make Draft</span> : <span>Make Public</span>}
-                </button> 
-            }
-            {post && post.image && 
-                <div className="post_image">
-                    {post && <img src={`${post.image}`} alt={post.title} /> }
+    return( 
+        <Layout>  
+            <Helmet>
+                <meta name="description" content={post && post.meta_description} />
+            </Helmet>  
+            <div className="article-div">
+                <h1>{post && post.title}</h1>
+                {post && <Like postId={post.id} /> }
+                <p><em>{post && post.author.username}</em></p>
+                <div>
+                    <strong>Tags: </strong>
+                    {post && post.tags.map((tag, index) => 
+                    <span key={tag.name}> {tag.name} {index < post.tags.length - 1 && '|'} </span> )}
                 </div>
-            }            
-            <div className="article-content">
-                {post &&  <p dangerouslySetInnerHTML={{ __html: post.content }} />}
+                <div>
+                    <strong>Category: </strong>
+                    <span>{post && post.category.name}</span>
+                </div>
+                {post && token && (userData.username === post.author.username) && <button onClick={() => handleEditClick(post && post.id)}>Edit Post</button> }
+                {post && token && (userData.username === post.author.username) && <button onClick={() => handleDeleteClick(post && post.id)}>Delete</button> }
+                {
+                    post && token && (userData.username === post.author.username) && 
+                    <button onClick={() => handleIsPublic(post && post.id, post && post.is_public)}>
+                        {post && post.is_public ? <span>Make Draft</span> : <span>Make Public</span>}
+                    </button> 
+                }
+                {post && post.image && 
+                    <div className="post_image">
+                        {post && <img src={`${post.image}`} alt={post.title} /> }
+                    </div>
+                }            
+                <div className="article-content">
+                    {post &&  <p dangerouslySetInnerHTML={{ __html: post.content }} />}
+                </div>
+                <a href='/'>Back To Article List</a>
+                {post && token && <CommentForm postId={post.id} onCommentAdded={handleCommentAdded} /> }
+                {post && <CommentList postId={post.id} onCommentAdded={handleCommentAdded} /> }
             </div>
-            <a href='/'>Back To Article List</a>
-            {post && token && <CommentForm postId={post.id} onCommentAdded={handleCommentAdded} /> }
-            {post && <CommentList postId={post.id} onCommentAdded={handleCommentAdded} /> }
-        </div>
+        </Layout>   
     )
 
 

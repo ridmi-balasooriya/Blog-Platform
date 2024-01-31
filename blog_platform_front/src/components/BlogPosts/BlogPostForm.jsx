@@ -29,7 +29,11 @@ const BlogPostForm = ({ postId }) => {
     const [tags, setTags]= useState([])
     const [success, setSuccess] = useState(successMessage)
     const [error, setError] = useState('')
-    const [viewPostId, setViewPostId] = useState('')
+    const [viewPostData, setViewPostData] = useState({
+        id:'',
+        slug:'',
+        author:userData.username,
+    })
     const [authorDetails,setAuthorDetails] = useState({})
     const [selectedImage, setSelectedImage] = useState(null);
     const [tagChecked, setTagChecked] = useState([])
@@ -46,14 +50,17 @@ const BlogPostForm = ({ postId }) => {
     }
 
     useEffect(() => {
-        if(isEditing){
-            setViewPostId(id)
+        if(isEditing){        
             axios.get(`${API_BASE_URL}/api/posts/${id}`, {headers: {Authorization: `Token ${token}`, 'Content-Type': 'application/json',}})
             .then(response => {
                 setFormData(response.data)
                 setSelectedImage(response.data.image)
                 setTagChecked(response.data.tags.map(tag => tag.id))
-                
+                setViewPostData({
+                    id:response.data.id,
+                    slug:response.data.slug,
+                    author:userData.username,
+                })
             })
             .catch(error => {
                 setError(`Error fetching blog post: ${error}`)
@@ -199,7 +206,11 @@ const BlogPostForm = ({ postId }) => {
             axios.put(`${API_BASE_URL}/api/posts/${id}/`, postData, {headers: {Authorization: `Token ${token}`, 'Content-Type': 'multipart/form-data',}})
             .then(response => {
                 setSuccess('Blog Post is Updated Successfully...');
-                setViewPostId(response.data.id)
+                setViewPostData({
+                    id:response.data.id,
+                    slug:response.data.slug,
+                    author:userData.username,
+                })
                 timeOutSuccess();
             })
             .catch(error => {
@@ -227,7 +238,7 @@ const BlogPostForm = ({ postId }) => {
             {error && <div>{error}</div>}
             {success && <div>{success}</div>}
             <div><em>Author: {authorDetails.username}</em></div>            
-            {viewPostId && <a href={`/posts/${viewPostId}`} target="_blank" rel="noopener noreferrer">View Post</a>}
+            {viewPostData.slug && <a href={`/posts/${viewPostData.author}/${viewPostData.id}/${viewPostData.slug}`} target="_blank" rel="noopener noreferrer">View Post</a>}
             <div>
                 <AddCategory onAddCategory={handleCategoryAdded} />
             </div>

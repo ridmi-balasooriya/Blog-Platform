@@ -2,10 +2,10 @@ import React, { useState, useEffect} from "react";
 import axios from "axios";
 import DOMPurify from 'dompurify';
 import API_BASE_URL from '../../config';
-import LoginButton from "../Auth/LoginButton"
-import LogOut from "../Auth/LogOut";
-import {token} from "../Auth/Token";
-import DashboadButton from "../PageButtons/DashboardButton";
+// import LoginButton from "../Auth/LoginButton"
+// import LogOut from "../Auth/LogOut";
+// import {token} from "../Auth/Token";
+// import DashboadButton from "../PageButtons/DashboardButton";
 import { useParams, Link } from 'react-router-dom';
 
 const BlogPostList = () => {
@@ -53,10 +53,10 @@ const BlogPostList = () => {
 
     return(
         <>
-            <div>{token 
+            {/* <div>{token 
             ? <> <DashboadButton />  <LogOut /> </>
             : <LoginButton /> }
-            </div>
+            </div> */}
             <div>
                 <select name="search_type" value={searchType} onChange={(e) => setSearchType(e.target.value)}>
                     <option value='title'>Title</option>
@@ -70,7 +70,7 @@ const BlogPostList = () => {
                 <ul>
                     {posts.map(post => (
                         <li key={post.id}>
-                            <h1><a href={`/posts/${post.id}`}>{post.title}</a></h1>
+                            <h1><a href={`/posts/${post.author.username}/${post.id}/${post.slug}`}>{post.title}</a></h1>
                             <div>
                                 {
                                     post.author_profile.profile_pic ? 
@@ -81,7 +81,7 @@ const BlogPostList = () => {
                                 <Link to={`/author/${post.author.id}`}><em>{post.author.username}</em></Link>
                             </div>
                             <p dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(getPostReadMore(post.content)) }} />
-                            <a href={`/posts/${post.id}`}>Read More</a>
+                            <a href={`/posts/${post.author.username}/${post.id}/${post.slug}`}>Read More</a>
                         </li>
                     ))}
                 </ul>

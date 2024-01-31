@@ -156,7 +156,6 @@ class PostModelViewSet(viewsets.ModelViewSet):
             instance, data=request.data, partial=True)
 
         if serializer.is_valid():
-
             # If 'category' is provided, set the category ID
             if 'category' in request.data:
                 category_id = request.data['category']

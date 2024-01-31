@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import {token} from "../components/Auth/Token";
-import HomeButton from "../components/PageButtons/HomeButton";
-import LogOut from "../components/Auth/LogOut";
+import Layout from "../templates/Layout";
+// import HomeButton from "../components/PageButtons/HomeButton";
+// import LogOut from "../components/Auth/LogOut";
 import BlogPostForm from "../components/BlogPosts/BlogPostForm";
 import MyBlogPost from "../components/BlogPosts/MyBlogPosts";
 import CategoryList from "../components/Categories/CategoryList";
@@ -30,9 +31,9 @@ const DashBoard = () => {
     };
   
     return(
-        <>
-            {token && <HomeButton /> }
-            {token && <LogOut /> }
+        <Layout>
+            {/* {token && <HomeButton /> }
+            {token && <LogOut /> } */}
             <div className="dashboard_div">
                 <div className="dashboard_menu">
                     <ul>
@@ -52,7 +53,7 @@ const DashBoard = () => {
                     {displayComponent === 'my_profile' && <MyProfile />}
                 </div>
             </div>
-        </>
+        </Layout>
 
     )
 }

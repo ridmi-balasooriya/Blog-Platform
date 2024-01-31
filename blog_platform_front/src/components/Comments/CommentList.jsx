@@ -117,8 +117,8 @@ const CommentList = ({postId, onCommentAdded}) => {
                             <span>{comment.content}</span>
                             <span>
                                 {   
-                                    comment.author_profile.profile_pic ? 
-                                    <img src={comment.author_profile.profile_pic} alt={comment.author.username} width='40px' height='40px' />
+                                    comment.author_profile
+                                    ? <img src={comment.author_profile.profile_pic} alt={comment.author.username} width='40px' height='40px' />
                                     : <span>{comment.author.username.charAt(0)}</span>                                
                                 }
                             </span>

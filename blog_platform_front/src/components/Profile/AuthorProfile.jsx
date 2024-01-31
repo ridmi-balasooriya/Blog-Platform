@@ -59,9 +59,9 @@ const AuthorProfile = () => {
                     <ul>
                         {authorPosts && authorPosts.map(post => (
                         <li key={post.id}>
-                            <h1><a href={`/posts/${post.id}`}>{post.title}</a></h1>
+                            <h1><a href={`/posts/${post.author.username}/${post.id}/${post.slug}`}>{post.title}</a></h1>
                             <p dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(getPostReadMore(post.content)) }} />
-                            <a href={`/posts/${post.id}`}>Read More</a>
+                            <a href={`/posts/${post.author.username}/${post.id}/${post.slug}`}>Read More</a>
                         </li>
                         ))}
                     </ul>

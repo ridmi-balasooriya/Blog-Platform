@@ -7,6 +7,17 @@ const CommentList = ({postId, onCommentAdded}) => {
     const [comments, setComments] = useState([])
     const [editCommentId, setEditCommentId] = useState(null)
     const [editComment, setEditComment] = useState('')
+    const [success, setSuccess] = useState('')
+
+    const clearMessages = () => {
+        setSuccess('')
+    }
+
+    const timeOutSuccess = (time = 5000) => {
+        setTimeout(() => {
+            setSuccess('');
+        }, time);
+    }
 
     useEffect(() => {
         axios.get(`${API_BASE_URL}/api/comments/?postId=${postId}`,  
@@ -54,7 +65,8 @@ const CommentList = ({postId, onCommentAdded}) => {
                 setComments(updateCommentList)
                 setEditCommentId(null)
                 setEditComment('')
-                alert('Comment Updated Successfully..!')
+                setSuccess('Comment Updated Successfully..!');
+                timeOutSuccess()
             })
             .catch(error => {
                 alert(`Error updating comment: ${error}`)
@@ -91,8 +103,9 @@ const CommentList = ({postId, onCommentAdded}) => {
         <div>
             <h3>Comments:</h3>
             <ul>
+                {success && <div>{success}</div>}
                 {comments.map((comment) => (
-                    <li key={comment.id}>
+                    <li key={comment.id}>                        
                         {editCommentId && (editCommentId === comment.id) ? 
                         <div>
                             <input type="text" value={editComment} onChange={(e) => setEditComment(e.target.value)} />  

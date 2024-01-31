@@ -100,7 +100,7 @@ const BlogPostForm = ({ postId }) => {
             console.error(`Error fetching author data: ${error}`);
         });
         
-    }, [isEditing, id, formData.author]);
+    }, [isEditing]);
 
 
     //Callback when add new category to update the category list

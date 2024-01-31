@@ -46,14 +46,21 @@ const AuthorProfile = () => {
         <>
         {authorProfile ?
             <div>
-                <div>
-                    {authorProfile.profile_pic ? 
-                        <img src={authorProfile.profile_pic} alt={`${authorProfile.first_name} ${authorProfile.last_name}`} />
-                        : <div>{authorProfile.first_name.charAt(0)}</div>
-                    }
-                </div>
-                <h1>{authorProfile.first_name} {authorProfile.last_name}</h1>
-                {authorProfile.profile_pic && <div>{authorProfile.bio}</div>}
+                {!authorProfile.first_name 
+                    ? <h5>Author Profile is not available.</h5>
+                    : <div>                        
+                        <div>
+                            {authorProfile.profile_pic ? 
+                                <img src={authorProfile.profile_pic} alt={`${authorProfile.first_name} ${authorProfile.last_name}`} />
+                                : <div>{authorProfile.first_name.charAt(0)}</div>
+                            }
+                        </div>
+                        <h1>{authorProfile.first_name} {authorProfile.last_name}</h1>
+                        {authorProfile.profile_pic && <div>{authorProfile.bio}</div>}
+                      </div>
+                
+                }
+                
                 <div>
                     <h2>Author Articles</h2>
                     <ul>

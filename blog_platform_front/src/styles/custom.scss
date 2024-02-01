@@ -1,4 +1,48 @@
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200&display=swap');
+
+$primary:   #030505; 
+$secondary: #575757;
+$font_primary: #ffffff;
+$nav_font: #ffffff8c;
+$nav_font_hover:#ffffffbf;
+
 @import '~bootstrap/scss/bootstrap';
+
+body{
+    font-family: 'Oswald', sans-serif;
+    background-color: $secondary;
+    color: $font_primary;
+
+}
+a{
+    color: $font_primary;
+}
+main{
+    margin-top: 70px;
+}
+/* Navingation Stlyes */
+.navbar{
+    .btn-link{
+        color: $nav_font;
+        text-decoration: none;
+        padding: 0.5rem;
+        &:hover{
+            color:$nav_font_hover;
+        }
+    }
+    .dropdown-menu{
+        background-color: $primary;
+        border-radius: 1px;
+        .dropdown-item{
+            color: $nav_font;
+            &:hover{
+                background-color: $primary;
+                color:$nav_font_hover;
+                text-decoration: underline;
+            }
+        }
+    }
+} 
 .post_image img{
     width: 100%;
 }

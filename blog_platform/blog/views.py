@@ -1,6 +1,6 @@
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
-from django.db.models import Q
+from django.db.models import Q, Count
 from django.utils.text import slugify
 from rest_framework.pagination import PageNumberPagination
 
@@ -82,6 +82,19 @@ class PostDetailView(generics.RetrieveAPIView):
     def get_queryset(self):
         query = Post.objects.filter(id=self.kwargs.get('id'))
         return query
+
+# Get Featured Post Public
+
+
+class FeaturedPostView(generics.RetrieveAPIView):
+    serializer_class = PostSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+    def get_object(self):
+        queryset = Post.objects.filter(is_public=True).annotate(like_count=Count('like'), comment_count=Count(
+            'comment')).order_by('-like_count', '-comment_count', '-created_at').first()
+
+        return queryset
 
 
 # List Posts Private

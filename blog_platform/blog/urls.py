@@ -19,6 +19,7 @@ urlpatterns = [
     path('postlist', views.PostListView.as_view(), name='postlist'),
     path('postlist/<int:id>/',
          views.PostDetailView.as_view(), name='post_detail'),
+    path('featuredpost', views.FeaturedPostView.as_view(), name='feaured_post'),
 
     # Start - User Authenticatio Related Urls
     path('token', views.CustomAuthToken.as_view(), name='token_obtain'),

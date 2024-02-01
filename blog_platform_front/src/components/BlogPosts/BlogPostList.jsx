@@ -73,7 +73,7 @@ const BlogPostList = () => {
                             <h1><a href={`/posts/${post.author.username}/${post.id}/${post.slug}`}>{post.title}</a></h1>
                             <div>
                                 {
-                                    post.author_profile
+                                    (post.author_profile && post.author_profile.profile_pic)
                                     ? <img src={post.author_profile.profile_pic} alt={post.author.username} width='40px' height='40px' />
                                     : <span>{post.author.username.charAt(0)}</span>                                
                                 }

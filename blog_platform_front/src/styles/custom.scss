@@ -2,7 +2,10 @@
 
 $primary:   #030505; 
 $secondary: #575757;
-$font_primary: #ffffff;
+$site_bg-primary: #ffffff;
+$site_bg-secondary:#030505;
+$font_primary:#030505;
+$font_secondary: #ffffff;
 $nav_font: #ffffff8c;
 $nav_font_hover:#ffffffbf;
 
@@ -10,7 +13,7 @@ $nav_font_hover:#ffffffbf;
 
 body{
     font-family: 'Oswald', sans-serif;
-    background-color: $secondary;
+    background-color: $site_bg-primary;
     color: $font_primary;
 
 }
@@ -18,7 +21,12 @@ a{
     color: $font_primary;
 }
 main{
-    margin-top: 70px;
+    margin-top: 60px;
+}
+.custom-btn-primary{
+    background-color: #fff;
+    color: $primary;
+    font-weight: bold;
 }
 /* Navingation Stlyes */
 .navbar{
@@ -28,6 +36,9 @@ main{
         padding: 0.5rem;
         &:hover{
             color:$nav_font_hover;
+        }
+        @media (max-width: 767.98px) {
+            padding-left: 0;
         }
     }
     .dropdown-menu{
@@ -42,7 +53,39 @@ main{
             }
         }
     }
-} 
+
+    /* sub menu Dropdown for hover */
+    @media (min-width: 576px) {
+        .nav-item.dropdown:hover .dropdown-menu {
+            display: block;
+        }
+    }
+}
+
+/* Featured Post */
+.featured-post{
+    position: relative;
+    color: $font_secondary;
+    background-size: cover;
+    background-position: center;
+    height: 22rem;
+    
+    .featured-post-overlay{
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.9); /* Dark overlay */
+    }
+
+    .featured-post-content {
+        position: relative;
+        z-index: 2; /* Ensure content is above the overlay */
+        padding: 20px;
+    }
+}
+
 .post_image img{
     width: 100%;
 }

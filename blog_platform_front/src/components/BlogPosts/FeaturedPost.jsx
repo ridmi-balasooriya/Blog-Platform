@@ -27,16 +27,32 @@ const FeaturedPost = () => {
     return(
         <>
             {featuredPost && 
-                <div>
-                    <h2>{featuredPost.title}</h2>
-                    <span><img src={featuredPost.image} alt={featuredPost.title}  /></span>
-                    <span>{featuredPost.category.name}</span>
-                    {featuredPost.tags.map((tag) => (
-                        <span key={tag.name}>{tag.name}</span>
-                    ))}
-                    <span>{featuredPost.author.username}</span>
-                    <span>{formatDate(featuredPost.updated_at)}</span>
-                    <a href={`/posts/${featuredPost.author.username}/${featuredPost.id}/${featuredPost.slug}`}>Read More</a>
+                <div className="featured-post position-relative" style={{backgroundImage: `url(${featuredPost.image})`}}>
+                    <div className="featured-post-overlay"></div>
+                    <div className="featured-post-content container d-flex flex-row justify-content-evenly align-items-center" style={{ height: '100%' }}>
+                        <div className="d-flex flex-column text-center">         
+                            <h3 className="pb-0 text-md-start">Featured Article</h3>
+                            <span className="pb-3 text-md-start">{featuredPost.category.name}</span>                   
+                            <div className="featured-title text-center">
+                                <h2 className="py-0">{featuredPost.title}</h2>
+                                <span className="d-block text-md-end pb-2">
+                                    {featuredPost.author.username} - {formatDate(featuredPost.updated_at)}
+                                </span>
+                                <div className="m-auto center text-md-end pb-2">
+                                    {featuredPost.tags.map((tag, index) => 
+                                        <span>
+                                            <span key={tag.name} className="badge"> {tag.name} </span> 
+                                            <span className="badge">{index < featuredPost.tags.length - 1 && '|'}</span>
+                                        </span>
+                                    )}                      
+                                </div>                                                                
+                                <span className="d-block text-md-end">
+                                    <a href={`/posts/${featuredPost.author.username}/${featuredPost.id}/${featuredPost.slug}`} className="btn custom-btn-primary">Read Article</a>
+                                </span> 
+                            </div>                           
+                            
+                        </div>    
+                    </div>
                 </div>
 
             }

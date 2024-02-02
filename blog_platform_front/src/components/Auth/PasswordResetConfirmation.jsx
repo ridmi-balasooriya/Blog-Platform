@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import axios from 'axios';
 import API_BASE_URL from "../../config";
+import Layout from '../../templates/Layout';
 
 const PasswordResetConfirmation = () => {
   const { uid, token } = useParams()
@@ -45,7 +46,7 @@ const PasswordResetConfirmation = () => {
     
   };
   return (
-    <div>      
+    <Layout>      
       {success ? (
         <div>{success} Please navigate to the <Link to='/login'>Login Page</Link> to access your blog account.</div>
       ) : (
@@ -70,7 +71,7 @@ const PasswordResetConfirmation = () => {
         </form>
         </>
       )}
-    </div>
+    </Layout>
   );
 };
 

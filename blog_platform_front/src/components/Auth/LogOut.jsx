@@ -20,7 +20,7 @@ const LogOut = () => {
     }
 
     return (
-        <button onClick={handleLogout}  type="button" className="btn btn-link">Log Out</button>
+        <button onClick={handleLogout}  type="button" className="btn btn-link ps-sm-0">Log Out</button>
     )
 
 }

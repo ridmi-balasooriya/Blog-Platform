@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link } from 'react-router-dom';
 import axios from "axios";
 import API_BASE_URL from '../../config';
+import Layout from '../../templates/Layout';
 
 const LogIn = () => {
     const [username, setUsername] = useState('');
@@ -27,7 +28,7 @@ const LogIn = () => {
     };
 
     return(
-        <div>
+        <Layout>
             <h1>Login</h1>
             {error && <div>{error}</div>}
             <form onSubmit={handleLogin}>
@@ -37,7 +38,7 @@ const LogIn = () => {
             </form>
             <div><Link to='/password_reset'>Forgot Your Password?</Link></div>
             <div>New to Our Platform? <Link to='/register'>Please Register</Link></div>
-        </div>
+        </Layout>
     )
 
 }

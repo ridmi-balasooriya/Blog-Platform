@@ -2,6 +2,7 @@ import React, { useState} from "react";
 import { Link } from 'react-router-dom'
 import axios from "axios";
 import API_BASE_URL from "../../config";
+import Layout from '../../templates/Layout';
 
 const Register = () => {
     const [formData, setFormData] = useState({
@@ -57,7 +58,7 @@ const Register = () => {
     }
 
     return(
-        <>
+        <Layout>
             {error && <div>{error}</div>}
             <form onSubmit={formSubmission}>
                 <input type='text' name="first_name" placeholder="First Name" value={formData.first_name} onChange={handleChange} />
@@ -69,7 +70,7 @@ const Register = () => {
                 <button type="submit">Sign Up</button>
             </form>
             <div>Already a member? <Link to='/login'>Login here.</Link></div>
-        </> 
+        </Layout> 
     )
 }
 

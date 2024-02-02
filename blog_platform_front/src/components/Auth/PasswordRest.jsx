@@ -1,6 +1,7 @@
 import React, {useState} from "react"; 
 import axios from "axios";
 import API_BASE_URL from "../../config";
+import Layout from '../../templates/Layout';
 
 const PasswordReset = () => {
     const [email, setEmail] = useState('');
@@ -29,7 +30,7 @@ const PasswordReset = () => {
     }
 
     return(
-        <div>
+        <Layout>
             {error && <div>{error}</div>}
             {success ? (<div>Password reset email sent. Check your inbox.</div>)
                      : (
@@ -42,7 +43,7 @@ const PasswordReset = () => {
                      )
             
             }
-        </div>
+        </Layout>
     )
 }
 

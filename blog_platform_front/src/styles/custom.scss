@@ -6,8 +6,8 @@ $site_bg-primary: #ffffff;
 $site_bg-secondary:#030505;
 $font_primary:#030505;
 $font_secondary: #ffffff;
-$nav_font: #ffffff8c;
-$nav_font_hover:#ffffffbf;
+$nav_font: #ffffff;
+$nav_font_hover:#ffffff8c;
 
 @import '~bootstrap/scss/bootstrap';
 
@@ -76,7 +76,7 @@ main{
         left: 0;
         right: 0;
         bottom: 0;
-        background-color: rgba(0, 0, 0, 0.9); /* Dark overlay */
+        background-color: rgba(0, 0, 0, 0.82); /* Dark overlay */
     }
 
     .featured-post-content {

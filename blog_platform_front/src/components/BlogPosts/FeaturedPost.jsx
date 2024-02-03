@@ -27,7 +27,7 @@ const FeaturedPost = () => {
     return(
         <>
             {featuredPost && 
-                <div className="featured-post position-relative" style={{backgroundImage: `url(${featuredPost.image})`}}>
+                <div className="featured-post position-relative" style={{backgroundImage: `url(/featured-article-bg.jpg)`}}>
                     <div className="featured-post-overlay"></div>
                     <div className="featured-post-content container d-flex flex-row justify-content-evenly align-items-center" style={{ height: '100%' }}>
                         <div className="d-flex flex-column text-center">         

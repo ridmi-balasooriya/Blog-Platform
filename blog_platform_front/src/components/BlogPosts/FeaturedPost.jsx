@@ -27,7 +27,7 @@ const FeaturedPost = () => {
     return(
         <>
             {featuredPost && 
-                <div className="featured-post position-relative" style={{backgroundImage: `url(/featured-article-bg.jpg)`}}>
+                <div className="featured-post position-relative mb-5" style={{backgroundImage: `url(/featured-article-bg.jpg)`}}>
                     <div className="featured-post-overlay"></div>
                     <div className="featured-post-content container d-flex flex-row justify-content-evenly align-items-center" style={{ height: '100%' }}>
                         <div className="d-flex flex-column text-center">         
@@ -49,8 +49,7 @@ const FeaturedPost = () => {
                                 <span className="d-block text-md-end">
                                     <a href={`/posts/${featuredPost.author.username}/${featuredPost.id}/${featuredPost.slug}`} className="btn custom-btn-primary">Read Article</a>
                                 </span> 
-                            </div>                           
-                            
+                            </div> 
                         </div>    
                     </div>
                 </div>

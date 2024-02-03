@@ -1,0 +1,64 @@
+import React, {useState, useEffect} from "react";
+import axios from "axios";
+import API_BASE_URL from "../../config";
+import DOMPurify from 'dompurify';
+
+const RecentBlogPosts = () => {
+    const [recentPosts, setRecentPosts] = useState([]);
+
+    useEffect(() => {
+        axios.get(`${API_BASE_URL}/api/recentposts`)
+        .then(response => {
+            setRecentPosts(response.data)
+            console.log(response.data)
+        })
+        .catch(error => {
+            console.log(error)
+        })
+    },[])
+
+    const getPostReadMore = (content) => {
+        const words = content.split(' ');
+        if (words.length > 50){
+            return words.slice(0, 20).join(' ') + '...';
+        }else{
+            return words.join(' ');
+        }
+    }
+
+    return(
+        <div className="recent-article container-fluid pb-5" style={{backgroundImage: `url(/recent-article-bg.jpg)`}}>
+            <div className="recent-article-overlay"></div>
+            <div className="recent-article-content container">
+                <h2 className="text-center py-5">Recent Articles <br/> <i class="bi bi-dash-lg"></i></h2>
+                 
+                <div className="row justify-content-center">
+                    {recentPosts.map(post => (
+                        <div className="col-lg-3 col-md-6 d-flex align-items-stretch text-center">
+                            <div className="card border-0 mb-3">
+                                <img src={`${post.image}`} className="card-img-top" alt={post.title} height='170px' />
+                                <div className="card-body">
+                                    <h5 className="card-title">{post.title}</h5>
+                                    <p className="card-text" dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(getPostReadMore(post.content)) }} />                                                                        
+                                </div>
+                                <div class="card-overlay">
+                                    <span className="d-flex flex-column align-items-center p-2">  
+                                        <span className="mb-0 fs-6">{post && post.category.name}</span>
+                                        <h4 className="card-title mt-2 mb-4">{post.title}</h4> 
+                                        <a  href={`/posts/${post.author.username}/${post.id}/${post.slug}`} className="btn btn-primary stretched-link mb-4">Read Article</a>
+                                        <div className="mb-auto">
+                                            {post && post.tags.map((tag) => 
+                                            <span className="badge tag-badge mx-1" key={tag.name}> {tag.name} </span> )}
+                                        </div>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    ))}   
+                </div> 
+            </div>                        
+        </div>
+    );
+}
+
+export default RecentBlogPosts;

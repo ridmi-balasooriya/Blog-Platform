@@ -51,8 +51,6 @@ class PostListView(generics.ListCreateAPIView):
         search_type = self.request.query_params.get('type', '')
         author_id = self.request.query_params.get('author', None)
 
-        print(author_id)
-
         type_field_mapping = {
             'title': 'title__icontains',
             'category': 'category__name__icontains',
@@ -83,9 +81,8 @@ class PostDetailView(generics.RetrieveAPIView):
         query = Post.objects.filter(id=self.kwargs.get('id'))
         return query
 
+
 # Get Featured Post Public
-
-
 class FeaturedPostView(generics.RetrieveAPIView):
     serializer_class = PostSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
@@ -93,6 +90,18 @@ class FeaturedPostView(generics.RetrieveAPIView):
     def get_object(self):
         queryset = Post.objects.filter(is_public=True).annotate(like_count=Count('like'), comment_count=Count(
             'comment')).order_by('-like_count', '-comment_count', '-created_at').first()
+
+        return queryset
+
+
+# Get Recent Posts Public
+class RecentPostsView(generics.ListAPIView):
+    serializer_class = PostSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+    def get_queryset(self):
+        queryset = Post.objects.filter(
+            is_public=True).order_by('-created_at')[:4]
 
         return queryset
 

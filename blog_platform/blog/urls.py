@@ -20,6 +20,7 @@ urlpatterns = [
     path('postlist/<int:id>/',
          views.PostDetailView.as_view(), name='post_detail'),
     path('featuredpost', views.FeaturedPostView.as_view(), name='feaured_post'),
+    path('recentposts', views.RecentPostsView.as_view(), name='recent_posts'),
 
     # Start - User Authenticatio Related Urls
     path('token', views.CustomAuthToken.as_view(), name='token_obtain'),

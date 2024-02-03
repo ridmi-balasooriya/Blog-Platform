@@ -10,12 +10,16 @@ $nav_font: #ffffff;
 $nav_font_hover:#ffffff8c;
 
 @import '~bootstrap/scss/bootstrap';
+@import '~bootstrap-icons/font/bootstrap-icons.css';
 
 body{
     font-family: 'Oswald', sans-serif;
     background-color: $site_bg-primary;
     color: $font_primary;
 
+}
+footer{
+    color: $font_secondary;
 }
 a{
     color: $font_primary;
@@ -85,7 +89,66 @@ main{
         padding: 20px;
     }
 }
+.recent-article{
+    position: relative;
+    background-size: cover;
+    background-position: center;
 
+    .recent-article-overlay{
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.85); /* Dark overlay */
+    }
+
+    .recent-article-content{
+        position: relative;
+        z-index: 2; /* Ensure content is above the overlay */
+        padding: 20px;        
+    }
+
+    h2{
+        color: $font_secondary;
+    }
+    .read-more{
+        width: 150px;
+        display: inline-block;
+    }
+    .card {
+        position: relative;
+        overflow: hidden; /* Ensures the overlay is contained within the card */        
+        box-shadow: rgb(0 0 0 / 60%) 1px 1px 1px 1px;
+        
+        .card-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.85); /* Dark overlay, adjust color and opacity as needed */
+            color: #fff; /* Text color */
+            opacity: 0; /* Hide overlay by default */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.5s ease; /* Smooth transition for the overlay */
+        }
+
+        &:hover .card-overlay {
+            opacity: 1; /* Show overlay on hover */
+        }
+        &:hover .card-body{
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+    }
+    
+}
+.tag-badge{
+    background-color: #030505;
+
+}
 .post_image img{
     width: 100%;
 }

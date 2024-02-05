@@ -10,7 +10,6 @@ const RecentBlogPosts = () => {
         axios.get(`${API_BASE_URL}/api/recentposts`)
         .then(response => {
             setRecentPosts(response.data)
-            console.log(response.data)
         })
         .catch(error => {
             console.log(error)
@@ -27,25 +26,25 @@ const RecentBlogPosts = () => {
     }
 
     return(
-        <div className="recent-article container-fluid pb-5" style={{backgroundImage: `url(/recent-article-bg.jpg)`}}>
+        <div className="recent-article container-fluid pb-5 mb-5" style={{backgroundImage: `url(/recent-article-bg.jpg)`}}>
             <div className="recent-article-overlay"></div>
             <div className="recent-article-content container">
-                <h2 className="text-center py-5">Recent Articles <br/> <i class="bi bi-dash-lg"></i></h2>
+                <h2 className="text-center py-5">Recent Articles <br/> <i className="bi bi-dash-lg"></i></h2>
                  
                 <div className="row justify-content-center">
                     {recentPosts.map(post => (
-                        <div className="col-lg-3 col-md-6 d-flex align-items-stretch text-center">
+                        <div className="col-lg-3 col-md-6 d-flex align-items-stretch text-center" key={post.id}>
                             <div className="card border-0 mb-3">
                                 <img src={`${post.image}`} className="card-img-top" alt={post.title} height='170px' />
                                 <div className="card-body">
                                     <h5 className="card-title">{post.title}</h5>
                                     <p className="card-text" dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(getPostReadMore(post.content)) }} />                                                                        
                                 </div>
-                                <div class="card-overlay">
+                                <div className="card-overlay">
                                     <span className="d-flex flex-column align-items-center p-2">  
                                         <span className="mb-0 fs-6">{post && post.category.name}</span>
                                         <h4 className="card-title mt-2 mb-4">{post.title}</h4> 
-                                        <a  href={`/posts/${post.author.username}/${post.id}/${post.slug}`} className="btn btn-primary stretched-link mb-4">Read Article</a>
+                                        <a  href={`/posts/${post.author.username}/${post.id}/${post.slug}`} className="btn btn-dark stretched-link mb-4">Read Article</a>
                                         <div className="mb-auto">
                                             {post && post.tags.map((tag) => 
                                             <span className="badge tag-badge mx-1" key={tag.name}> {tag.name} </span> )}

@@ -9,7 +9,7 @@ from rest_framework import generics, viewsets, status
 from rest_framework.response import Response
 from rest_framework.parsers import MultiPartParser, FormParser
 from .models import Like, Post, Category, Tag, Comment, User, AuthorProfile
-from .serializers import PostSerializer, CategorySerializer, TagSerializer, CommentSerializer, UserSerializer, PasswordResetSerializer, LikeSerializer, AuthorProfileSerializer
+from .serializers import PostSerializer, CategorySerializer, TagSerializer, CommentSerializer, UserSerializer, PasswordResetSerializer, LikeSerializer, AuthorProfileSerializer, RecentPostCategorySerializer
 
 
 # For User Authentication
@@ -102,6 +102,18 @@ class RecentPostsView(generics.ListAPIView):
     def get_queryset(self):
         queryset = Post.objects.filter(
             is_public=True).order_by('-created_at')[:4]
+
+        return queryset
+
+
+# Get Popular Category  Public
+class PopularCategoriesView(generics.ListAPIView):
+    serializer_class = RecentPostCategorySerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+    def get_queryset(self):
+        queryset = Category.objects .annotate(num_posts=Count('post', filter=Q(post__is_public=True))).exclude(
+            name__iexact='Uncategory').filter(num_posts__gt=0).order_by('-num_posts')[:5]
 
         return queryset
 

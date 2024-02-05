@@ -32,6 +32,27 @@ main{
     color: $primary;
     font-weight: bold;
 }
+.btn-dark{
+    background-color: $site_bg-secondary;
+    color:$font_secondary;    
+    box-shadow: #030505 2px 2px 1px 1px;
+
+    &:hover{
+        background-color: transparent;
+        border: thin solid $font_secondary;
+    }
+}
+.btn-light{
+    
+        background-color: transparent;
+        color: $font_secondary;
+        border: thin solid $font_secondary;
+        box-shadow: #030505 2px 2px 1px 1px;
+    &:hover{
+        background-color: $site_bg-primary;
+        color: $font_primary;
+    }
+}
 /* Navingation Stlyes */
 .navbar{
     .btn-link{
@@ -144,6 +165,11 @@ main{
         }
     }
     
+}
+.popular-topic{
+    .dark-image{
+        filter: brightness(15%);
+    }
 }
 .tag-badge{
     background-color: #030505;

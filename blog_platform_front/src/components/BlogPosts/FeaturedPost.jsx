@@ -40,14 +40,14 @@ const FeaturedPost = () => {
                                 </span>
                                 <div className="m-auto center text-md-end pb-2">
                                     {featuredPost.tags.map((tag, index) => 
-                                        <span>
+                                        <span key={index}>
                                             <span key={tag.name} className="badge"> {tag.name} </span> 
                                             <span className="badge">{index < featuredPost.tags.length - 1 && '|'}</span>
                                         </span>
                                     )}                      
                                 </div>                                                                
                                 <span className="d-block text-md-end">
-                                    <a href={`/posts/${featuredPost.author.username}/${featuredPost.id}/${featuredPost.slug}`} className="btn custom-btn-primary">Read Article</a>
+                                    <a href={`/posts/${featuredPost.author.username}/${featuredPost.id}/${featuredPost.slug}`} className="btn btn-light">Read Article</a>
                                 </span> 
                             </div> 
                         </div>    

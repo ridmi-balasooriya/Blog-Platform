@@ -94,3 +94,25 @@ class LikeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Like
         fields = '__all__'
+
+
+# Get Recent Posts
+class RecentPostSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Post
+        fields = '__all__'
+
+
+# Get Recent Post of the Category
+class RecentPostCategorySerializer(serializers.ModelSerializer):
+
+    recent_post = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Category
+        fields = ['id', 'name', 'recent_post']
+
+    def get_recent_post(self, obj):
+        recent_post = Post.objects.filter(
+            category=obj, is_public=True).order_by('-created_at').first()
+        return RecentPostSerializer(recent_post).data if recent_post else None

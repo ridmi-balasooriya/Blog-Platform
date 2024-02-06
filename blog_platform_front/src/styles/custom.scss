@@ -35,11 +35,12 @@ main{
 .btn-dark{
     background-color: $site_bg-secondary;
     color:$font_secondary;    
-    box-shadow: #030505 2px 2px 1px 1px;
+    box-shadow: #030505 1px 1px 1px 1px;
 
     &:hover{
         background-color: transparent;
-        border: thin solid $font_secondary;
+        border: thin solid $site_bg-secondary;
+        color: $font_primary;
     }
 }
 .btn-light{
@@ -171,10 +172,24 @@ main{
         filter: brightness(15%);
     }
 }
+.top-author{
+    .author-profile-initial{
+        width: 80px;
+        height: 80px;
+        border: thin solid $site_bg-secondary;
+        background-color: $site_bg-secondary;
+        color: $font_secondary;
+    }
+}
 .tag-badge{
     background-color: #030505;
 
 }
 .post_image img{
     width: 100%;
+}
+.light-carousel{
+    .carousel-indicators [data-bs-target]{
+        background-color: #030505;
+    }
 }

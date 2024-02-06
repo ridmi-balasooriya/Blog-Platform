@@ -1,5 +1,5 @@
 from django.http import JsonResponse
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, get_list_or_404
 from django.db.models import Q, Count
 from django.utils.text import slugify
 from rest_framework.pagination import PageNumberPagination
@@ -339,11 +339,22 @@ class UserViewSet(viewsets.ModelViewSet):
         return queryset
 
 
+class TopAuthorViewSet(generics.ListAPIView):
+    serializer_class = UserSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+    def get_queryset(self):
+        top_authors = User.objects.annotate(
+            num_posts=Count('post', filter=Q(post__is_public=True))).order_by('-num_posts')[:3]
+
+        return top_authors
+
+
 def home(request):
     return JsonResponse({'message': 'Testing App'})
 
 
-class AuthorProfileViewSet(viewsets.ModelViewSet):
+class AuthorProfileModelViewSet(viewsets.ModelViewSet):
     queryset = AuthorProfile.objects.all()
     serializer_class = AuthorProfileSerializer
 
@@ -359,8 +370,18 @@ class AuthorProfileViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         author_id = self.request.query_params.get('author', None)
-        if author_id:
+        top_authors = self.request.query_params.get('top_authors', None)
+
+        if top_authors:
+            top_authors = top_authors.split(',')
+            author_profiles = get_list_or_404(
+                AuthorProfile, author__id__in=top_authors)
+            serializer = AuthorProfileSerializer(author_profiles, many=True)
+            return Response(serializer.data)
+
+        elif author_id:
             return AuthorProfile.objects.filter(author=author_id)
+
         return AuthorProfile.objects.all()
 
 

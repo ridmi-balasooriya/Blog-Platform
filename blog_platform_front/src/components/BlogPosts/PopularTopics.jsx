@@ -9,7 +9,6 @@ const PopularTopics = () => {
         axios.get(`${API_BASE_URL}/api/popular_categories`)
         .then(response => {
             setPouplarCategories(response.data)
-            console.log(response.data)
         })
         .catch(error => {
             console.log(error)
@@ -17,7 +16,7 @@ const PopularTopics = () => {
     },[])
 
     return(
-        <div className="popular-topic">
+        <div className="popular-topic mb-5">
             <h3 className="text-center py-2">Popular Topics <br/> <i className="bi bi-dash-lg"></i></h3>
             <div id="articlesCarousel" className="carousel slide" data-bs-ride="carousel">
 

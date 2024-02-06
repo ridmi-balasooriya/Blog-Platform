@@ -5,7 +5,7 @@ const Footer = () => {
     
     return(
         <footer className='container-fluid bg-primary text-center p-2 pt-3 mt-5'>
-             <p>&copy; {currentYear} Tech Talk. All rights reserved. | Designed and developed by Ridmi Balasooriya</p>
+             <p className='fs-6'>&copy; {currentYear} Tech Talk. All rights reserved. | Designed and developed by Ridmi Balasooriya | This blog platform serves as a showcase of my technical skills and is created solely for demonstration purposes.</p>
         </footer>
     );
 }

@@ -12,7 +12,7 @@ router.register(r'tags', views.TagViewSet)
 router.register(r'comments', views.CommentViewSet)
 router.register(r'likes', views.LikeViewSet)
 router.register(r'users', views.UserViewSet)
-router.register(r'author_profile', views.AuthorProfileViewSet)
+router.register(r'author_profile', views.AuthorProfileModelViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
@@ -23,6 +23,8 @@ urlpatterns = [
     path('recentposts', views.RecentPostsView.as_view(), name='recent_posts'),
     path('popular_categories', views.PopularCategoriesView.as_view(),
          name='popular_categories'),
+
+    path('top_authors', views.TopAuthorViewSet.as_view(), name='top_authors'),
 
     # Start - User Authenticatio Related Urls
     path('token', views.CustomAuthToken.as_view(), name='token_obtain'),

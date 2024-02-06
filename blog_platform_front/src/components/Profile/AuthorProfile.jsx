@@ -16,9 +16,7 @@ const AuthorProfile = () => {
     const [authorPosts, setAuthorPosts] = useState([]);
 
     useEffect(() => {
-        axios.get(`${API_BASE_URL}/api/author_profile/?author=${id}`,
-            {headers: {Authorization: `Token ${token}`, 'Content-Type': 'application/json',}
-        })
+        axios.get(`${API_BASE_URL}/api/author_profile?author=${id}`)
         .then(response => {
             setAuthorProfile(response.data[0])
         }).catch(error => {

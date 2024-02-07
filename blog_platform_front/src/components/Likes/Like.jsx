@@ -61,9 +61,9 @@ const Like = ({postId}) => {
     }
 
     return(
-        <div>
-            {(likeList.length > 0) && <span>{likeList.length} &#x1F44D;</span>}
-            {token && <button onClick={handleLikeSubmission}>LIKE{liked && <span>D</span>}</button> }
+        <div className="d-inline-block px-2">
+            <span>Like(s): </span>
+            {(likeList.length > 0) ? <span>{likeList.length}</span> : <span>0</span>} { token  && <button className="btn-thin btn btn-dark ms-1 mb-1" onClick={handleLikeSubmission}> Like{liked && <span>d &#x1F44D;</span>}</button>}            
         </div>
     )
 }

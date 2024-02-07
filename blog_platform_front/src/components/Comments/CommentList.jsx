@@ -100,42 +100,59 @@ const CommentList = ({postId, onCommentAdded}) => {
     }
 
     return(
-        <div>
-            <h3>Comments:</h3>
-            <ul>
-                {success && <div>{success}</div>}
-                {comments.map((comment) => (
-                    <li key={comment.id}>                        
-                        {editCommentId && (editCommentId === comment.id) ? 
-                        <div>
-                            <input type="text" value={editComment} onChange={(e) => setEditComment(e.target.value)} />  
-                            <button onClick={() => handleSaveEditComment(comment.id)}>Save</button>
-                            <button onClick={handleCancelEditComment}>Cancel</button>
-                        </div>
-                        :
-                        <div>
-                            <span>{comment.content}</span>
-                            <span>
-                                {   
-                                    comment.author_profile
-                                    ? <img src={comment.author_profile.profile_pic} alt={comment.author.username} width='40px' height='40px' />
-                                    : <span>{comment.author.username.charAt(0)}</span>                                
-                                }
-                            </span>
-                                
-                            <span>{comment.author.username}</span>
-                            {userData && (userData.username === comment.author.username) && <button onClick={() => handleEditClick(comment && comment.id, comment && comment.content)}>Edit</button>}
-                            {userData && (userData.username === comment.author.username) && <button onClick={() => handleDeleteClick(comment && comment.id)}>Delete</button>}
-                        </div>                        
-                        }
-                        
-                    </li>
-                ))
+        <>
+        {(comments.length > 0) &&
+            <div className="comment-section">
+                <h3>Comments:</h3>
+                <ul>
+                    {success && <div className="alert alert-success">{success}</div>}
+                    {comments.map((comment) => (
+                        <li key={comment.id}>                        
+                            {editCommentId && (editCommentId === comment.id) ? 
+                             <div className="d-flex flex-row flex-wrap align-items-center">
+                                <span className="d-inline-block me-2">
+                                    {   
+                                        comment.author_profile.profile_pic
+                                        ? <img src={comment.author_profile.profile_pic} alt={comment.author.username} width='40px' height='40px' />
+                                        : <span className="author-profile-initial">{comment.author.username.charAt(0).toUpperCase()}</span>                                
+                                    }
+                                </span>
+                                <span>
+                                    <textarea className="comment-block update-comment" type="text" value={editComment} onChange={(e) => setEditComment(e.target.value)}></textarea>
+                                </span>
+                                <span className="d-block text-end mt-2 mt-md-0">
+                                    <button className="btn btn-dark btn-thin ms-2" onClick={() => handleSaveEditComment(comment.id)}>Save</button>
+                                    <button className="btn btn-dark btn-thin ms-2" onClick={handleCancelEditComment}>Cancel</button>
+                                </span>
+                            </div>
+                            :
+                            <div className="d-flex flex-row flex-wrap align-items-center">
+                                <span className="d-inline-block me-2">
+                                    {   
+                                        comment.author_profile.profile_pic
+                                        ? <img src={comment.author_profile.profile_pic} alt={comment.author.username} width='40px' height='40px' />
+                                        : <span className="author-profile-initial">{comment.author.username.charAt(0).toUpperCase()}</span>                                
+                                    }
+                                </span>
+                                <span className="comment-block">
+                                    {comment.content}
+                                    <span className="comment-username d-block text-end mt-1 mt-md-2"><em>~ {comment.author.username}</em></span>
+                                </span>
+                                <span className="btn-span text-end mt-3">
+                                    {userData && (userData.username === comment.author.username) && <button className="btn btn-dark btn-thin ms-2" onClick={() => handleEditClick(comment && comment.id, comment && comment.content)}>Edit</button>}
+                                    {userData && (userData.username === comment.author.username) && <button className="btn btn-dark btn-thin ms-2" onClick={() => handleDeleteClick(comment && comment.id)}>Delete</button>}
+                                </span>                                
+                            </div>                        
+                            }
+                            
+                        </li>
+                    ))
 
-                }
-            </ul>
-        </div>
-        
+                    }
+                </ul>
+            </div>
+            }
+        </>
     )
 }
 

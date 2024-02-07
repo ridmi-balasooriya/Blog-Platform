@@ -80,14 +80,16 @@ const CommentForm = ({postId, onCommentAdded}) => {
     }
 
     return(
-        <div>
-            {error && <div>{error}</div>}
-            {success && <div>{success}</div>}
+        <div className="comment_form mb-5">
+            {error && <div className="alert alert-danger">{error}</div>}
+            {success && <div className="alert alert-success">{success}</div>}
             <h4>Add New Comment</h4>
-            <form onSubmit={handleSubmission}>
-                <textarea name="content" value={formData.content} onChange={handleCommentChange}></textarea>
-                <button>Submit</button>
-            </form>
+            <span className="form-span d-block d-sm-inline-block">
+                <form onSubmit={handleSubmission}>
+                    <textarea name="content" className="comment-input" value={formData.content} onChange={handleCommentChange}></textarea>
+                    <button className="btn btn-dark">Submit</button>
+                </form>
+            </span>            
         </div>
     )
 }

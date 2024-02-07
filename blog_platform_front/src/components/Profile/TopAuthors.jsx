@@ -52,8 +52,7 @@ const TopAuthors = () => {
 
                             }
                             
-                            <div className="d-md-block px-md-5 px-2">                                
-                                <h6>{topAuthor.author.username}</h6>
+                            <div className="d-md-block px-md-5 px-2">      
                                 <h3 className="mb-4">{topAuthor.first_name} {topAuthor.last_name}</h3>
                                 <p>
                                     Meet the masterminds behind the cutting-edge discussions and insightful analyses on our tech blog. These top authors stand out for their prolific contributions, diving deep into the latest trends, technologies, and innovations that are shaping the future. Join us in celebrating the voices that drive progress and foster a deeper understanding of the digital world.

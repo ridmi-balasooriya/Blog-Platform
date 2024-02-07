@@ -21,7 +21,7 @@ const FeaturedPost = () => {
                         "July", "August", "September", "October", "November", "December"];
         const monthIndex = date.getMonth()
         const monthName = monthNames[monthIndex]
-        return `${monthName} ${String(date.getDate() + 1).padStart(2, '0')}, ${date.getFullYear()}`;
+        return `${monthName} ${String(date.getDate()).padStart(2, '0')}, ${date.getFullYear()}`;
     }
 
     return(
@@ -36,7 +36,7 @@ const FeaturedPost = () => {
                             <div className="featured-title text-center">
                                 <h2 className="py-0">{featuredPost.title}</h2>
                                 <span className="d-block text-md-end pb-2">
-                                    {featuredPost.author.username} - {formatDate(featuredPost.updated_at)}
+                                    {featuredPost.author_profile.author.first_name} {featuredPost.author_profile.author.last_name} - {formatDate(featuredPost.updated_at)}
                                 </span>
                                 <div className="m-auto center text-md-end pb-2">
                                     {featuredPost.tags.map((tag, index) => 

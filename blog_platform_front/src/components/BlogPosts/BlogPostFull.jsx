@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import API_BASE_URL from '../../config';
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import { Helmet } from 'react-helmet'
 import {token, userData} from "../Auth/Token";
 import CommentForm from "../Comments/CommentForm";
@@ -74,25 +74,47 @@ const BlogPostFull = () =>{
             console.log(`Error changing post status ${postId}: ${error}`)
         })
     }
+
+    const formatDate = (dateString) => {
+        const date = new Date(dateString);
+        const monthNames = ["January", "February", "March", "April", "May", "June",
+                        "July", "August", "September", "October", "November", "December"];
+        const monthIndex = date.getMonth()
+        const monthName = monthNames[monthIndex]
+        return `${monthName} ${String(date.getDate()).padStart(2, '0')}, ${date.getFullYear()}`;
+    }
+
     
     return( 
         <Layout>  
             <Helmet>
                 <meta name="description" content={post && post.meta_description} />
             </Helmet>  
-            <div className="article-div">
-                <h1>{post && post.title}</h1>
-                {post && <Like postId={post.id} /> }
-                <p><em>{post && post.author.username}</em></p>
-                <div>
-                    <strong>Tags: </strong>
+            <article className="article container">
+                {post && post.image && 
+                    <div className="post_image">
+                        {post && <img src={`${post.image}`} alt={post.title} /> }
+                    </div>
+                }                 
+                <div className="text-center pt-5">
+                    <span className="fs-4">{post && post.category.name}</span>
+                </div>
+                <h1 className="text-center">{post && post.title}  <br/> <i className="bi bi-dash-lg"></i></h1>
+                <div className="text-center mb-2">
                     {post && post.tags.map((tag, index) => 
-                    <span key={tag.name}> {tag.name} {index < post.tags.length - 1 && '|'} </span> )}
+                    <span className="badge tag-badge mx-1 mb-1 p-2 d-inline-block" key={tag.name}> {tag.name} </span> )}
+                </div>  
+                <div className="author-div text-center text-md-end mb-4 color-subfont">                    
+                    <span className="d-inline-block px-2">
+                        <strong>
+                        <Link to={`/author/${post && post.author.id}`}>
+                            {post && post.author_profile.author.first_name} {post && post.author_profile.author.last_name}
+                        </Link> - {post && formatDate(post.updated_at)}
+                        </strong>
+                    </span>
+                    <strong>| {post && <Like postId={post.id} />}</strong>
                 </div>
-                <div>
-                    <strong>Category: </strong>
-                    <span>{post && post.category.name}</span>
-                </div>
+                
                 {post && token && (userData.username === post.author.username) && <button onClick={() => handleEditClick(post && post.id)}>Edit Post</button> }
                 {post && token && (userData.username === post.author.username) && <button onClick={() => handleDeleteClick(post && post.id)}>Delete</button> }
                 {
@@ -101,18 +123,14 @@ const BlogPostFull = () =>{
                         {post && post.is_public ? <span>Make Draft</span> : <span>Make Public</span>}
                     </button> 
                 }
-                {post && post.image && 
-                    <div className="post_image">
-                        {post && <img src={`${post.image}`} alt={post.title} /> }
-                    </div>
-                }            
+                          
                 <div className="article-content">
                     {post &&  <p dangerouslySetInnerHTML={{ __html: post.content }} />}
                 </div>
-                <a href='/'>Back To Article List</a>
+                <a href='/' className="d-block mb-5">Back To Article List</a>
                 {post && token && <CommentForm postId={post.id} onCommentAdded={handleCommentAdded} /> }
                 {post && <CommentList postId={post.id} onCommentAdded={handleCommentAdded} /> }
-            </div>
+            </article>
         </Layout>   
     )
 

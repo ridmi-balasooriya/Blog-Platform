@@ -114,15 +114,17 @@ const BlogPostFull = () =>{
                     </span>
                     <strong>| {post && <Like postId={post.id} />}</strong>
                 </div>
-                
-                {post && token && (userData.username === post.author.username) && <button onClick={() => handleEditClick(post && post.id)}>Edit Post</button> }
-                {post && token && (userData.username === post.author.username) && <button onClick={() => handleDeleteClick(post && post.id)}>Delete</button> }
-                {
-                    post && token && (userData.username === post.author.username) && 
-                    <button onClick={() => handleIsPublic(post && post.id, post && post.is_public)}>
-                        {post && post.is_public ? <span>Make Draft</span> : <span>Make Public</span>}
-                    </button> 
-                }
+
+                <div className="my-4 text-end">
+                    {post && token && (userData.username === post.author.username) && <button className="btn btn-dark mx-1" onClick={() => handleEditClick(post && post.id)}><i class="bi bi-pencil-square"></i></button> }
+                    {post && token && (userData.username === post.author.username) && <button className="btn btn-dark mx-1" onClick={() => handleDeleteClick(post && post.id)}><i class="bi bi-trash3"></i></button> }
+                    {
+                        post && token && (userData.username === post.author.username) && 
+                        <button className="btn btn-dark mx-1" onClick={() => handleIsPublic(post && post.id, post && post.is_public)}>
+                            {post && post.is_public ? <span>Public <i class="bi bi-globe ms-1"></i></span> : <span>Draft <i class="bi bi-eye-slash-fill ms-1"></i></span>}
+                        </button> 
+                    }
+                </div>    
                           
                 <div className="article-content">
                     {post &&  <p dangerouslySetInnerHTML={{ __html: post.content }} />}

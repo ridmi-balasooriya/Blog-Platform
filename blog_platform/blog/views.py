@@ -32,7 +32,7 @@ from django.contrib.auth import get_user_model
 
 # Pagination
 class CustomPageNumberPagination(PageNumberPagination):
-    page_size = 5  # Adjust the number of items per page as needed
+    page_size = 6  # Adjust the number of items per page as needed
     page_size_query_param = 'page_size'
     max_page_size = 100
     page_query_param = 'page'

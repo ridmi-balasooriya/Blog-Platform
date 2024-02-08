@@ -44,7 +44,7 @@ const RecentBlogPosts = () => {
                                     <span className="d-flex flex-column align-items-center p-2">  
                                         <span className="mb-0 fs-6">{post && post.category.name}</span>
                                         <h4 className="card-title mt-2 mb-4">{post.title}</h4> 
-                                        <a  href={`/posts/${post.author.username}/${post.id}/${post.slug}`} className="btn btn-dark stretched-link mb-4">Read Article</a>
+                                        <a  href={`/posts/${post.author.username}/${post.id}/${post.slug}`} className="btn btn-light stretched-link mb-4">Read Article</a>
                                         <div className="mb-auto">
                                             {post && post.tags.map((tag) => 
                                             <span className="badge tag-badge mx-1" key={tag.name}> {tag.name} </span> )}

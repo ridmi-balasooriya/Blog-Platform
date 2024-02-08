@@ -1,6 +1,7 @@
 import './App.css';
 import { BrowserRouter as Router, Routes, Route, Navigate} from 'react-router-dom';
 import HomePage from './pages/HomePage';
+import ArticlePage from './pages/ArticlesPage';
 import BlogPostFull from './components/BlogPosts/BlogPostFull';
 import AuthorProfilePage from './pages/AuthorProfilePage';
 import ProfilePage from './pages/ProfilePage';
@@ -20,6 +21,7 @@ function App() {
     <Router>
       <Routes>
         <Route path='/' element={<HomePage />} />
+        <Route path='/articles/' element={<ArticlePage />} />
         <Route path="/dashboard/" element={<PrivateRoutes authenticated={isAuthorized} children={<DashBoard />} />} />   
         <Route path='posts/:usernanme/:id/:slug' element={<BlogPostFull />} />
         <Route path='author/:id' element={<AuthorProfilePage />} />

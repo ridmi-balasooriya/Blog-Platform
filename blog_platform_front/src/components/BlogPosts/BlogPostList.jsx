@@ -51,49 +51,82 @@ const BlogPostList = () => {
         }
     }
 
+    const formatDate = (dateString) => {
+        const date = new Date(dateString);
+        const monthNames = ["January", "February", "March", "April", "May", "June",
+                        "July", "August", "September", "October", "November", "December"];
+        const monthIndex = date.getMonth()
+        const monthName = monthNames[monthIndex]
+        return `${monthName} ${String(date.getDate()).padStart(2, '0')}, ${date.getFullYear()}`;
+    }
+
     return(
-        <>
-            {/* <div>{token 
-            ? <> <DashboadButton />  <LogOut /> </>
-            : <LoginButton /> }
-            </div> */}
-            <div>
-                <select name="search_type" value={searchType} onChange={(e) => setSearchType(e.target.value)}>
-                    <option value='title'>Title</option>
-                    <option value='category'>Category</option>
-                </select>
-                <input type="text" name="search" value={searchInput} onChange={(e) => setSearchInput(e.target.value)} />
+        <div className="article-list container">
+             <h1 className="text-center mt-5 mb-2">Articles <br/> <i className="bi bi-dash-lg"></i></h1>
+            <div className="search-section d-flex flex-row pb-5">
+                <div className="search-type">
+                    <select name="search_type" className="form-select" value={searchType} onChange={(e) => setSearchType(e.target.value)} aria-label="search_type">
+                        <option value='title'>Title</option>
+                        <option value='category'>Category</option>
+                    </select>
+                </div>                
+                <div className="input-group">
+                    <input
+                        type="text"
+                        className="form-control"
+                        placeholder="Search"
+                        name="search"
+                        value={searchInput}
+                        onChange={(e) => setSearchInput(e.target.value)}
+                        aria-label="Search"
+                    />
+                    <div className="input-group-append">
+                        <span className="input-group-text" id="basic-addon2">
+                        <i className="bi bi-search"></i>
+                        </span>
+                    </div>                        
+                </div>
             </div>
-            <h1>Articles</h1>
+           
             {successMsg && <div>{successMsg}</div>}
             <div>
-                <ul>
+                <ul className="row">
                     {posts.map(post => (
-                        <li key={post.id}>
-                            <h1><a href={`/posts/${post.author.username}/${post.id}/${post.slug}`}>{post.title}</a></h1>
-                            <div>
-                                {
-                                    (post.author_profile && post.author_profile.profile_pic)
-                                    ? <img src={post.author_profile.profile_pic} alt={post.author.username} width='40px' height='40px' />
-                                    : <span>{post.author.username.charAt(0)}</span>                                
-                                }
-                                
-                                <Link to={`/author/${post.author.id}`}><em>{post.author.username}</em></Link>
+                        <li key={post.id} className="article-summary col-12 col-lg-4 col-md-6 d-flex align-items-stretch">
+                            <div className="article-summary-div m-2 mb-4 p-4 pb-2 d-flex flex-column text-center">
+                                <h3 className="mb-3"><a href={`/posts/${post.author.username}/${post.id}/${post.slug}`}>{post.title}</a></h3>
+                                <p className="text-break" dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(getPostReadMore(post.content)) }} />
+                                <div className="mb-3 mt-0">
+                                    {post && post.tags.map((tag) => 
+                                    <span className="badge tag-badge mx-1" key={tag.name}> {tag.name} </span> )}
+                                </div>
+                                <div className="mt-3 mb-5">
+                                    <a className="btn btn-dark" href={`/posts/${post.author.username}/${post.id}/${post.slug}`}>Read More</a>
+                                </div>
+                                <div className="text- center text-sm-end author-block mt-sm-auto">
+                                    {
+                                        (post.author_profile && post.author_profile.profile_pic)
+                                        ? <img src={post.author_profile.profile_pic} alt={post.author.username} className="me-2" width='30px' height='30px' />
+                                        : <span className="author-profile-initial me-2">{post.author.username.charAt(0).toUpperCase()}</span>                                
+                                    }
+                                    
+                                    <Link to={`/author/${post && post.author.id}`}>
+                                        {post && post.author_profile.author.first_name} {post && post.author_profile.author.last_name}
+                                    </Link> - {post && formatDate(post.updated_at)}
+                                </div>
                             </div>
-                            <p dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(getPostReadMore(post.content)) }} />
-                            <a href={`/posts/${post.author.username}/${post.id}/${post.slug}`}>Read More</a>
                         </li>
                     ))}
                 </ul>
                 {(totalPages > 1) && 
                     Array.from({ length: totalPages }, (_, index) => (
-                        <button key={index + 1} onClick={() => loadMorePosts(index + 1)}>
+                        <button className="btn btn-dark pagination-btn" key={index + 1} onClick={() => loadMorePosts(index + 1)}>
                             {index + 1}
                         </button>
                     ))
                 }
             </div>            
-        </>
+        </div>
     )
 }
 

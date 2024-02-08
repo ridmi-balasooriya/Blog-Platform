@@ -16,6 +16,7 @@ const Header = () => {
                     <div className="collapse navbar-collapse pt-2" id="navbarToggler">
                         <ul className='navbar-nav ms-auto'>
                             <li className='nav-item'><Link to='/' className='nav-link'>Home</Link></li>
+                            <li className='nav-item'><Link to='/articles/' className='nav-link'>Articles</Link></li>
                             {token && 
                                 <li className='nav-item dropdown'>
                                     <a className='nav-link dropdown-toggle' id='navbarDropdown' role='button' data-bs-toggle='dropdown' aria-expanded='false' href='#dropdown'>Account</a>

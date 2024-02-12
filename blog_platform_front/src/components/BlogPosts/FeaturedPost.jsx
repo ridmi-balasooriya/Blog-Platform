@@ -32,7 +32,11 @@ const FeaturedPost = () => {
                     <div className="featured-post-content container d-flex flex-row justify-content-evenly align-items-center" style={{ height: '100%' }}>
                         <div className="d-flex flex-column text-center">         
                             <h3 className="pb-0 text-md-start">Featured Article</h3>
-                            <span className="pb-3 text-md-start">{featuredPost.category.name}</span>                   
+                            <span className="pb-3 text-md-start">
+                                <a className="category_link" href={`/article_category/${featuredPost.category.id}/${featuredPost.category.name}`}>
+                                    {featuredPost.category.name}
+                                </a>
+                            </span>                   
                             <div className="featured-title text-center">
                                 <h2 className="py-0">{featuredPost.title}</h2>
                                 <span className="d-block text-md-end pb-2">

@@ -50,6 +50,7 @@ class PostListView(generics.ListCreateAPIView):
         search = self.request.query_params.get('search', '')
         search_type = self.request.query_params.get('type', '')
         author_id = self.request.query_params.get('author', None)
+        category_id = self.request.query_params.get('category_id', None)
 
         type_field_mapping = {
             'title': 'title__icontains',
@@ -64,6 +65,10 @@ class PostListView(generics.ListCreateAPIView):
         elif author_id is not None:
             queryset = Post.objects.all().filter(
                 author=author_id, is_public=True).order_by('-created_at')
+
+        elif category_id is not None:
+            queryset = Post.objects.all().filter(
+                category=category_id, is_public=True).order_by('-created_at')
 
         else:
             queryset = Post.objects.all().filter(is_public=True).order_by('-created_at')

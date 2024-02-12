@@ -97,7 +97,9 @@ const BlogPostFull = () =>{
                     </div>
                 }                 
                 <div className="text-center pt-5">
-                    <span className="fs-4">{post && post.category.name}</span>
+                    <a className="category_link fs-4" href={`/article_category/${post && post.category.id}/${post && post.category.name}`}>
+                        {post && post.category.name}
+                    </a>
                 </div>
                 <h1 className="text-center">{post && post.title}  <br/> <i className="bi bi-dash-lg"></i></h1>
                 <div className="text-center mb-2">

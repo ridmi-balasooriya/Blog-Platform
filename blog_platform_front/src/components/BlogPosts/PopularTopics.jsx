@@ -39,7 +39,11 @@ const PopularTopics = () => {
                         <div className={`carousel-item ${index === 0 ? 'active' : ''}`} key={category.id}>
                             <img src={`${API_BASE_URL}${category.recent_post.image}`} className="d-block w-100 dark-image" alt={category.recent_post.title} height='350px' />
                             <div className="carousel-caption d-md-block">                                
-                                <h5 className="mb-4">{category.name}</h5>
+                                <h6 className="mb-2">
+                                    <a className="category_link" href={`/article_category/${category.id}/${category.name}`}>
+                                        {category.name}
+                                    </a>
+                                </h6>
                                 <h3 className="mb-4">{category.recent_post.title}</h3>
                                 <a  href={`/posts/${category.recent_post.author.username}/${category.recent_post.id}/${category.recent_post.slug}`} className="btn btn-light stretched-link mb-5">Read Article</a>
                             </div>

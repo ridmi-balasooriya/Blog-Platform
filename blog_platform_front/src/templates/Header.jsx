@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { token } from '../components/Auth/Token';
 import LogOut from '../components/Auth/LogOut';
 const Header = () => {
@@ -15,20 +15,20 @@ const Header = () => {
                     </button>
                     <div className="collapse navbar-collapse pt-2" id="navbarToggler">
                         <ul className='navbar-nav ms-auto'>
-                            <li className='nav-item'><Link to='/' className='nav-link'>Home</Link></li>
-                            <li className='nav-item'><Link to='/articles/' className='nav-link'>Articles</Link></li>
+                            <li className='nav-item'><NavLink to='/' className='nav-link'>Home</NavLink></li>
+                            <li className='nav-item'><NavLink to='/articles/' className='nav-link'>Articles</NavLink></li>
                             {token && 
                                 <li className='nav-item dropdown'>
                                     <a className='nav-link dropdown-toggle' id='navbarDropdown' role='button' data-bs-toggle='dropdown' aria-expanded='false' href='#dropdown'>Account</a>
                                     <ul className='dropdown-menu' aria-labelledby='navbarDropdown'>
-                                        <li><Link to='/dashboard' className='dropdown-item'>Dashboard</Link></li>
-                                        <li><Link to='/my_profile/' className='dropdown-item'>My Profile</Link></li>                                                                         
+                                        <li><NavLink to='/dashboard' className='dropdown-item'>Dashboard</NavLink></li>
+                                        <li><NavLink to='/my_profile/' className='dropdown-item'>My Profile</NavLink></li>                                                                         
                                     </ul>                                                         
                                 </li> 
                             }
                             {token && <li className='nav-item'><LogOut className='nav-link' /></li>}
-                            {!token && <li className='nav-item'><Link to='/login' className='nav-link'>Log In</Link></li>}
-                            {!token && <li className='nav-item'><Link to='/register' className='nav-link'>Register</Link></li>}
+                            {!token && <li className='nav-item'><NavLink to='/login' className='nav-link'>Log In</NavLink></li>}
+                            {!token && <li className='nav-item'><NavLink to='/register' className='nav-link'>Register</NavLink></li>}
                         </ul>
                     </div>
                 </div>

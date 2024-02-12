@@ -21,6 +21,21 @@ body{
 }
 footer{
     color: $font_secondary;
+    .footer-nav{
+        list-style: none;
+        padding-left: 0px;
+        display: inline-block;
+        li{
+            display: inline-block;
+            padding: 0.5em;
+            margin: 0.5em;
+            a{
+                &:hover{
+                    text-decoration: underline;
+                }
+            }
+        }
+    }
 }
 a{
     color: $font_primary;
@@ -80,9 +95,27 @@ article {
     padding: 0.1em 1em;
 }
 .pagination-btn{
-    border:thin solid $site_bg-primary;
+    border:2px solid $site_bg-primary;
+    color: $font_primary;
+    background-color: transparent;
     border-radius: 0px;
     box-shadow: #ccc 1px 1px 1px 1px;
+
+    &.active{
+        color: $font_secondary;
+        background-color: $site_bg-secondary;
+        border:2px solid $site_bg-secondary;
+    }
+
+    &:hover{
+        border:2px solid $site_bg-secondary;
+    }
+}
+.category_link{
+    text-decoration: none;
+    &:hover{
+        text-decoration: underline;
+    }
 }
 /* Navingation Stlyes */
 .navbar{
@@ -125,7 +158,9 @@ article {
     background-size: cover;
     background-position: center;
     height: 22rem;
-    
+    .category_link{
+        color: $font_secondary;
+    }
     .featured-post-overlay{
         position: absolute;
         top: 0;
@@ -202,6 +237,9 @@ article {
 .popular-topic{
     .dark-image{
         filter: brightness(15%);
+    }
+    .category_link{
+        color: $font_secondary;
     }
 }
 .top-author{
@@ -344,6 +382,9 @@ article {
                 border-radius: 5px;
                 box-shadow: #eeeeee 1px 1px 1px;
                 width: 100%;
+                &:hover{
+                    box-shadow: #cccccc 1px 1px 2px 2px;
+                }
             }
             h3{
                 a{
@@ -381,5 +422,23 @@ article {
                 }
             }
         }
+    }
+}
+
+.author-profile{
+    .author-profile-initial{
+        width: 100px;
+        height: 100px;
+        font-weight: bolder;
+        font-size: 3.5em;
+        padding-top: 4px;
+        background-color: #030505;
+        color: #ffffff;
+        border-radius: 100px;
+        text-align: center;
+        display: inline-block;
+        justify-content: center;
+        align-items: center;
+        margin: auto;
     }
 }

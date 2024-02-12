@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate} from 'react-router-do
 import HomePage from './pages/HomePage';
 import ArticlePage from './pages/ArticlesPage';
 import ArticlesWithCategory from './pages/ArticlesWithCategoryPage';
+import AboutUsPage from './pages/AboutUsPage';
 import BlogPostFull from './components/BlogPosts/BlogPostFull';
 import AuthorProfilePage from './pages/AuthorProfilePage';
 import ProfilePage from './pages/ProfilePage';
@@ -23,6 +24,7 @@ function App() {
       <Routes>
         <Route path='/' element={<HomePage />} />
         <Route path='/articles/' element={<ArticlePage />} />
+        <Route path='/about_us/' element={<AboutUsPage />} />
         <Route path='/article_category/:category_id/:category_name' element={<ArticlesWithCategory />} />
         <Route path="/dashboard/" element={<PrivateRoutes authenticated={isAuthorized} children={<DashBoard />} />} />   
         <Route path='posts/:usernanme/:id/:slug' element={<BlogPostFull />} />

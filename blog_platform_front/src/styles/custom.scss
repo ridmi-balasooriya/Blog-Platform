@@ -50,6 +50,11 @@ article {
     p{
         padding-bottom: 1em;
     }
+    ul{
+        li{
+            padding: 0.5em;
+        }
+    }
     .author-div{
         a{
             text-decoration: none;
@@ -93,6 +98,9 @@ article {
 }
 .btn-thin{
     padding: 0.1em 1em;
+}
+.image-dark{
+    filter: brightness(25%);
 }
 .pagination-btn{
     border:2px solid $site_bg-primary;

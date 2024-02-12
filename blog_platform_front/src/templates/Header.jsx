@@ -17,6 +17,7 @@ const Header = () => {
                         <ul className='navbar-nav ms-auto'>
                             <li className='nav-item'><NavLink to='/' className='nav-link'>Home</NavLink></li>
                             <li className='nav-item'><NavLink to='/articles/' className='nav-link'>Articles</NavLink></li>
+                            <li className='nav-item'><NavLink to='/about_us/' className='nav-link'>About Us</NavLink></li>
                             {token && 
                                 <li className='nav-item dropdown'>
                                     <a className='nav-link dropdown-toggle' id='navbarDropdown' role='button' data-bs-toggle='dropdown' aria-expanded='false' href='#dropdown'>Account</a>

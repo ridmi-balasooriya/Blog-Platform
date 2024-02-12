@@ -64,7 +64,10 @@ const BlogPostList = () => {
 
     return(
         <div className="article-list container">
-             <h1 className="text-center mt-5 mb-2">Articles <br/> <i className="bi bi-dash-lg"></i></h1>
+            <div className="post_image image-dark">
+                <img src="/article-list-top-banner.jpg" alt="Article List Page" className="image-fluid" />
+            </div>
+            <h1 className="text-center mt-5 mb-2">Articles <br/> <i className="bi bi-dash-lg"></i></h1>
             <div className="search-section d-flex flex-row pb-5">
                 <div className="search-type">
                     <select name="search_type" className="form-select" value={searchType} onChange={(e) => setSearchType(e.target.value)} aria-label="search_type">

@@ -3,7 +3,7 @@ import Layout from "../templates/Layout";
 const NotFound = () => {
     return(
         <Layout>
-            <h1>Page Not Found</h1>
+            <h1>Page Not Found <br/> <i className="bi bi-dash-lg"></i></h1>
             <p>The requested page could not be found.</p>
         </Layout>
     );

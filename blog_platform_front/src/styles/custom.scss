@@ -450,3 +450,41 @@ article {
         margin: auto;
     }
 }
+
+.password-rest-alert{
+    max-width: 650px;
+    width: 95%;
+    display: block;
+}
+.signin-div{
+    .alert{
+        max-width: 300px;
+        width: 100%;
+    }
+    .register-error{
+        max-width: 650px;
+        width: 100%;
+    }
+    form{
+        input{
+            display: block;
+            margin: 0.5em auto;
+            max-width: 300px;
+            width: 100%;
+            padding: 0.5em;
+            border-radius: 4px;
+            border: thin solid #ccc;
+            box-shadow: #ccc 1px 1px 1px 0px;
+            font-size: 1.1em;
+        }
+        button{
+            max-width: 300px;
+            width: 100%;
+        }
+        .row{
+            max-width: 650px;
+            width: 100%;
+            margin: auto;
+        }
+    }
+}

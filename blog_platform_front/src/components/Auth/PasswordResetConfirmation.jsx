@@ -48,28 +48,29 @@ const PasswordResetConfirmation = () => {
   return (
     <Layout>      
       {success ? (
-        <div>{success} Please navigate to the <Link to='/login'>Login Page</Link> to access your blog account.</div>
+        <div className="alert alert-success password-rest-alert fs-5 text-center my-5 mx-auto">{success} Please navigate to the <Link to='/login'>Login Page</Link> to access your blog account.</div>
       ) : (
-        <>
-        {error && <div>{error}</div>}
-        <form onSubmit={handlePasswordResetConfirmation}>
-          <input
-            type="password"
-            name='password'
-            placeholder="New Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <input
-            type="password"
-            name='confirmPassword'
-            placeholder="Confirm New Password"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-          />
-          <button type="submit">Reset Password</button>
-        </form>
-        </>
+        <div className="container text-center signin-div">
+          <h1 className="my-5">Enter New Password <br/> <i className="bi bi-dash-lg"></i></h1>
+        {error && <div className="alert alert-danger d-inline-block register-error">{error}</div>}
+          <form onSubmit={handlePasswordResetConfirmation}>
+            <input
+              type="password"
+              name='password'
+              placeholder="New Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <input
+              type="password"
+              name='confirmPassword'
+              placeholder="Confirm New Password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+            />
+            <button type="submit" className="btn btn-dark mt-2 mb-4">Reset Password</button>
+          </form>
+        </div>
       )}
     </Layout>
   );

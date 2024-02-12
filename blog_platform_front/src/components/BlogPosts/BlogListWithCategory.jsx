@@ -55,6 +55,9 @@ const BlogListWithCategory = () => {
 
     return(
         <div className="article-list container">
+            <div className="post_image image-dark">
+                <img src="/article-list-top-banner.jpg" alt="Article List Page" className="image-fluid" />
+            </div>
             <h1 className="text-center mt-5 mb-2">{category_name} <br/> <i className="bi bi-dash-lg"></i></h1>
             <div>
                 <ul className="row">

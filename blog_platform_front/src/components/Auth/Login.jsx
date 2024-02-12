@@ -29,15 +29,17 @@ const LogIn = () => {
 
     return(
         <Layout>
-            <h1>Login</h1>
-            {error && <div>{error}</div>}
-            <form onSubmit={handleLogin}>
-                <input type="text" placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} /> 
-                <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
-                <button type="submit">Login</button>
-            </form>
-            <div><Link to='/password_reset'>Forgot Your Password?</Link></div>
-            <div>New to Our Platform? <Link to='/register'>Please Register</Link></div>
+            <div className="container text-center signin-div">
+                <h1 className="my-5">Login <br/> <i className="bi bi-dash-lg"></i></h1>
+                {error && <div className="alert alert-danger d-inline-block">{error}</div>}
+                <form onSubmit={handleLogin}>
+                    <input type="text" placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} /> 
+                    <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
+                    <button type="submit" className="btn btn-dark mt-2 mb-4">Login</button>
+                </form>
+                <div><Link to='/password_reset'>Forgot Your Password?</Link> | New to Our Platform? <Link to='/register'>Please Register</Link></div>
+            </div>
+            
         </Layout>
     )
 

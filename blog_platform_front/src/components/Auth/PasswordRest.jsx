@@ -34,7 +34,7 @@ const PasswordReset = () => {
             {error && <div className="alert alert-danger d-inline-block password-rest-alert">{error}</div>}
             {success ? (<div className="alert alert-success password-rest-alert fs-5 text-center my-5 mx-auto">Password reset email sent. Check your inbox.</div>)
                      : (
-                        <div className="container text-center signin-div">
+                        <div className="container text-center signin-div pb-5">
                             <h1 className="my-5">Reset Password <br/> <i className="bi bi-dash-lg"></i></h1>
                             <form onSubmit={handleSubmit}>
                                 <input type="email" name="email" placeholder="Enter Your Email Address" value={email} onChange={(e) => setEmail(e.target.value)} />

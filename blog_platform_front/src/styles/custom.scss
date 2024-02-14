@@ -10,14 +10,23 @@ $font_sub: #575757;
 $nav_font: rgba(255, 255, 255, 0.55);
 $nav_font_hover:rgba(255, 255, 255, 0.75);
 
+$primary_font: 'Oswald', sans-serif;
+
 @import '~bootstrap/scss/bootstrap';
 @import '~bootstrap-icons/font/bootstrap-icons.css';
 
 body{
-    font-family: 'Oswald', sans-serif;
+    font-family: $primary_font;
     background-color: $site_bg-primary;
     color: $font_primary;
 
+}
+.full-height-container {
+    height: 100vh; 
+    width: 100%;
+    display: flex; 
+    justify-content: center;
+    align-items: center;
 }
 footer{
     color: $font_secondary;
@@ -487,4 +496,208 @@ article {
             margin: auto;
         }
     }
+}
+.dashboard-section{
+    .dashbord-menu-col{
+        background-color: $site_bg-secondary;
+        color: $font_secondary;
+        padding: 0px;
+        .dashboard_menu{
+            position: fixed;
+            width: 16.6666666%;
+
+            .dashboard_menu_button{
+                display: none;
+            }
+            ul{
+                padding-left: 0px;
+                background-color: $site_bg-secondary;
+                color: $font_secondary;
+                li{
+                    background-color: $site_bg-secondary;
+                    color: $font_secondary;
+                    border: none;
+                    padding: 10px 0px;
+                    button{
+                        display: block;
+                        width: 100%;
+                        text-decoration: none;
+                        text-transform: uppercase;
+                        background-color: $site_bg-secondary;
+                        color: $font_secondary;
+                        border-radius: 0;
+                        padding: 10px 0px; 
+                        line-height: 1.1em;
+                        position: relative;
+
+                        .dashboard-menu-pointer{
+                            width: 50px;
+                            height: 50px;
+                            background: $site_bg-secondary;
+                            position: absolute;
+                            right: -20px;
+                            top: 0px;
+                            rotate: 45deg;
+                            box-shadow: #ccc 1px 1px 1px 1px;
+                            display: none;
+                        }
+
+                        &:hover, &.active{
+                            color: $nav_font_hover;
+                            .dashboard-menu-pointer{
+                                display: block;
+                                z-index: -1;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        @media (max-width: 992px) {            
+            .dashboard_menu{
+                width: 25%
+            }
+        }
+        @media (max-width:767px) {  
+            .dashboard_menu{
+                position: relative;
+                max-width: 200px;
+                width: 100%;
+                background-color: transparent;
+                margin: auto;
+
+                .dashboard_menu_button{
+                    display: block;
+                    width: 100%;
+                    margin-top: 1.5em;
+                    border-radius: 0px;
+                    background-color: $site_bg-secondary;
+                    font-size: 1em !important;
+                    padding: 10px 0px;
+                }
+                .dashboard-menu-list{
+                    margin-top: -3px !important;
+                    width: 100%;
+                    border-radius: 0;
+                    padding: 0px;
+                    li{
+                        padding: 0px;
+                        button{
+                            font-size: 1em !important;
+                            padding: 15px 0px;
+                            &:hover, &.active{
+                                color: $font_primary;
+                                background-color: $nav_font_hover;
+                                .dashboard-menu-pointer{
+                                    display: none;
+                                }
+                            }
+                            i{
+                                display: none;
+                            }
+                        }
+                    }
+                }
+            }   
+        }
+    }
+    @media (max-width:767px) {  
+        .dashbord-menu-col{
+            background-color: transparent;
+        }
+    } 
+}
+
+.article-editor{    
+    .article-section{
+        border: 2px solid #f6f6f6;
+        padding: 20px;
+        margin-bottom: 2rem;
+        border-radius: 3px;
+        box-shadow: #f6f6f6 1px 1px 3px 1px;
+
+        input[type="text"]{
+            border: 0px;
+            background: #f6f6f6;
+            box-shadow: #f6f6f6 1px 1px 1px 1px;
+        }
+        select{
+            box-shadow: #f6f6f6 1px 1px 1px 1px;
+        }
+        textarea{
+            border: 0px;
+            background: #f6f6f6;
+            box-shadow: #f6f6f6 1px 1px 1px 1px;
+        }
+        .content-div{
+            .quill{
+                height: 600px;
+                border-radius: 0.5rem;
+                background: #f6f6f6;
+                box-shadow: #f6f6f6 1px 1px 1px 1px;
+                border: 0px;
+                .ql-toolbar{
+                    border:0px;
+                    border-bottom:thin solid #dee2e6;
+                    font-family: $primary_font;
+                    font-size: 1.5rem;
+                }
+                .ql-container{
+                    height: 90%;
+                    border: 0px;
+                    color: #212529;
+                    font-family: $primary_font;
+                    font-size: 1.1rem;
+                    .ql-editor{
+                        h1, h2, h3, h4, h5{
+                            margin-top: 25px;
+                            margin-bottom: 15px;
+                        }
+                        p{
+                            margin-bottom: 20px;
+                        }
+                    }
+                }
+            }
+            
+        }
+
+        .article-image-div{
+            img{
+                border: thin solid #ccc;
+                padding: 2px;
+                margin-bottom: 10px;
+            }
+        }
+
+        &.meta-input-section{
+            textarea{
+                height: 150px;
+            }
+        }
+    }
+
+    .article-section-right{
+        .article-section{
+            .tag-list-div{
+                height: 624px;
+                overflow-y: scroll;
+            }
+            
+            .form-label{
+                padding-bottom: 2px;
+                line-height: 1.2rem;
+            }
+            .input-group{
+                button{
+                    border: 0px;
+                    background: $site_bg-secondary;
+                    color: $font_secondary;
+                    border-radius: 0rem 0.5rem 0.5rem 0rem;
+                    padding: 5px 10px
+                }
+            }
+        }
+    }
+    
 }

@@ -50,7 +50,7 @@ const PasswordResetConfirmation = () => {
       {success ? (
         <div className="alert alert-success password-rest-alert fs-5 text-center my-5 mx-auto">{success} Please navigate to the <Link to='/login'>Login Page</Link> to access your blog account.</div>
       ) : (
-        <div className="container text-center signin-div">
+        <div className="container text-center signin-div pb-5">
           <h1 className="my-5">Enter New Password <br/> <i className="bi bi-dash-lg"></i></h1>
         {error && <div className="alert alert-danger d-inline-block register-error">{error}</div>}
           <form onSubmit={handlePasswordResetConfirmation}>

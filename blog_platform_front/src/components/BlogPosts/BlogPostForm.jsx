@@ -233,70 +233,84 @@ const BlogPostForm = ({ postId }) => {
 
     
     return(
-        <div>
-            <h1>{isEditing ? 'Edit Blog Post' : 'Create New Blog Post'}</h1>
-            {error && <div>{error}</div>}
-            {success && <div>{success}</div>}
-            <div><em>Author: {authorDetails.username}</em></div>            
-            {viewPostData.slug && <a href={`/posts/${viewPostData.author}/${viewPostData.id}/${viewPostData.slug}`} target="_blank" rel="noopener noreferrer">View Post</a>}
-            <div>
-                <AddCategory onAddCategory={handleCategoryAdded} />
-            </div>
-            <div>
-                <AddTag onAddTag={handleTagAdded} />
-            </div>
-            <div>
-                <select name='is_public' onChange={hanldeChangePublic} value={formData.is_public}>
-                    <option value={false} >Draft</option>
-                    <option value={true}>Public</option>
-                </select>
-            </div>
-            <div>
-                <label htmlFor='title'>Title</label>
-                <input type='text' name='title' value={formData.title} onChange={handleChangeFormData} />
-            </div>                
-            <div>
-                <label htmlFor='category'>Category</label>
-                <select name='category' onChange={handleChangeCategory} value={formData.category.id}>
-                    <option value={null}>Please Select</option>
-                    {categories.map(category => (
-                        <option key={category.id} value={category.id}>{category.name}</option>
-                    ))}
-                </select>
-            </div>
-            <div>
-                    <label htmlFor='tags'>Tags</label>
-                    {tags.map(tag => (
-                        <label key={tag.id}>
-                        <input type='checkbox' name='tags' id={`tag${tag.id}`} value={tag.id} onChange={() => handleTagChange(tag.id)} checked={tagChecked.includes(tag.id)}/>                                                                                   
-                            {tag.name}
-                        </label>                           
-                    ))}                    
-            </div>
-            <div>
-                <label htmlFor='image'>Blog Image </label>
-                {selectedImage ? (
-                    <img src={selectedImage} alt="Selected thumbnail" style={{ width: '50px', height: '50px', objectFit: 'cover' }} />
-                    ) 
-                    : ( 'Choose Image' )
-                }
-                <input type='file' name='image' accept='image/*' onChange={handleImageChange} />
-                
-            </div>
-            <div>
-                <label htmlFor='content'>Content</label>
-                <ReactQuill value={formData.content} onChange={handleContentChange} placeholder='Write your content here...' />
-            </div>
-            <hr />
-            <div>
-                <label htmlFor='slug'>Slug</label>
-                <input type='text' name='slug' value={formData.slug} onChange={handleChangeFormData} />
-            </div>
-            <div>
-                <label htmlFor='meta_description'>Meta Description</label>
-                <textarea name='meta_description' value={formData.meta_description} onChange={handleChangeFormData}></textarea>
-            </div>
-            <button onClick={handleSubmission}>{isEditing ? 'Update' : 'Create'}</button>
+        <div className='article-editor'>
+            <h1 className='text-center mt-2 my-3'>{isEditing ? 'Edit Blog Post' : 'Create New Blog Post'}  <br/> <i className="bi bi-dash-lg"></i></h1>           
+            <div className='row'>
+                <div className='col-lg-8 col-xl-9'>
+                    <div className='article-section article-input-section'>
+                        <div className='mb-3'>
+                            <label for='title' className="form-label col-form-label-lg">Title: </label>
+                            <input type='text' className="form-control form-control-lg" name='title' value={formData.title} onChange={handleChangeFormData} />
+                        </div> 
+                        <div className='mb-3 content-div'>
+                            <label for='content'  className="form-label col-form-label-lg">Article:</label>
+                            <ReactQuill value={formData.content} className="form-control form-control-lg p-0" onChange={handleContentChange} placeholder='Write your content here...' />
+                        </div>
+                        <div className='mb-3'>
+                            <label for='image'  className="form-label col-form-label-lg">Article Image:  </label>
+                            <div className='article-image-div'>
+                                {selectedImage &&
+                                    <img src={selectedImage} alt="Selected thumbnail" style={{ width: '100px', height: '100px', objectFit: 'cover' }} />
+                                }
+                                <input type='file' className="form-control" name='image' accept='image/*' onChange={handleImageChange} />
+                            </div>
+                            <div id="imageHelp" className="form-text">Article Image size should be 1260px x 400px</div>
+                        </div>
+                    </div>
+
+                    <div className='article-section meta-input-section'>
+                        <div className='mb-3'>
+                            <label for='slug' className="form-label col-form-label-lg">Slug: </label>
+                            <input type='text' name='slug' className="form-control" value={formData.slug} onChange={handleChangeFormData} />
+                        </div>
+                        <div>
+                            <label for='meta_description' className="form-label col-form-label-lg">Meta Description: </label>
+                            <textarea name='meta_description' className="form-control" value={formData.meta_description} onChange={handleChangeFormData}></textarea>
+                        </div>
+                    </div>   
+                </div>
+                <div className='col-lg-4 col-xl-3 article-section-right'>
+                    <div className='article-section'>
+                        <label className="form-label col-form-label-lg">Author <br/> <i className="bi bi-dash-lg"></i></label> 
+                        <div className='fs-5 mb-4'>{authorDetails.first_name} {authorDetails.last_name}</div>
+                        {viewPostData.slug && <a href={`/posts/${viewPostData.author}/${viewPostData.id}/${viewPostData.slug}`} target="_blank"className="btn btn-dark d-block" rel="noopener noreferrer">View Article</a>}
+                    </div>  
+                    <div className='article-section'>
+                        <label for='is_public' className="form-label col-form-label-lg">Article Status <br/> <i className="bi bi-dash-lg"></i></label>
+                        <select name='is_public' className='form-select' onChange={hanldeChangePublic} value={formData.is_public}>
+                            <option value={false}>Draft</option>
+                            <option value={true}>Public</option>
+                        </select>
+                    </div>
+                    <div className='article-section'>
+                        <label for='category' className="form-label col-form-label-lg">Category<br/> <i className="bi bi-dash-lg"></i></label>
+                        <AddCategory onAddCategory={handleCategoryAdded} />                        
+                        <select name='category' className='form-select' onChange={handleChangeCategory} value={formData.category.id}>
+                            <option value={null}>Please Select</option>
+                            {categories.map(category => (
+                                <option key={category.id} value={category.id}>{category.name}</option>
+                            ))}
+                        </select>
+                    </div>
+                    <div className='article-section'>
+                        <label htmlFor='tags' className="form-label col-form-label-lg">Tags<br/> <i className="bi bi-dash-lg"></i></label>
+                        <AddTag onAddTag={handleTagAdded} />  
+                        <div className='tag-list-div py-3'>
+                            {tags.map(tag => (
+                                <div key={tag.id} className='form-check py-1'>
+                                    <input type='checkbox' className="form-check-input" name='tags' id={`tag${tag.id}`} value={tag.id} onChange={() => handleTagChange(tag.id)} checked={tagChecked.includes(tag.id)}/>                                                                                   
+                                    <label class="form-check-label" for={`tag${tag.id}`}>{tag.name}</label>
+                                </div>                           
+                            ))}  
+                        </div> 
+                    </div>
+                </div> 
+                <div className="text-end">
+                    {error && <div className="alert alert-danger text-center"><i class="bi bi-x-circle me-1"></i>{error}</div>}
+                    {success && <div className="alert alert-success text-center"><i className="bi bi-check-circle me-1"></i> {success}</div>} 
+                    <button className="btn btn-dark" onClick={handleSubmission}>{isEditing ? 'Update' : 'Create'} Article</button>
+                </div>   
+            </div>  
         </div>
     )
 }

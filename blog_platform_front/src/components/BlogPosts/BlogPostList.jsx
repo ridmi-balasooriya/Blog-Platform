@@ -63,7 +63,7 @@ const BlogPostList = () => {
     }
 
     return(
-        <div className="article-list container">
+        <div className="article-list container pb-5">
             <div className="post_image image-dark">
                 <img src="/article-list-top-banner.jpg" alt="Article List Page" className="image-fluid" />
             </div>

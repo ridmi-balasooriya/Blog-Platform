@@ -109,7 +109,7 @@ const CommentList = ({postId, onCommentAdded}) => {
     return(
         <>
         {(comments.length > 0) &&
-            <div className="comment-section">
+            <div className="comment-section pb-5">
                 <h3>Comments:</h3>
                 <ul>
                     {error && <div className="alert alert-danger">{error}</div>}

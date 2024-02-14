@@ -112,8 +112,10 @@ const AddCategory = ({onAddCategory}) => {
             {success && <div>{success}</div>}
             {error && <div>{error}</div>}
             <form onSubmit={handleSubmission}>
-                <input type="text" name="name" value={formData.name} onChange={handleNewCategory} />
-                <button type="submit">Add New Category</button>
+                <div className="input-group mb-3">
+                    <input type="text" className="form-control" name="name" value={formData.name} onChange={handleNewCategory} />
+                    <button type="submit"><i class="bi bi-plus"></i></button>
+                </div>                
             </form>
             { formData.name &&
                 <ul>

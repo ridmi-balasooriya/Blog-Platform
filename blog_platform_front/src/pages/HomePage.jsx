@@ -21,7 +21,7 @@ const HomePage = () => {
 
             <RecentBlogPosts />
 
-            <div className='container-fluid'>
+            <div className='container-fluid pb-5'>
                 <div className='container'>
                     <div className='row'>
                     <div className='col-md-6'><PopularTopics /></div>

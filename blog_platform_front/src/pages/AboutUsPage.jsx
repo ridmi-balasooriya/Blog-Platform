@@ -4,7 +4,7 @@ import Layout from "../templates/Layout";
 const AboutUsPage = () => {
     return(
         <Layout>
-            <article className="container fs-5">
+            <article className="container fs-5 pb-5">
                 <div className="post_image image-dark">
                     <img src="/about-us-banner.jpg" alt="About Us Page" className="image-fluid" />
                 </div>

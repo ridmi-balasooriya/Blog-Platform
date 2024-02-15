@@ -140,32 +140,38 @@ const TagList = () => {
         }
     }
     return(
-        <div>
-            <h1>Tags</h1>
-            {success && <div>{success}</div>}
-            {error && <div>{error}</div>}
+        <div className="category-list container pb-5">
+            <h1 className="text-center mt-5 mb-2">Tags <br/> <i className="bi bi-dash-lg"></i></h1>            
             <AddTag onAddTag={handleTagAdd} />
-            <ul>
+            {success && <div className="alert alert-success text-center"><i className="bi bi-check-circle me-1"></i> {success}</div>}
+            {error && <div className="alert alert-danger text-center"><i class="bi bi-x-circle me-1"></i> {error}</div>}
+            <div className="row">
                 {tagList.map(tag => (
                     (tag.name !== 'Untaged') &&
-                    <li key={tag.id}>
+                    <div key={tag.id} className="col-lg-6 col-xl-4 category-div">
                         {editTagId && (editTagId === tag.id)
                         ? 
-                            <div>
+                            <div className="m-2 fs-5 d-flex flex-row p-3">
+                                <div className="flex-grow-1">
                                 <input type="text" value={eidtTagName} onChange={(e) => setEditTagName(e.target.value)} />
-                                <button onClick={() => handleSaveEditClick(tag.id, tag.name)}>Save</button>
-                                <button onClick={handleCancelEditClick}>Cancel</button>
+                                </div>
+                                <div className="text-end">
+                                    <button className="btn btn-dark mx-1" onClick={() => handleSaveEditClick(tag.id, tag.name)}><i class="bi bi-floppy"></i></button>
+                                    <button className="btn btn-dark mx-1" onClick={handleCancelEditClick}><i class="bi bi-x-circle"></i></button>
+                                </div>
                             </div>
                         :     
-                            <div>                      
-                                <span>{tag.name}</span>
-                                <span>{tag && token && (userData.id === tag.author) && <button onClick={() => handleEditClick(tag && tag.id, tag && tag.name)}>Edit</button>}</span>
-                                <span>{tag && token && (userData.id === tag.author) && <button onClick={() => handleDeleteClick(tag && tag.id, tag && tag.name)}>Delete</button>}</span>
+                            <div className="my-2 fs-5 d-flex flex-row p-3">  
+                                <div className="flex-grow-1">{tag.name}</div>
+                                <div className="text-end">
+                                    <span>{tag && token && (userData.id === tag.author) && <button className="btn btn-dark mx-1" onClick={() => handleEditClick(tag && tag.id, tag && tag.name)}><i className="bi bi-pencil-square"></i></button>}</span>
+                                    <span>{tag && token && (userData.id === tag.author) && <button className="btn btn-dark mx-1" onClick={() => handleDeleteClick(tag && tag.id, tag && tag.name)}><i className="bi bi-trash3"></i></button>}</span>
+                                </div>
                             </div>
                         }                        
-                    </li>
+                    </div>
                 ))}
-            </ul>
+            </div>
         </div>
     )
 }

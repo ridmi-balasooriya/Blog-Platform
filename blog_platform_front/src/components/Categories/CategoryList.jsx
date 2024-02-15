@@ -140,32 +140,39 @@ const CategoryList = () => {
         }
     }
     return(
-        <div>
-            <h1>Categories</h1>
+        <div className="category-list container pb-5">
+            <h1 className="text-center mt-5 mb-2">Categories <br/> <i className="bi bi-dash-lg"></i></h1>
             <AddCategory onAddCategory={handleCategoryAdded} />
-            {success && <div>{success}</div>}
-            {error && <div>{error}</div>}
-            <ul>
+            {success && <div className="alert alert-success text-center"><i className="bi bi-check-circle me-1"></i> {success}</div>}
+            {error && <div className="alert alert-danger text-center"><i class="bi bi-x-circle me-1"></i> {error}</div>}
+            <div className="row">
                 {categoryList.map(category => (
                     (category.name !== 'Uncategory') &&
-                    <li key={category.id}>
+                    <div key={category.id} className="col-lg-6 col-xl-4 category-div">
                         {editCategoryId && (editCategoryId === category.id)
                         ? 
-                            <div>
-                                <input type="text" value={eidtCategoryName} onChange={(e) => setEditCategoryName(e.target.value)} />
-                                <button onClick={() => handleSaveEditClick(category.id, category.name)}>Save</button>
-                                <button onClick={handleCancelEditClick}>Cancel</button>
+                            <div className="m-2 fs-5 d-flex flex-row p-3">
+                                <div className="flex-grow-1">
+                                    <input className="py-2 form-control" type="text" value={eidtCategoryName} onChange={(e) => setEditCategoryName(e.target.value)} />
+                                </div>
+                                <div className="text-end">
+                                    <button className="btn btn-dark mx-1" onClick={() => handleSaveEditClick(category.id, category.name)}><i class="bi bi-floppy"></i></button>
+                                    <button className="btn btn-dark mx-1" onClick={handleCancelEditClick}><i class="bi bi-x-circle"></i></button>
+                                </div>
                             </div>
                         :     
-                            <div>                      
-                                <span>{category.name}</span>
-                                <span>{category && token && (userData.id === category.author) && <button onClick={() => handleEditClick(category && category.id, category && category.name)}>Edit</button>}</span>
-                                <span>{category && token && (userData.id === category.author) && <button onClick={() => handleDeleteClick(category && category.id, category && category.name)}>Delete</button>}</span>
+                            <div className="my-2 fs-5 d-flex flex-row p-3"> 
+                                <div className="flex-grow-1">{category.name}</div>
+                                <div className="text-end">
+                                    <span>{category && token && (userData.id === category.author) && <button className="btn btn-dark mx-1" onClick={() => handleEditClick(category && category.id, category && category.name)}><i className="bi bi-pencil-square"></i></button>}</span>
+                                    <span>{category && token && (userData.id === category.author) && <button className="btn btn-dark mx-1" onClick={() => handleDeleteClick(category && category.id, category && category.name)}><i className="bi bi-trash3"></i></button>}</span>
+                                </div>
+                                
                             </div>
                         }                        
-                    </li>
+                    </div>
                 ))}
-            </ul>
+            </div>
         </div>
     )
 }

@@ -118,8 +118,8 @@ const BlogPostFull = () =>{
                 </div>
 
                 <div className="my-4 text-end">
-                    {post && token && (userData.username === post.author.username) && <button className="btn btn-dark mx-1" onClick={() => handleEditClick(post && post.id)}><i class="bi bi-pencil-square"></i></button> }
-                    {post && token && (userData.username === post.author.username) && <button className="btn btn-dark mx-1" onClick={() => handleDeleteClick(post && post.id)}><i class="bi bi-trash3"></i></button> }
+                    {post && token && (userData.username === post.author.username) && <button className="btn btn-dark mx-1" onClick={() => handleEditClick(post && post.id)}><i className="bi bi-pencil-square"></i></button> }
+                    {post && token && (userData.username === post.author.username) && <button className="btn btn-dark mx-1" onClick={() => handleDeleteClick(post && post.id)}><i className="bi bi-trash3"></i></button> }
                     {
                         post && token && (userData.username === post.author.username) && 
                         <button className="btn btn-dark mx-1" onClick={() => handleIsPublic(post && post.id, post && post.is_public)}>

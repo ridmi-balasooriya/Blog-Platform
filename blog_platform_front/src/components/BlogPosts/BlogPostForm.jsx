@@ -234,7 +234,7 @@ const BlogPostForm = ({ postId }) => {
     
     return(
         <div className='article-editor'>
-            <h1 className='text-center mt-2 my-3'>{isEditing ? 'Edit Blog Post' : 'Create New Blog Post'}  <br/> <i className="bi bi-dash-lg"></i></h1>           
+            <h1 className='text-center mt-2 my-3'>{isEditing ? 'Edit Article' : 'Create New Article'}  <br/> <i className="bi bi-dash-lg"></i></h1>           
             <div className='row'>
                 <div className='col-lg-8 col-xl-9'>
                     <div className='article-section article-input-section'>

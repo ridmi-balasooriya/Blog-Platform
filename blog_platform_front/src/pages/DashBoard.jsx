@@ -65,7 +65,7 @@ const DashBoard = () => {
                                 </li>
                                 <li className="list-group-item">
                                     <button className={`btn btn-link fs-5 ${displayComponent === 'my_posts' ? 'active' : ''}`} onClick={() => setDisplayComponent('my_posts')}>
-                                        My Posts <br/> <i className="bi bi-dash-lg"></i>
+                                        My Articles <br/> <i className="bi bi-dash-lg"></i>
                                         <span className="dashboard-menu-pointer"></span>
                                     </button>
                                 </li>

@@ -75,7 +75,7 @@ const BlogPostList = () => {
                         <option value='category'>Category</option>
                     </select>
                 </div>                
-                <div className="input-group">
+                <div className="search-input input-group">
                     <input
                         type="text"
                         className="form-control"

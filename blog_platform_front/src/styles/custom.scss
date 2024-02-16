@@ -712,10 +712,25 @@ article {
     .article-section-right{
         .article-section{
             .tag-list-div{
-                height: 624px;
+                height: 530px;
                 overflow-y: scroll;
+                .form-check{
+                    padding-left: 1.8em;
+                }
+                .checked{
+                    background-color: $shadow_color;
+                }
             }
-            
+            .category-list-div{
+                height: 200px;
+                overflow-y: scroll;
+                .form-check{
+                    padding-left: 1.8em;
+                }
+                .checked{
+                    background-color: $shadow_color;
+                }
+            }
             .form-label{
                 padding-bottom: 2px;
                 line-height: 1.2rem;
@@ -763,6 +778,9 @@ article {
                 box-shadow: $shadow_color 1px 1px 1px 1px;
             }
         }
+        .edit-category{
+            background-color: #ccc;
+        }
     }
     .input-group{
         button{
@@ -774,4 +792,34 @@ article {
         }
     }
     
+}
+
+.my_profile{
+    .profile-info{
+        max-width: 600px;
+        width: 100%;
+        margin:auto;
+        textarea{
+            width: 95%;
+            height: 150px;
+            border: 0px;
+            background: $shadow_color;
+            box-shadow: $shadow_color 1px 1px 1px 1px;
+        }
+        input{
+            border: 0px;
+            background: $shadow_color;
+            box-shadow: $shadow_color 1px 1px 1px 1px; 
+        }
+        .info-span{
+            display: block;
+            margin: auto;
+            padding:15px;
+            max-width: 500px;
+            width:95%;
+            background-color: $shadow_color;
+            box-shadow: $shadow_color 1px 1px 1px 1px;
+            border-radius: 5px;
+        }
+    }
 }

@@ -37,6 +37,9 @@ const BlogPostForm = ({ postId }) => {
     const [authorDetails,setAuthorDetails] = useState({})
     const [selectedImage, setSelectedImage] = useState(null);
     const [tagChecked, setTagChecked] = useState([])
+    const [categoryChecked, setCategoryChecked] = useState([])
+    const [filterCategory, setFilterCategory] = useState('');
+    const [filterTags, setFilterTags] = useState('');
 
     const clearMessages = () => {
         setSuccess('')
@@ -56,6 +59,7 @@ const BlogPostForm = ({ postId }) => {
                 setFormData(response.data)
                 setSelectedImage(response.data.image)
                 setTagChecked(response.data.tags.map(tag => tag.id))
+                setCategoryChecked(response.data.category.id)
                 setViewPostData({
                     id:response.data.id,
                     slug:response.data.slug,
@@ -125,7 +129,8 @@ const BlogPostForm = ({ postId }) => {
         setFormData({
             ...formData,
             [name]: {id: value, name: e.innerText},
-        })  
+        })          
+        setCategoryChecked(value);        
     }
 
     const hanldeChangePublic = (e) => {
@@ -284,20 +289,35 @@ const BlogPostForm = ({ postId }) => {
                     </div>
                     <div className='article-section'>
                         <label for='category' className="form-label col-form-label-lg">Category<br/> <i className="bi bi-dash-lg"></i></label>
-                        <AddCategory onAddCategory={handleCategoryAdded} />                        
-                        <select name='category' className='form-select' onChange={handleChangeCategory} value={formData.category.id}>
-                            <option value={null}>Please Select</option>
-                            {categories.map(category => (
-                                <option key={category.id} value={category.id}>{category.name}</option>
+                        <AddCategory onAddCategory={handleCategoryAdded} onFilterChange={setFilterCategory} />                        
+                        <div className='category-list-div' onChange={handleChangeCategory} value={formData.category.id}>
+                            
+                            {categories
+                                .filter(category => category.name.toLowerCase().includes(filterCategory.toLowerCase()))
+                                .map(category => (
+                                    <div className={`form-check py-1 ${category.id === parseInt(categoryChecked, 10) ? 'checked' : ''}`} key={category.id}>
+                                        <input 
+                                            className="form-check-input" 
+                                            type="radio" 
+                                            name="category" 
+                                            id={`category${category.id}`} 
+                                            value={category.id} 
+                                            checked={category.id === parseInt(categoryChecked, 10)}
+                                            onChange={handleChangeCategory} // The actual change is handled by the div
+                                        />
+                                        <label className="form-check-label" htmlFor={`category${category.id}`}>
+                                            {category.name}
+                                        </label>
+                                    </div>
                             ))}
-                        </select>
+                        </div>
                     </div>
                     <div className='article-section'>
                         <label htmlFor='tags' className="form-label col-form-label-lg">Tags<br/> <i className="bi bi-dash-lg"></i></label>
-                        <AddTag onAddTag={handleTagAdded} />  
+                        <AddTag onAddTag={handleTagAdded} onFilterChange={setFilterTags} />  
                         <div className='tag-list-div py-3'>
-                            {tags.map(tag => (
-                                <div key={tag.id} className='form-check py-1'>
+                            {tags.filter(category => category.name.toLowerCase().includes(filterTags.toLowerCase())).map(tag => (
+                                <div key={tag.id} className={`form-check py-1 ${tagChecked.includes(tag.id) ? 'checked' : ''}`}>
                                     <input type='checkbox' className="form-check-input" name='tags' id={`tag${tag.id}`} value={tag.id} onChange={() => handleTagChange(tag.id)} checked={tagChecked.includes(tag.id)}/>                                                                                   
                                     <label class="form-check-label" for={`tag${tag.id}`}>{tag.name}</label>
                                 </div>                           

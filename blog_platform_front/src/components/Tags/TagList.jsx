@@ -10,6 +10,7 @@ const TagList = () => {
     const [eidtTagName, setEditTagName] = useState('')
     const [success, setSuccess] = useState('')
     const [error, setError] =useState('')
+    const [filterTags, setFilterTags] = useState('');
 
     // Get Tag List
     useEffect(() => {
@@ -142,18 +143,18 @@ const TagList = () => {
     return(
         <div className="category-list container pb-5">
             <h1 className="text-center mt-5 mb-2">Tags <br/> <i className="bi bi-dash-lg"></i></h1>            
-            <AddTag onAddTag={handleTagAdd} />
+            <AddTag onAddTag={handleTagAdd} onFilterChange={setFilterTags} />
             {success && <div className="alert alert-success text-center"><i className="bi bi-check-circle me-1"></i> {success}</div>}
             {error && <div className="alert alert-danger text-center"><i class="bi bi-x-circle me-1"></i> {error}</div>}
             <div className="row">
-                {tagList.map(tag => (
+                {tagList.filter(category => category.name.toLowerCase().includes(filterTags.toLowerCase())).map(tag => (
                     (tag.name !== 'Untaged') &&
                     <div key={tag.id} className="col-lg-6 col-xl-4 category-div">
                         {editTagId && (editTagId === tag.id)
                         ? 
-                            <div className="m-2 fs-5 d-flex flex-row p-3">
+                            <div className="m-2 d-flex flex-row p-3 edit-category">
                                 <div className="flex-grow-1">
-                                <input type="text" value={eidtTagName} onChange={(e) => setEditTagName(e.target.value)} />
+                                <input className="py-2 form-control" type="text" value={eidtTagName} onChange={(e) => setEditTagName(e.target.value)} />
                                 </div>
                                 <div className="text-end">
                                     <button className="btn btn-dark mx-1" onClick={() => handleSaveEditClick(tag.id, tag.name)}><i class="bi bi-floppy"></i></button>

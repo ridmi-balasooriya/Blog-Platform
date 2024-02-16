@@ -131,7 +131,7 @@ const BlogPostFull = () =>{
                 <div className="article-content">
                     {post &&  <p dangerouslySetInnerHTML={{ __html: post.content }} />}
                 </div>
-                <a href='/' className="d-block mb-5">Back To Article List</a>
+                <a href='/articles/' className="d-block mb-5">Back To Article List</a>
                 {post && token && <CommentForm postId={post.id} onCommentAdded={handleCommentAdded} /> }
                 {post && <CommentList postId={post.id} onCommentAdded={handleCommentAdded} /> }
             </article>

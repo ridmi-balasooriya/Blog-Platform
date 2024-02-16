@@ -3,7 +3,7 @@ import axios from "axios";
 import API_BASE_URL from '../../config';
 import {token, userData} from "../Auth/Token";
 
-const AddTag = ({onAddTag}) => {
+const AddTag = ({onAddTag, onFilterChange}) => {
     const [tagList, setTagList] = useState([])
     const [formData, setFormData] = useState({
         name: '',
@@ -73,6 +73,7 @@ const AddTag = ({onAddTag}) => {
             ...formData,
             [name]: value,
         })
+        onFilterChange(value);
     }
 
     const handleSubmission = (e) => {
@@ -117,13 +118,6 @@ const AddTag = ({onAddTag}) => {
                     <button type="submit"><i class="bi bi-plus"></i></button>
                 </div>
             </form>
-            {formData.name &&
-                 <ul>
-                    {tagList.map(tag => (
-                        <li key={tag.id}><span>{tag.name}</span></li>
-                    ))}
-                </ul>
-            }
         </div>
     )
 }

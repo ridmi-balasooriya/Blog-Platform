@@ -3,7 +3,7 @@ import axios from "axios";
 import API_BASE_URL from '../../config';
 import {token, userData} from "../Auth/Token";
 
-const AddCategory = ({onAddCategory}) => {
+const AddCategory = ({onAddCategory, onFilterChange}) => {
     const [categoryList, setCategoryList] = useState([])
     const [formData, setFormData] = useState({
         name: '',
@@ -74,7 +74,10 @@ const AddCategory = ({onAddCategory}) => {
             ...formData,
             [name]: value,
         })
+        onFilterChange(value);
     }
+
+    
 
     const handleSubmission = (e) => {
         e.preventDefault();
@@ -116,14 +119,7 @@ const AddCategory = ({onAddCategory}) => {
                     <input type="text" className="form-control" name="name" value={formData.name} onChange={handleNewCategory} />
                     <button type="submit"><i class="bi bi-plus"></i></button>
                 </div>                
-            </form>
-            { formData.name &&
-                <ul>
-                    {categoryList.map(category => (
-                        <li key={category.id}><span>{category.name}</span></li>
-                    ))}
-                </ul>
-            }            
+            </form>           
         </div>
     )
 }

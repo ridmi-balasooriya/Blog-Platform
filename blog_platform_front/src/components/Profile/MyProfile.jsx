@@ -128,82 +128,95 @@ const MyProfile = () => {
     }
 
     return(
-        <>
-            <h1>My Profile</h1>
-            <div>
-                {success && <div>{success}</div>}
-                {error && <div>{error}</div>}
+        <div className="my_profile container pb-5">
+            {success && <div className="alert alert-success text-center"><i className="bi bi-check-circle me-1"></i> {success}</div>}
+            {error && <div className="alert alert-danger text-center"><i class="bi bi-x-circle me-1"></i> {error}</div>}
+            <h1 className="text-center mt-5 mb-2">My Profile <br/> <i className="bi bi-dash-lg"></i></h1>
+            <div className="text-center profile-info">
                 {editInput === 'profile_pic' 
                     ? <span>
                             {selectedImage ? (
-                                <img src={selectedImage} alt="Selected thumbnail" style={{ width: '50px', height: '50px', objectFit: 'cover' }} />
+                                <img src={selectedImage} alt="Selected thumbnail" style={{ width: '100px', height: '100px', objectFit: 'cover' }} />
                                 ) 
                                 : ( 'Choose Image' )
                             }
-                            <input type='file' name='image' accept='image/*' onChange={handleImageChange} />
-                            <button onClick={() => handleSaveEditClick()}>Save</button>
-                            <button onClick={() => setEditInput('')}>Cancel</button>
+                            <input className="form-control mt-2 mb-4" type='file' name='image' accept='image/*' onChange={handleImageChange} />
+                            <button className="btn btn-dark mx-1" onClick={() => handleSaveEditClick()}>Save</button>
+                            <button className="btn btn-dark mx-1" onClick={() => setEditInput('')}>Cancel</button>
                       </span>
                     : <>
                             {authorProfile.profile_pic 
                             ?   <span>
-                                    <img src={authorProfile.profile_pic} width='150px' height='100px' alt={`${authorProfile.first_name} ${authorProfile.last_name}`} />
-                                    <button onClick={() => setEditInput('profile_pic')}>Edit</button>
+                                    <img className="mb-3" src={authorProfile.profile_pic} width='150px' height='150px' alt={`${authorProfile.first_name} ${authorProfile.last_name}`} />
+                                    <br />
+                                    <button className="btn btn-dark mx-1" onClick={() => setEditInput('profile_pic')}>Change Profie Picture</button>
                                 </span>
                             :   <span>
-                                    <button onClick={() => setEditInput('profile_pic')}>Add Profile Picture</button>
+                                    <button className="btn btn-dark mx-1" onClick={() => setEditInput('profile_pic')}>Add Profile Picture</button>
                                 </span>
                             }
-                            
+                            <div id="imageHelp" className="form-text mt-2">Proflie picture size should be 100px x 100px</div>
                       </>
                 }
                 
             </div>
-            <div>
-                {editInput === 'bio' 
-                    ? <span>
-                        <textarea name="bio" onChange={hanldeChange}>{authorProfile.bio}</textarea>
-                        <button onClick={() => handleSaveEditClick()}>Save</button>
-                        <button onClick={() => setEditInput('')}>Cancel</button>
-                     </span>
-                    : <>
-                            {authorProfile.bio && authorProfile.bio !== 'null'
-                            ?   <span>
-                                    {authorProfile.bio}
-                                    <button onClick={() => setEditInput('bio')}>Edit</button>
-                                </span>
-                            :   <span>
-                                    <button onClick={() => setEditInput('bio')}>Add Bio</button>
-                                </span>
-                            }                    
-                    </>                    
-                }
-            </div>            
-            <div>
-                <label htmlFor="first_name">Name:</label>
-                {editInput === 'name' 
-                    ? <span>
-                        <input type="text" name="first_name" value={authorProfile.first_name} onChange={hanldeChange} />
-                        <input type="text" name="last_name" value={authorProfile.last_name} onChange={hanldeChange} />
-                        <button onClick={() => handleSaveEditClick()}>Save</button>
-                        <button onClick={() => setEditInput('')}>Cancel</button>
-                    </span>
-                    : <span>
-                        <span>{authorProfile.first_name} {authorProfile.last_name}</span>
-                        <button onClick={() => setEditInput('name')}>Edit</button>
-                    </span>
-                }               
-            </div>
-            <div>
-                <label htmlFor="username">UserName:</label>
-                <span>{userProfile.username}</span>
-            </div>
-            <div>
-                <label htmlFor="email">Email:</label>
-                <span>{userProfile.email}</span>
-            </div>
-            <div><Link to='/password_reset'>Change Your Password?</Link></div>            
-        </>
+            <div className="row">
+                    <div className="col-lg-6 text-center mt-5">
+                        <h4 className="text-center mt-5">Bio <br/> <i className="bi bi-dash-lg"></i></h4>
+                        {editInput === 'bio' 
+                            ? <div className="profile-info fs-5">
+                                <textarea className="form-control form-control-lg" name="bio" onChange={hanldeChange}>{authorProfile.bio}</textarea>
+                                <br />
+                                <button className="btn btn-dark mx-1" onClick={() => handleSaveEditClick()}>Save</button>
+                                <button className="btn btn-dark mx-1" onClick={() => setEditInput('')}>Cancel</button>
+                            </div>
+                            : <div className="profile-info fs-5">
+                                    {authorProfile.bio && authorProfile.bio !== 'null'
+                                    ?   <div className="profile-info">
+                                            <span className="info-span">{authorProfile.bio}</span>
+                                            <br />
+                                            <button className="btn btn-dark mx-1" onClick={() => setEditInput('bio')}>Edit Bio</button>
+                                        </div>
+                                    :   <div>
+                                            <button className="btn btn-dark mx-1" onClick={() => setEditInput('bio')}>Add Bio</button>
+                                        </div>
+                                    }                    
+                            </div>                    
+                        }
+                    </div>
+                    <div className="col-lg-6 text-center mt-5">
+                        <h4 className="text-center mt-5">Name<br/> <i className="bi bi-dash-lg"></i></h4>
+                        {editInput === 'name' 
+                            ? <div className="profile-info fs-5">
+                                <div className="d-flex flex-row mb-4">
+                                    <input className="form-control form-control-lg d-inline-block mx-1" type="text" name="first_name" value={authorProfile.first_name} onChange={hanldeChange} />
+                                    <input className="form-control form-control-lg d-inline-block mx-1" type="text" name="last_name" value={authorProfile.last_name} onChange={hanldeChange} />
+                                </div>
+                                <button className="btn btn-dark mx-1"  onClick={() => handleSaveEditClick()}>Save</button>
+                                <button className="btn btn-dark mx-1"  onClick={() => setEditInput('')}>Cancel</button>
+                            </div>
+                            : <div className="profile-info fs-5">
+                                <span className="info-span">{authorProfile.first_name} {authorProfile.last_name}</span><br />
+                                <button className="btn btn-dark mx-1" onClick={() => setEditInput('name')}>Edit Name</button>
+                            </div>
+                        }     
+                    </div>
+                    <div className="col-lg-6">
+                        <div className="profile-info fs-5 text-center">
+                            <h4 className="text-center mt-5">UserName<br/> <i className="bi bi-dash-lg"></i></h4>
+                            <span className="info-span">{userProfile.username}</span>
+                        </div>
+                    </div>
+                    <div className="col-lg-6">
+                    <div className="profile-info fs-5 text-center">
+                        <h4 className="text-center mt-5">Email<br/> <i className="bi bi-dash-lg"></i></h4>
+                        <span className="info-span">{userProfile.email}</span>
+                    </div>
+                    </div>
+                </div>
+
+                <div className="text-center mt-5"><Link className="btn btn-dark mx-1" to='/password_reset'>Change Your Password</Link></div>            
+        </div>
     );
 }
 

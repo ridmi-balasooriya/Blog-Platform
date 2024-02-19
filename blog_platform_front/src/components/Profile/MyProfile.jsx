@@ -23,6 +23,7 @@ const MyProfile = () => {
     const [editInput, setEditInput] = useState('');
     const [success, setSuccess] = useState('');
     const [error, setError] = useState('');
+    const [imgError, setImgError] = useState('')
 
     useEffect(() => {
         axios.get(`${API_BASE_URL}/api/users/${userData.id}`,
@@ -86,19 +87,34 @@ const MyProfile = () => {
     }
 
     const handleImageChange = (e) => {
-        const profilePic = e.target.files[0]
-        setAuthorProfile({
-            ...authorProfile,
-            profile_pic: profilePic,
-        })
+        const profilePic = e.target.files[0]        
         if (profilePic) {
-            const reader = new FileReader();        
+            const reader = new FileReader(); 
             reader.onload = (e) => {
-                setSelectedImage(e.target.result);
+                const img = new Image();
+                img.src = e.target.result; 
+
+                img.onload = () => {
+                    const {width, height} = img;
+                    if((width !== 150) && (height !== 150)){
+                        setImgError('Your profile picture should be 150px x 150px. Please ajust the image width and height before uploading.')
+                    }else{
+                        setImgError('');
+                        setSelectedImage(e.target.result);
+                        setAuthorProfile({
+                            ...authorProfile,
+                            profile_pic: profilePic,
+                        })
+                    }
+                }
             };    
             reader.readAsDataURL(profilePic);
         } else {
             setSelectedImage(null);
+            setAuthorProfile({
+                ...authorProfile,
+                profile_pic: profilePic,
+            })
         }
     }
             
@@ -129,17 +145,18 @@ const MyProfile = () => {
 
     return(
         <div className="my_profile container pb-5">
-            {success && <div className="alert alert-success text-center"><i className="bi bi-check-circle me-1"></i> {success}</div>}
-            {error && <div className="alert alert-danger text-center"><i class="bi bi-x-circle me-1"></i> {error}</div>}
+            {success && <div className="alert alert-success text-center mt-5"><i className="bi bi-check-circle me-1"></i> {success}</div>}
+            {error && <div className="alert alert-danger text-center mt-5"><i class="bi bi-x-circle me-1"></i> {error}</div>}
             <h1 className="text-center mt-5 mb-2">My Profile <br/> <i className="bi bi-dash-lg"></i></h1>
             <div className="text-center profile-info">
                 {editInput === 'profile_pic' 
                     ? <span>
                             {selectedImage ? (
-                                <img src={selectedImage} alt="Selected thumbnail" style={{ width: '100px', height: '100px', objectFit: 'cover' }} />
+                                <img src={selectedImage} alt="Selected thumbnail" style={{ width: '150px', height: '150px', objectFit: 'cover' }} />
                                 ) 
                                 : ( 'Choose Image' )
                             }
+                            {imgError && <div className="alert alert-danger text-center mt-2"><i class="bi bi-x-circle me-1"></i> {imgError}</div>}
                             <input className="form-control mt-2 mb-4" type='file' name='image' accept='image/*' onChange={handleImageChange} />
                             <button className="btn btn-dark mx-1" onClick={() => handleSaveEditClick()}>Save</button>
                             <button className="btn btn-dark mx-1" onClick={() => setEditInput('')}>Cancel</button>
@@ -155,7 +172,7 @@ const MyProfile = () => {
                                     <button className="btn btn-dark mx-1" onClick={() => setEditInput('profile_pic')}>Add Profile Picture</button>
                                 </span>
                             }
-                            <div id="imageHelp" className="form-text mt-2">Proflie picture size should be 100px x 100px</div>
+                            <div id="imageHelp" className="form-text mt-2">Proflie picture size should be 150px x 150px</div>
                       </>
                 }
                 

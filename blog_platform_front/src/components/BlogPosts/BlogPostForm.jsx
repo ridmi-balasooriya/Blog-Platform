@@ -29,6 +29,7 @@ const BlogPostForm = ({ postId }) => {
     const [tags, setTags]= useState([])
     const [success, setSuccess] = useState(successMessage)
     const [error, setError] = useState('')
+    const [imgError, setImgError] = useState('')
     const [viewPostData, setViewPostData] = useState({
         id:'',
         slug:'',
@@ -152,17 +153,34 @@ const BlogPostForm = ({ postId }) => {
 
     const handleImageChange = (e) => {
         const image = e.target.files[0]
-        setFormData({
-            ...formData,
-            image: image,
-        })
+
         if (image) {
-            const reader = new FileReader();        
+            const reader = new FileReader();   
             reader.onload = (e) => {
-                setSelectedImage(e.target.result);
+                const img = new Image();
+                img.src = e.target.result;
+                img.onload = () => {
+                    const {width, height} = img;
+                    if((width !== 1260) && (height !== 400)){
+                        setImgError('Article Image size should be 1260px x 400px. Please ajust the image width and height before uploading.')
+                    }else{
+                        setImgError('');
+                        setFormData({
+                            ...formData,
+                            image: image,
+                        })
+                        setSelectedImage(e.target.result);
+                    }
+                }
             };    
+
             reader.readAsDataURL(image);
+
         } else {
+            setFormData({
+                ...formData,
+                image: image,
+            })
             setSelectedImage(null);
         }
     }
@@ -244,32 +262,33 @@ const BlogPostForm = ({ postId }) => {
                 <div className='col-lg-8 col-xl-9'>
                     <div className='article-section article-input-section'>
                         <div className='mb-3'>
-                            <label for='title' className="form-label col-form-label-lg">Title: </label>
+                            <label htmlFor='title' className="form-label col-form-label-lg">Title: </label>
                             <input type='text' className="form-control form-control-lg" name='title' value={formData.title} onChange={handleChangeFormData} />
                         </div> 
                         <div className='mb-3 content-div'>
-                            <label for='content'  className="form-label col-form-label-lg">Article:</label>
+                            <label htmlFor='content'  className="form-label col-form-label-lg">Article:</label>
                             <ReactQuill value={formData.content} className="form-control form-control-lg p-0" onChange={handleContentChange} placeholder='Write your content here...' />
                         </div>
                         <div className='mb-3'>
-                            <label for='image'  className="form-label col-form-label-lg">Article Image:  </label>
-                            <div className='article-image-div'>
+                            <label htmlFor='image'  className="form-label col-form-label-lg">Article Image:  </label>
+                            <div className='article-image-div'>                                
                                 {selectedImage &&
                                     <img src={selectedImage} alt="Selected thumbnail" style={{ width: '100px', height: '100px', objectFit: 'cover' }} />
                                 }
+                                {imgError && <div className="alert alert-danger text-center p-1 fs-6"><i className="bi bi-exclamation-triangle me-1"></i> {imgError}</div> }
                                 <input type='file' className="form-control" name='image' accept='image/*' onChange={handleImageChange} />
-                            </div>
+                            </div>                            
                             <div id="imageHelp" className="form-text">Article Image size should be 1260px x 400px</div>
                         </div>
                     </div>
 
                     <div className='article-section meta-input-section'>
                         <div className='mb-3'>
-                            <label for='slug' className="form-label col-form-label-lg">Slug: </label>
+                            <label htmlFor='slug' className="form-label col-form-label-lg">Slug: </label>
                             <input type='text' name='slug' className="form-control" value={formData.slug} onChange={handleChangeFormData} />
                         </div>
                         <div>
-                            <label for='meta_description' className="form-label col-form-label-lg">Meta Description: </label>
+                            <label htmlFor='meta_description' className="form-label col-form-label-lg">Meta Description: </label>
                             <textarea name='meta_description' className="form-control" value={formData.meta_description} onChange={handleChangeFormData}></textarea>
                         </div>
                     </div>   
@@ -281,14 +300,14 @@ const BlogPostForm = ({ postId }) => {
                         {viewPostData.slug && <a href={`/posts/${viewPostData.author}/${viewPostData.id}/${viewPostData.slug}`} target="_blank"className="btn btn-dark d-block" rel="noopener noreferrer">View Article</a>}
                     </div>  
                     <div className='article-section'>
-                        <label for='is_public' className="form-label col-form-label-lg">Article Status <br/> <i className="bi bi-dash-lg"></i></label>
+                        <label htmlFor='is_public' className="form-label col-form-label-lg">Article Status <br/> <i className="bi bi-dash-lg"></i></label>
                         <select name='is_public' className='form-select' onChange={hanldeChangePublic} value={formData.is_public}>
                             <option value={false}>Draft</option>
                             <option value={true}>Public</option>
                         </select>
                     </div>
                     <div className='article-section'>
-                        <label for='category' className="form-label col-form-label-lg">Category<br/> <i className="bi bi-dash-lg"></i></label>
+                        <label htmlFor='category' className="form-label col-form-label-lg">Category<br/> <i className="bi bi-dash-lg"></i></label>
                         <AddCategory onAddCategory={handleCategoryAdded} onFilterChange={setFilterCategory} />                        
                         <div className='category-list-div' onChange={handleChangeCategory} value={formData.category.id}>
                             
@@ -319,14 +338,14 @@ const BlogPostForm = ({ postId }) => {
                             {tags.filter(category => category.name.toLowerCase().includes(filterTags.toLowerCase())).map(tag => (
                                 <div key={tag.id} className={`form-check py-1 ${tagChecked.includes(tag.id) ? 'checked' : ''}`}>
                                     <input type='checkbox' className="form-check-input" name='tags' id={`tag${tag.id}`} value={tag.id} onChange={() => handleTagChange(tag.id)} checked={tagChecked.includes(tag.id)}/>                                                                                   
-                                    <label class="form-check-label" for={`tag${tag.id}`}>{tag.name}</label>
+                                    <label className="form-check-label" htmlFor={`tag${tag.id}`}>{tag.name}</label>
                                 </div>                           
                             ))}  
                         </div> 
                     </div>
                 </div> 
                 <div className="text-end">
-                    {error && <div className="alert alert-danger text-center"><i class="bi bi-x-circle me-1"></i>{error}</div>}
+                    {error && <div className="alert alert-danger text-center"><i className="bi bi-x-circle me-1"></i>{error}</div>}
                     {success && <div className="alert alert-success text-center"><i className="bi bi-check-circle me-1"></i> {success}</div>} 
                     <button className="btn btn-dark" onClick={handleSubmission}>{isEditing ? 'Update' : 'Create'} Article</button>
                 </div>   

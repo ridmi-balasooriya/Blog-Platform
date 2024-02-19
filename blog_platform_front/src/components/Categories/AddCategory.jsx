@@ -113,11 +113,11 @@ const AddCategory = ({onAddCategory, onFilterChange}) => {
     return(
         <div>
             {success && <div className="alert alert-success text-center"><i className="bi bi-check-circle me-1"></i> {success}</div>}
-            {error && <div className="alert alert-danger text-center"><i class="bi bi-x-circle me-1"></i> {error}</div>}
+            {error && <div className="alert alert-danger text-center"><i className="bi bi-x-circle me-1"></i> {error}</div>}
             <form onSubmit={handleSubmission}>
                 <div className="input-group mb-3">
                     <input type="text" className="form-control" name="name" value={formData.name} onChange={handleNewCategory} />
-                    <button type="submit"><i class="bi bi-plus"></i></button>
+                    <button type="submit"><i className="bi bi-plus"></i></button>
                 </div>                
             </form>           
         </div>

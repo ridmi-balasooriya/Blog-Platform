@@ -31,7 +31,7 @@ const PasswordReset = () => {
 
     return(
         <Layout>
-            {error && <div className="alert alert-danger d-inline-block password-rest-alert">{error}</div>}
+            {error && <div className="alert alert-danger password-rest-alert fs-6 text-center my-5 mx-auto">{error}</div>}
             {success ? (<div className="alert alert-success password-rest-alert fs-5 text-center my-5 mx-auto">Password reset email sent. Check your inbox.</div>)
                      : (
                         <div className="container text-center signin-div pb-5">

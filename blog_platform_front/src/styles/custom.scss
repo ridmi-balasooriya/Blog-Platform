@@ -1,7 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200&display=swap');
 
-$primary:   #030505; 
-$secondary: #575757;
+
 $site_bg-primary: #ffffff;
 $site_bg-secondary:#030505;
 $font_primary:#030505;
@@ -13,7 +12,7 @@ $shadow_color:#f6f6f6;
 
 $primary_font: 'Oswald', sans-serif;
 
-@import '~bootstrap/scss/bootstrap';
+@import '~bootstrap/dist/css/bootstrap.min.css';
 @import '~bootstrap-icons/font/bootstrap-icons.css';
 
 body{
@@ -31,6 +30,7 @@ body{
 }
 footer{
     color: $font_secondary;
+    background-color: $site_bg-secondary;
     .footer-nav{
         list-style: none;
         padding-left: 0px;
@@ -52,6 +52,11 @@ a{
 }
 main{
     margin-top: 60px;
+}
+.is-invalid{
+    border: thin solid #ffcdcd !important;
+    box-shadow: #ffcdcd 2px 2px 1px 0px !important;
+    background: #fff7f7 !important;
 }
 .input-group{
     .form-control:focus{
@@ -96,7 +101,7 @@ article {
 }
 .custom-btn-primary{
     background-color: #fff;
-    color: $primary;
+    color: $site_bg-secondary;
     font-weight: bold;
 }
 .btn-dark{
@@ -151,7 +156,11 @@ article {
     }
 }
 /* Navingation Stlyes */
+header{
+    background-color: $site_bg-secondary;
+}
 .navbar{
+    background-color: $site_bg-secondary;
     .btn-link{
         color: $nav_font;
         text-decoration: none;
@@ -164,14 +173,17 @@ article {
         }
     }
     .dropdown-menu{
-        background-color: $primary;
+        background-color: $site_bg-secondary;
         border-radius: 1px;
         .dropdown-item{
             color: $nav_font;
             &:hover{
-                background-color: $primary;
+                background-color: $site_bg-secondary;
                 color:$nav_font_hover;
                 text-decoration: underline;
+            }
+            &.active{
+                background-color: $site_bg-secondary;
             }
         }
     }

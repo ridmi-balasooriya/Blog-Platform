@@ -130,12 +130,9 @@ const BlogPostList = () => {
                 </ul>
                 {(totalPages > 1) && 
                     Array.from({ length: totalPages }, (_, index) => (
-                        <>
-                            <button className={`btn btn-dark pagination-btn ${currentPage === index + 1 ? 'active' : ''}`} key={index + 1} onClick={() => loadMorePosts(index + 1)}>
-                                {index + 1}
-                            </button>
-                        </>
-                        
+                        <button key={index + 1} className={`btn btn-dark pagination-btn ${currentPage === index + 1 ? 'active' : ''}`} onClick={() => loadMorePosts(index + 1)}>
+                            {index + 1}
+                        </button>
                     ))
                 }
             </div>            

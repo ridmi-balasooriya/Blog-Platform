@@ -4,8 +4,8 @@ import { token } from '../components/Auth/Token';
 import LogOut from '../components/Auth/LogOut';
 const Header = () => {
     return(
-        <header className='container-fluid bg-primary'>
-            <nav className='navbar navbar-expand-sm bg-primary navbar-dark fixed-top shadow'>
+        <header className='container-fluid'>
+            <nav className='navbar navbar-expand-sm navbar-dark fixed-top shadow'>
                 <div className='container'>
 
                     <img src='/tech_talk_logo-dark.png' width="70px" alt='Tech Talk logo' />

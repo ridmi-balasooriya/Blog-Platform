@@ -25,6 +25,12 @@ const BlogPostForm = ({ postId }) => {
         slug:'',
         meta_description:'',
     })
+    const [inputValidate, setInputValidate] = useState({
+        title: false,
+        content: false,
+        category: false,
+        image: false,
+    });
     const [categories, setCategories]= useState([])
     const [tags, setTags]= useState([])
     const [success, setSuccess] = useState(successMessage)
@@ -122,7 +128,22 @@ const BlogPostForm = ({ postId }) => {
         setFormData({
             ...formData,
             [name]: value,
-        })    
+        })   
+
+        if(name === 'title'){
+            const slugName = value.toLowerCase().replace(/\s+/g, '-');
+            setFormData({
+                ...formData,  
+                [name]: value,              
+                slug: slugName,
+            })
+
+            setInputValidate({
+                ...inputValidate,
+                title: false,
+            }) 
+        }
+        
     }
 
     const handleChangeCategory = (e) => {
@@ -131,7 +152,11 @@ const BlogPostForm = ({ postId }) => {
             ...formData,
             [name]: {id: value, name: e.innerText},
         })          
-        setCategoryChecked(value);        
+        setCategoryChecked(value); 
+        setInputValidate({
+            ...inputValidate,
+            category:false,
+        })       
     }
 
     const hanldeChangePublic = (e) => {
@@ -148,6 +173,10 @@ const BlogPostForm = ({ postId }) => {
             }else{
                 return [...prevTagChecked, tagId]
             }
+        })
+        setInputValidate({
+            ...inputValidate,
+            tags:false,
         })
     }
 
@@ -183,6 +212,10 @@ const BlogPostForm = ({ postId }) => {
             })
             setSelectedImage(null);
         }
+        setInputValidate({
+            ...inputValidate,
+            image:false,
+        })
     }
 
     const handleContentChange = (newContent) => {
@@ -190,16 +223,34 @@ const BlogPostForm = ({ postId }) => {
             ...prevFormData,
             content: newContent,
         }))
+        setInputValidate({
+            ...inputValidate,
+            content:false,
+        })
+    }
+    
+    const validateInputs = () => {
+        const errors = {
+            title: !formData.title,
+            content: !formData.content,
+            category: !formData.category.id,
+            image: !formData.image,
+            tags: tagChecked.length === 0
+        };
+        setInputValidate(errors)
     }
     
     const handleSubmission = (e) => {
         e.preventDefault();
         clearMessages()
         
-        if((!formData.title) || (!formData.content) || (!formData.category)){
+        if((!formData.title) || (!formData.content) || (!formData.category.id) || (!formData.image) || (tagChecked.length === 0)){
             setError('Please fill in all required fields.')
+            validateInputs();
             return
         }
+
+
         console.log(formData)
         const postData = new FormData();
         postData.append('title', formData.title)
@@ -263,11 +314,11 @@ const BlogPostForm = ({ postId }) => {
                     <div className='article-section article-input-section'>
                         <div className='mb-3'>
                             <label htmlFor='title' className="form-label col-form-label-lg">Title: </label>
-                            <input type='text' className="form-control form-control-lg" name='title' value={formData.title} onChange={handleChangeFormData} />
+                            <input type='text' className={`form-control form-control-lg ${inputValidate.title ? 'is-invalid' : ''}`} name='title' value={formData.title} onChange={handleChangeFormData} />
                         </div> 
                         <div className='mb-3 content-div'>
                             <label htmlFor='content'  className="form-label col-form-label-lg">Article:</label>
-                            <ReactQuill value={formData.content} className="form-control form-control-lg p-0" onChange={handleContentChange} placeholder='Write your content here...' />
+                            <ReactQuill value={formData.content} className={`form-control form-control-lg p-0 ${inputValidate.content ? 'is-invalid' : ''}`} onChange={handleContentChange} placeholder='Write your content here...' />
                         </div>
                         <div className='mb-3'>
                             <label htmlFor='image'  className="form-label col-form-label-lg">Article Image:  </label>
@@ -276,7 +327,7 @@ const BlogPostForm = ({ postId }) => {
                                     <img src={selectedImage} alt="Selected thumbnail" style={{ width: '100px', height: '100px', objectFit: 'cover' }} />
                                 }
                                 {imgError && <div className="alert alert-danger text-center p-1 fs-6"><i className="bi bi-exclamation-triangle me-1"></i> {imgError}</div> }
-                                <input type='file' className="form-control" name='image' accept='image/*' onChange={handleImageChange} />
+                                <input type='file' className={`form-control ${inputValidate.image ? 'is-invalid' : ''}`} name='image' accept='image/*' onChange={handleImageChange} />
                             </div>                            
                             <div id="imageHelp" className="form-text">Article Image size should be 1260px x 400px</div>
                         </div>
@@ -309,8 +360,7 @@ const BlogPostForm = ({ postId }) => {
                     <div className='article-section'>
                         <label htmlFor='category' className="form-label col-form-label-lg">Category<br/> <i className="bi bi-dash-lg"></i></label>
                         <AddCategory onAddCategory={handleCategoryAdded} onFilterChange={setFilterCategory} />                        
-                        <div className='category-list-div' onChange={handleChangeCategory} value={formData.category.id}>
-                            
+                        <div className={`category-list-div ${inputValidate.category ? 'is-invalid' : ''}`} onChange={handleChangeCategory} value={formData.category.id}>                            
                             {categories
                                 .filter(category => category.name.toLowerCase().includes(filterCategory.toLowerCase()))
                                 .map(category => (
@@ -334,7 +384,7 @@ const BlogPostForm = ({ postId }) => {
                     <div className='article-section'>
                         <label htmlFor='tags' className="form-label col-form-label-lg">Tags<br/> <i className="bi bi-dash-lg"></i></label>
                         <AddTag onAddTag={handleTagAdded} onFilterChange={setFilterTags} />  
-                        <div className='tag-list-div py-3'>
+                        <div className={`tag-list-div py-3 ${inputValidate.tags ? 'is-invalid' : ''}`}>
                             {tags.filter(category => category.name.toLowerCase().includes(filterTags.toLowerCase())).map(tag => (
                                 <div key={tag.id} className={`form-check py-1 ${tagChecked.includes(tag.id) ? 'checked' : ''}`}>
                                     <input type='checkbox' className="form-check-input" name='tags' id={`tag${tag.id}`} value={tag.id} onChange={() => handleTagChange(tag.id)} checked={tagChecked.includes(tag.id)}/>                                                                                   

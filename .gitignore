@@ -5,3 +5,4 @@ myenv/
 pass.txt
 /blog_platform/db.sqlite3
 /sample_images
+/blog_platform/.env

@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path, re_path
-from blog_platform.view import FrontEndAppView
+# from blog_platform.view import FrontEndAppView
 
 # Image Sevrve and Debuging
 from django.views.static import serve
@@ -27,10 +27,10 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('media/<path>', serve, {'document_root': settings.MEDIA_ROOT}),
     path('api/', include('blog.urls')),
-    re_path(r'^', FrontEndAppView.as_view(), name='frontend-app-view'),
+    # re_path(r'^', FrontEndAppView.as_view(), name='frontend-app-view'),
 ]
 
-urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+# urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 # Image Debuging
 if settings.DEBUG:
